@@ -1,0 +1,466 @@
+---
+export interface Props {
+  totalQuota?: number;
+}
+
+const { totalQuota = 200 } = Astro.props;
+---
+
+<section
+  id="tempahan"
+  aria-labelledby="checkout-heading"
+  class="border-t border-slate-800 bg-slate-900/70 py-14 sm:py-20 lg:py-28"
+>
+  <div class="mx-auto max-w-3xl px-5 sm:px-6 lg:px-8">
+    <div class="rounded-2xl border border-slate-700 bg-slate-900 p-6 sm:p-10">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
+          Pra-Jualan Cetakan Pertama
+        </p>
+        <h2
+          id="checkout-heading"
+          class="mt-2 text-[clamp(1.65rem,3vw,2.25rem)] font-extrabold tracking-tight text-white"
+        >
+          Tempah Naskhah Anda Sekarang
+        </h2>
+        <p class="mt-2 text-base leading-relaxed text-slate-300">
+          Miliki analisis lengkap menjelang PRU 16. Harga pra-jualan RM48.00
+          (Semenanjung) dan RM55.00 (Sabah &amp; Sarawak) dikhaskan untuk{" "}
+          {totalQuota} naskhah terawal.
+        </p>
+      </div>
+
+      <div class="mt-7 rounded-xl border border-slate-700 bg-putrajaya-navy p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
+          <span class="font-semibold text-white">
+            Had Kuota Pra-Jualan (RM48 / RM55)
+          </span>
+          <span class="font-bold tabular-nums text-yellow-400">
+            Kuota: {totalQuota} Naskhah Terawal ([DATA SEBENAR] Stok Langsung)
+          </span>
+        </div>
+
+        <div
+          class="mt-3 h-3 w-full overflow-hidden rounded-full border border-slate-600 bg-slate-900"
+          role="progressbar"
+          aria-valuenow={totalQuota}
+          aria-valuemin={0}
+          aria-valuemax={totalQuota}
+          aria-label="Had kuota pra-jualan 200 naskhah terawal"
+        >
+          <div class="h-full w-3/4 rounded-full bg-yellow-400"></div>
+        </div>
+
+        <p class="mt-2.5 text-xs leading-relaxed text-slate-300">
+          Harga kembali kepada kadar biasa selepas kuota {totalQuota} naskhah
+          cetakan awal penuh.
+        </p>
+      </div>
+
+      <form id="chip-checkout-form" class="mt-8 space-y-6" novalidate>
+        <fieldset>
+          <legend class="block text-sm font-semibold text-white">
+            Pilih Zon Penghantaran
+          </legend>
+          <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <label
+              class="relative flex min-h-[64px] cursor-pointer items-center justify-between rounded-xl border-2 border-yellow-400 bg-putrajaya-navy p-4 transition hover:bg-slate-900 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-yellow-400"
+              data-region-card="semenanjung"
+            >
+              <span class="flex items-center gap-3">
+                <input
+                  type="radio"
+                  name="region"
+                  value="semenanjung"
+                  data-price-rm="48"
+                  checked
+                  class="h-5 w-5 accent-yellow-400"
+                />
+                <span>
+                  <span class="block text-sm font-bold text-white">
+                    Semenanjung Malaysia
+                  </span>
+                  <span class="block text-xs text-slate-300">
+                    Kadar Pra-Jualan Semenanjung
+                  </span>
+                </span>
+              </span>
+              <span class="text-lg font-extrabold tabular-nums text-yellow-400">
+                RM48
+              </span>
+            </label>
+
+            <label
+              class="relative flex min-h-[64px] cursor-pointer items-center justify-between rounded-xl border-2 border-slate-500 bg-putrajaya-navy p-4 transition hover:border-slate-300 hover:bg-slate-900 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-yellow-400"
+              data-region-card="borneo"
+            >
+              <span class="flex items-center gap-3">
+                <input
+                  type="radio"
+                  name="region"
+                  value="borneo"
+                  data-price-rm="55"
+                  class="h-5 w-5 accent-yellow-400"
+                />
+                <span>
+                  <span class="block text-sm font-bold text-white">
+                    Sabah &amp; Sarawak
+                  </span>
+                  <span class="block text-xs text-slate-300">
+                    Kadar Pra-Jualan Borneo
+                  </span>
+                </span>
+              </span>
+              <span class="text-lg font-extrabold tabular-nums text-white">
+                RM55
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div>
+            <label for="full_name" class="block text-sm font-medium text-white">
+              Nama Penuh <span class="text-yellow-400">*</span>
+            </label>
+            <input
+              type="text"
+              id="full_name"
+              name="full_name"
+              autocomplete="name"
+              required
+              placeholder="Nama penuh penerima"
+              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+            />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-white">
+              Alamat E-mel <span class="text-yellow-400">*</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              autocomplete="email"
+              required
+              placeholder="emel@contoh.com"
+              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div>
+            <label for="phone" class="block text-sm font-medium text-white">
+              Nombor Telefon (WhatsApp) <span class="text-yellow-400">*</span>
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              autocomplete="tel"
+              required
+              placeholder="Nombor telefon bimbit"
+              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+            />
+          </div>
+
+          <div>
+            <label for="quantity" class="block text-sm font-medium text-white">
+              Kuantiti Naskhah
+            </label>
+            <select
+              id="quantity"
+              name="quantity"
+              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+            >
+              <option value="1">1 Naskhah</option>
+              <option value="2">2 Naskhah</option>
+              <option value="3">3 Naskhah</option>
+              <option value="5">5 Naskhah</option>
+              <option value="10">10 Naskhah</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="shipping_address"
+            class="block text-sm font-medium text-white"
+          >
+            Alamat Penghantaran Lengkap <span class="text-yellow-400">*</span>
+          </label>
+          <textarea
+            id="shipping_address"
+            name="shipping_address"
+            autocomplete="street-address"
+            rows="3"
+            required
+            placeholder="Nombor rumah, nama jalan, poskod, bandar dan negeri"
+            class="mt-2 w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+          ></textarea>
+        </div>
+
+        <div class="rounded-xl border border-slate-700 bg-putrajaya-navy p-5">
+          <div class="flex items-center justify-between text-sm text-slate-300">
+            <span>Buku: Siapa Akan Menguasai Putrajaya?</span>
+            <span id="summary-unit-price" class="tabular-nums">
+              RM48.00 / naskhah
+            </span>
+          </div>
+          <div class="mt-3 flex items-baseline justify-between border-t border-slate-800 pt-3">
+            <span class="text-base font-bold text-white">Jumlah Bayaran</span>
+            <span
+              id="summary-total-price"
+              class="text-2xl font-extrabold tabular-nums text-yellow-400"
+            >
+              RM48.00
+            </span>
+          </div>
+        </div>
+
+        <div
+          id="checkout-status"
+          role="status"
+          aria-live="polite"
+          class="hidden rounded-lg border p-4 text-sm"
+        ></div>
+
+        <button
+          type="submit"
+          id="submit-payment-btn"
+          class="flex min-h-[52px] w-full items-center justify-center gap-3 rounded-xl bg-yellow-400 px-8 py-4 text-base font-extrabold text-slate-950 transition hover:bg-yellow-300 active:translate-y-px active:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <span id="submit-btn-text">Bayar Sekarang (RM48.00)</span>
+        </button>
+
+        <p class="text-center text-xs leading-relaxed text-slate-300">
+          Pembayaran selamat diproses melalui gerbang pembayaran{" "}
+          <strong class="font-semibold text-white">CHIP Collect</strong> (FPX
+          Perbankan Dalam Talian, Kad Kredit/Debit &amp; E-Dompet).
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  // CHIP Collect API expects unit prices in integer sen (e.g. RM48.00 = 4800).
+  interface ChipProduct {
+    name: string;
+    price: number;
+    quantity: number;
+  }
+
+  interface ChipPurchasePayload {
+    brand_id: string;
+    client: {
+      email: string;
+      full_name: string;
+      phone: string;
+      shipping_street_address: string;
+    };
+    purchase: {
+      currency: "MYR";
+      products: ChipProduct[];
+      notes: string;
+    };
+    success_redirect: string;
+    failure_redirect: string;
+    success_callback?: string;
+  }
+
+  interface ChipPurchaseResponse {
+    id?: string;
+    status?: string;
+    checkout_url?: string;
+    message?: string;
+  }
+
+  const form = document.querySelector<HTMLFormElement>("#chip-checkout-form");
+  const regionRadios = document.querySelectorAll<HTMLInputElement>(
+    'input[name="region"]',
+  );
+  const quantitySelect = document.querySelector<HTMLSelectElement>("#quantity");
+  const unitPriceEl = document.querySelector<HTMLElement>(
+    "#summary-unit-price",
+  );
+  const totalPriceEl = document.querySelector<HTMLElement>(
+    "#summary-total-price",
+  );
+  const submitBtn = document.querySelector<HTMLButtonElement>(
+    "#submit-payment-btn",
+  );
+  const submitBtnText = document.querySelector<HTMLElement>("#submit-btn-text");
+  const statusBox = document.querySelector<HTMLElement>("#checkout-status");
+  const regionCards =
+    document.querySelectorAll<HTMLElement>("[data-region-card]");
+
+  const getSelectedPriceRM = (): number => {
+    const checked = document.querySelector<HTMLInputElement>(
+      'input[name="region"]:checked',
+    );
+    return checked ? Number(checked.dataset.priceRm || 48) : 48;
+  };
+
+  const getSelectedQuantity = (): number => {
+    return quantitySelect ? Number(quantitySelect.value || 1) : 1;
+  };
+
+  const updatePricingSummary = (): void => {
+    const unitPrice = getSelectedPriceRM();
+    const quantity = getSelectedQuantity();
+    const totalRM = unitPrice * quantity;
+
+    if (unitPriceEl) {
+      unitPriceEl.textContent = `RM${unitPrice.toFixed(2)} / naskhah`;
+    }
+    if (totalPriceEl) {
+      totalPriceEl.textContent = `RM${totalRM.toFixed(2)}`;
+    }
+    if (submitBtnText) {
+      submitBtnText.textContent = `Bayar Sekarang (RM${totalRM.toFixed(2)})`;
+    }
+
+    regionCards.forEach((card) => {
+      const input = card.querySelector<HTMLInputElement>(
+        'input[name="region"]',
+      );
+      const isChecked = Boolean(input?.checked);
+      card.classList.toggle("border-yellow-400", isChecked);
+      card.classList.toggle("border-slate-500", !isChecked);
+    });
+  };
+
+  regionRadios.forEach((radio) => {
+    radio.addEventListener("change", updatePricingSummary);
+  });
+
+  quantitySelect?.addEventListener("change", updatePricingSummary);
+
+  const showStatus = (
+    prefix: string,
+    message: string,
+    isError = false,
+  ): void => {
+    if (!statusBox) return;
+    statusBox.classList.remove(
+      "hidden",
+      "border-red-400",
+      "bg-red-950/80",
+      "text-red-100",
+      "border-yellow-400",
+      "bg-slate-950",
+      "text-yellow-200",
+    );
+    if (isError) {
+      statusBox.classList.add(
+        "border-red-400",
+        "bg-red-950/80",
+        "text-red-100",
+      );
+    } else {
+      statusBox.classList.add(
+        "border-yellow-400",
+        "bg-slate-950",
+        "text-yellow-200",
+      );
+    }
+    statusBox.textContent = `${prefix}: ${message}`;
+  };
+
+  form?.addEventListener("submit", async (event: SubmitEvent) => {
+    event.preventDefault();
+    if (!form) return;
+
+    const formData = new FormData(form);
+    const fullName = String(formData.get("full_name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const phone = String(formData.get("phone") || "").trim();
+    const address = String(formData.get("shipping_address") || "").trim();
+    const region = String(formData.get("region") || "semenanjung");
+
+    if (!fullName || !email || !phone || !address) {
+      showStatus(
+        "Ralat Pengesahan Borang",
+        "Sila lengkapkan Nama Penuh, Alamat E-mel, Nombor Telefon dan Alamat Penghantaran sebelum meneruskan pembayaran.",
+        true,
+      );
+      return;
+    }
+
+    const unitPriceRM = getSelectedPriceRM();
+    const quantity = getSelectedQuantity();
+    const regionLabel =
+      region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
+
+    const chipPayload: ChipPurchasePayload = {
+      brand_id: import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA",
+      client: {
+        email,
+        full_name: fullName,
+        phone,
+        shipping_street_address: address,
+      },
+      purchase: {
+        currency: "MYR",
+        products: [
+          {
+            name: `Siapa Akan Menguasai Putrajaya? (${regionLabel})`,
+            price: unitPriceRM * 100,
+            quantity,
+          },
+        ],
+        notes: `Pra-Jualan Buku (${quantity} naskhah) - ${regionLabel}`,
+      },
+      success_redirect: `${window.location.origin}/?status=berjaya#tempahan`,
+      failure_redirect: `${window.location.origin}/?status=gagal#tempahan`,
+    };
+
+    if (submitBtn) submitBtn.disabled = true;
+    if (submitBtnText)
+      submitBtnText.textContent = "Sedang Memproses Permintaan CHIP Collect...";
+    showStatus(
+      "Memuatkan",
+      "Sedang menghubungi gerbang pembayaran CHIP Collect. Sila tunggu sebentar...",
+    );
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(chipPayload),
+      });
+
+      const data = (await response.json()) as ChipPurchaseResponse;
+
+      if (response.ok && data.checkout_url) {
+        showStatus(
+          "Status Berjaya",
+          "Mengalihkan anda ke halaman pembayaran rasmi CHIP Collect...",
+        );
+        window.location.href = data.checkout_url;
+        return;
+      }
+
+      showStatus(
+        "Makluman Konfigurasi CHIP Collect",
+        data.message ||
+          `Butiran tempahan untuk ${fullName} (Jumlah: RM${(unitPriceRM * quantity).toFixed(2)}) telah disahkan. Sila tetapkan CHIP_SECRET_KEY dan CHIP_BRAND_ID pada pelayan untuk pengalihan pembayaran langsung.`,
+        false,
+      );
+    } catch {
+      showStatus(
+        "Ralat Sambungan Pelayan",
+        `Tidak dapat menghubungi titik akhir /api/checkout. Sila semak sambungan internet anda atau cuba sebentar lagi.`,
+        true,
+      );
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+      updatePricingSummary();
+    }
+  });
+</script>

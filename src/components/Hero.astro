@@ -1,0 +1,108 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  author?: string;
+  coverImage?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const {
+  title = "Siapa Akan Menguasai Putrajaya?",
+  subtitle = "Rahsia, Analisis, Data dan Strategi Menjelang PRU 16",
+  author = "Ronifira Rejab",
+  coverImage = "/COVER 16 copy 2.jpg",
+  ctaText = "Beli Sekarang",
+  ctaHref = "#tempahan",
+} = Astro.props;
+---
+
+<section
+  id="utama"
+  aria-labelledby="hero-heading"
+  class="border-b border-slate-800 bg-putrajaya-navy py-12 sm:py-20 lg:py-28"
+>
+  <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-12 md:gap-10 lg:gap-16">
+      <div class="mx-auto w-full max-w-[300px] sm:max-w-[340px] md:col-span-5 lg:max-w-[380px]">
+        <div class="overflow-hidden rounded-xl border border-slate-500 bg-slate-900 shadow-2xl shadow-black/80">
+          <img
+            src={coverImage}
+            alt={`Kulit hadapan buku ${title} karya ${author}`}
+            width="760"
+            height="1064"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="aspect-[760/1064] h-auto w-full object-cover"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col items-start text-left md:col-span-7">
+        <p class="text-xs font-bold uppercase tracking-widest text-yellow-400 sm:text-sm">
+          Sebuah Analisis Berasaskan Lensa Politik Pasca-Normal
+        </p>
+
+        <h1
+          id="hero-heading"
+          class="mt-3 text-[clamp(2.15rem,4.5vw,3.75rem)] font-extrabold leading-[1.08] tracking-tight text-white"
+        >
+          Siapa Akan <span class="text-yellow-400">Menguasai</span> Putrajaya?
+        </h1>
+
+        <p class="mt-4 max-w-2xl text-base font-medium leading-relaxed text-slate-300 sm:text-xl">
+          {subtitle}
+        </p>
+
+        <p class="mt-3 text-sm font-medium text-slate-300">
+          Karya <span class="font-bold text-white">{author}</span>
+        </p>
+
+        <dl class="mt-7 grid w-full grid-cols-2 gap-4 border-y border-slate-700 py-5 sm:grid-cols-3 sm:gap-6">
+          <div>
+            <dt class="text-xs font-medium uppercase tracking-wider text-slate-300">
+              Semenanjung
+            </dt>
+            <dd class="mt-1 text-2xl font-extrabold tabular-nums text-yellow-400">
+              RM48.00
+            </dd>
+          </div>
+          <div>
+            <dt class="text-xs font-medium uppercase tracking-wider text-slate-300">
+              Sabah &amp; Sarawak
+            </dt>
+            <dd class="mt-1 text-2xl font-extrabold tabular-nums text-white">
+              RM55.00
+            </dd>
+          </div>
+          <div class="col-span-2 border-t border-slate-800 pt-3 sm:col-span-1 sm:border-t-0 sm:pt-0">
+            <dt class="text-xs font-medium uppercase tracking-wider text-slate-300">
+              Cetakan Awal
+            </dt>
+            <dd class="mt-1 text-base font-bold text-yellow-400 sm:text-lg">
+              Terhad 200 Naskhah
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-8 flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row sm:items-center">
+          <a
+            href={ctaHref}
+            class="inline-flex min-h-[48px] items-center justify-center rounded-lg bg-yellow-400 px-8 py-3.5 text-base font-extrabold text-slate-950 transition hover:bg-yellow-300 active:translate-y-px active:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+          >
+            {ctaText}
+          </a>
+
+          <a
+            href="#sinopsis"
+            class="inline-flex min-h-[48px] items-center justify-center rounded-lg border border-slate-500 bg-slate-900 px-6 py-3.5 text-base font-semibold text-white transition hover:border-slate-300 hover:bg-slate-800 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+          >
+            Baca Sinopsis Buku
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,95 @@
+---
+export interface QuantitativeSpec {
+  metric: string;
+  title: string;
+  description: string;
+}
+
+export interface MethodologySpec {
+  code: string;
+  title: string;
+  description: string;
+}
+
+const primarySpecs: QuantitativeSpec[] = [
+  {
+    metric: "430",
+    title: "430 Muka Surat",
+    description:
+      "Kupasan menyeluruh merangkumi sejarah peralihan kuasa sejak 2018, dinamika gabungan politik dan unjuran kerusi parlimen menjelang PRU 16.",
+  },
+  {
+    metric: "200",
+    title: "Terhad 200 Naskhah Terawal",
+    description:
+      "Tawaran cetakan awal pada harga RM48.00 (Semenanjung) dan RM55.00 (Sabah & Sarawak) khusus untuk kelompok pembaca pertama.",
+  },
+];
+
+const methodologySpecs: MethodologySpec[] = [
+  {
+    code: "Kerangka Teori",
+    title: "Lensa Politik Pasca-Normal",
+    description:
+      "Pendekatan analitikal untuk memahami kerumitan, percanggahan dan ketidaktentuan landskap politik Malaysia yang tidak lagi dapat dijelaskan oleh formula lama.",
+  },
+  {
+    code: "Metodologi Empirikal",
+    title: "Analisis Data & Kajian Lapangan",
+    description:
+      "Dihimpunkan daripada statistik pilihan raya, perubahan demografi pengundi, ekosistem media sosial, faktor ekonomi dan pemerhatian strategik di lapangan.",
+  },
+];
+---
+
+<section
+  id="spesifikasi"
+  aria-labelledby="specs-heading"
+  class="bg-putrajaya-navy py-14 sm:py-20 lg:py-24"
+>
+  <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
+        Fakta &amp; Metodologi Karya
+      </p>
+      <h2
+        id="specs-heading"
+        class="mt-2 text-[clamp(1.65rem,3vw,2.25rem)] font-extrabold tracking-tight text-white"
+      >
+        Empat Tunjang Utama Buku Ini
+      </h2>
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+      {primarySpecs.map((item) => (
+        <article class="rounded-2xl border border-slate-700 bg-slate-900 p-6 sm:p-8">
+          <p class="text-4xl font-extrabold tabular-nums tracking-tight text-yellow-400 sm:text-5xl">
+            {item.metric}
+          </p>
+          <h3 class="mt-3 text-xl font-bold text-white sm:text-2xl">
+            {item.title}
+          </h3>
+          <p class="mt-2.5 text-base leading-relaxed text-slate-300">
+            {item.description}
+          </p>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-6 grid grid-cols-1 divide-y divide-slate-800 rounded-2xl border border-slate-700 bg-slate-900/50 md:grid-cols-2 md:divide-x md:divide-y-0">
+      {methodologySpecs.map((item) => (
+        <article class="p-6 sm:p-8">
+          <p class="text-xs font-bold uppercase tracking-wider text-yellow-400">
+            {item.code}
+          </p>
+          <h3 class="mt-2 text-xl font-bold text-white sm:text-2xl">
+            {item.title}
+          </h3>
+          <p class="mt-2.5 text-base leading-relaxed text-slate-300">
+            {item.description}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

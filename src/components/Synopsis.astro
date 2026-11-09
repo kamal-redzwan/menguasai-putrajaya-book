@@ -1,0 +1,74 @@
+---
+export interface Props {
+  heading?: string;
+  subheading?: string;
+}
+
+const {
+  heading = "Sinopsis Kulit Belakang",
+  subheading = "Sebuah Analisis Berasaskan Lensa Politik Pasca-Normal",
+} = Astro.props;
+---
+
+<section
+  id="sinopsis"
+  aria-labelledby="synopsis-heading"
+  class="border-y border-slate-800 bg-slate-900/60 py-14 sm:py-20 lg:py-24"
+>
+  <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-prose">
+      <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
+        {heading}
+      </p>
+
+      <h2
+        id="synopsis-heading"
+        class="mt-2 text-[clamp(1.65rem,3vw,2.25rem)] font-extrabold leading-tight tracking-tight text-white"
+      >
+        Mengapa Formula Politik Lama Tidak Lagi Mampu Menjelaskan Realiti
+        Malaysia?
+      </h2>
+
+      <p class="mt-2 text-sm font-semibold text-slate-300">{subheading}</p>
+
+      <div class="mt-8 space-y-6 text-base leading-relaxed text-slate-300 sm:text-lg sm:leading-relaxed">
+        <p>
+          Malaysia sedang memasuki era politik yang paling mencabar sejak
+          kemerdekaan. Kejatuhan Barisan Nasional pada tahun 2018, pembentukan
+          Kerajaan Pakatan Harapan, episod Langkah Sheraton, pandemik COVID-19,
+          beberapa kali pertukaran Perdana Menteri serta penubuhan Kerajaan
+          Perpaduan telah mengubah landskap politik negara secara menyeluruh.
+          Formula politik yang selama ini dianggap kukuh semakin kehilangan
+          keupayaannya untuk menjelaskan perubahan yang berlaku.
+        </p>
+
+        <p>
+          Melalui pendekatan{" "}
+          <strong class="font-semibold text-white">Politik Pasca-Normal</strong>
+          , buku ini menghimpunkan data pilihan raya, kajian lapangan, analisis
+          statistik dan pemerhatian strategik bagi menjelaskan bagaimana
+          prestasi kerajaan, pembangkang, tingkah laku pengundi, perubahan
+          demografi, media sosial, ekonomi, geopolitik dan ekosistem politik
+          saling mempengaruhi dalam menentukan hala tuju negara menjelang{" "}
+          <strong class="font-semibold text-yellow-400">PRU 16</strong>.
+        </p>
+
+        <p>
+          Lebih daripada sebuah buku politik, karya ini mengajak pembaca
+          memahami mengapa politik Malaysia tidak lagi boleh dinilai menggunakan
+          formula lama. Ia menawarkan satu kerangka analisis baharu yang lebih
+          dekat dengan realiti semasa dan membantu pembaca menilai masa depan
+          politik negara secara lebih objektif, matang dan berasaskan data.
+        </p>
+      </div>
+
+      <footer class="mt-10 rounded-xl border border-slate-700 bg-putrajaya-navy p-5 text-sm text-slate-300">
+        <p class="font-semibold text-white">Butiran Penerbitan Rasmi</p>
+        <p class="mt-1 text-slate-300">
+          ISBN 978-967-5131-28-8. Terbitan bersama Brainwave Communications dan
+          Prestasi Media.
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>

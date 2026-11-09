@@ -1,0 +1,310 @@
+---
+import Hero from "../components/Hero.astro";
+import ScrollVideo from "../components/ScrollVideo.astro";
+import Synopsis from "../components/Synopsis.astro";
+import SpecsGrid from "../components/SpecsGrid.astro";
+import CheckoutCTA from "../components/CheckoutCTA.astro";
+
+const pageTitle =
+  "Siapa Akan Menguasai Putrajaya? | Rahsia, Analisis, Data dan Strategi Menjelang PRU 16";
+const pageDescription =
+  "Sebuah analisis berasaskan lensa Politik Pasca-Normal karya Ronifira Rejab. Menghimpunkan data pilihan raya, kajian lapangan dan pemerhatian strategik menjelang PRU 16.";
+---
+
+<!doctype html>
+<html lang="ms" class="scroll-smooth bg-putrajaya-navy text-white">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="min-h-screen bg-putrajaya-navy font-sans text-white antialiased selection:bg-yellow-400 selection:text-slate-950">
+    <a
+      href="#kandungan-utama"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-yellow-400 focus:px-4 focus:py-3 focus:text-sm focus:font-extrabold focus:text-slate-950 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-white"
+    >
+      Langkau ke kandungan utama
+    </a>
+
+    <header class="sticky top-0 z-50 border-b border-slate-800 bg-putrajaya-navy/95 backdrop-blur-md">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between px-5 py-3 sm:px-6 lg:px-8">
+        <a
+          href="#utama"
+          class="inline-flex min-h-[44px] items-center text-sm font-extrabold uppercase tracking-wider text-white transition hover:text-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+        >
+          Menguasai <span class="ml-1 text-yellow-400">Putrajaya</span>
+        </a>
+
+        <button
+          type="button"
+          id="mobile-menu-btn"
+          aria-expanded="false"
+          aria-controls="main-nav"
+          class="inline-flex min-h-[44px] w-[44px] items-center justify-center rounded-lg border border-slate-500 bg-slate-900 text-slate-300 transition hover:border-slate-300 hover:bg-slate-800 hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 sm:hidden"
+          aria-label="Buka Menu Utama"
+        >
+          <svg
+            id="icon-menu"
+            class="block h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+          <svg
+            id="icon-close"
+            class="hidden h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <nav
+          id="main-nav"
+          aria-label="Navigasi Utama"
+          class="mt-3 hidden w-full flex-col items-center gap-4 border-t border-slate-800 pt-5 pb-3 sm:mt-0 sm:flex sm:w-auto sm:flex-row sm:gap-5 sm:border-none sm:p-0"
+        >
+          <a
+            href="#video-ulasan"
+            class="inline-flex min-h-[44px] items-center px-2 text-sm font-semibold text-slate-300 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+          >
+            Video
+          </a>
+          <a
+            href="#sinopsis"
+            class="inline-flex min-h-[44px] items-center px-2 text-sm font-semibold text-slate-300 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+          >
+            Sinopsis
+          </a>
+          <a
+            href="#spesifikasi"
+            class="inline-flex min-h-[44px] items-center px-2 text-sm font-semibold text-slate-300 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+          >
+            Spesifikasi
+          </a>
+          <a
+            href="#tempahan"
+            class="inline-flex min-h-[44px] items-center rounded-lg bg-yellow-400 px-8 py-2.5 text-xs font-extrabold uppercase tracking-wider text-slate-950 transition hover:bg-yellow-300 active:translate-y-px active:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+          >
+            Beli Sekarang
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="kandungan-utama">
+      <Hero
+        title="Siapa Akan Menguasai Putrajaya?"
+        subtitle="Rahsia, Analisis, Data dan Strategi Menjelang PRU 16"
+        author="Ronifira Rejab"
+        coverImage="/COVER 16 copy 2.jpg"
+        ctaText="Beli Sekarang"
+        ctaHref="#tempahan"
+      />
+
+      <section
+        id="video-ulasan"
+        aria-labelledby="video-1-heading"
+        class="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8"
+      >
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
+            Pengenalan Visual
+          </p>
+          <h2
+            id="video-1-heading"
+            class="mt-2 text-[clamp(1.5rem,2.8vw,2.15rem)] font-extrabold tracking-tight text-white"
+          >
+            Realiti Baharu Landskap Politik Negara
+          </h2>
+        </div>
+
+        <ScrollVideo
+          src="/WhatsApp Video 2026-10-28 at 11.43.11.mp4"
+          label="Analisis Visual 01"
+          caption="Kupasan awal mengapa pergolakan politik Malaysia selepas 2018 memerlukan satu kerangka bacaan baharu menjelang PRU 16."
+        />
+      </section>
+
+      <Synopsis />
+
+      <SpecsGrid />
+
+      <section
+        id="tinjauan-strategik"
+        aria-labelledby="video-2-heading"
+        class="border-t border-slate-800 bg-putrajaya-navy py-14 sm:py-20 lg:py-24"
+      >
+        <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-5 sm:px-6 md:grid-cols-12 lg:gap-16 lg:px-8">
+          <div class="md:col-span-6">
+            <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
+              Tinjauan Strategik
+            </p>
+            <h2
+              id="video-2-heading"
+              class="mt-2 text-[clamp(1.65rem,3vw,2.25rem)] font-extrabold tracking-tight text-white"
+            >
+              Data, Demografi dan Tingkah Laku Pengundi
+            </h2>
+            <p class="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
+              Perubahan demografi pengundi, peranan media sosial, faktor ekonomi
+              semasa serta dinamika antara gabungan politik membentuk ekosistem
+              baharu yang tidak lagi bergerak mengikut congakan tradisional.
+            </p>
+            <p class="mt-4 text-base leading-relaxed text-slate-300">
+              Tonton sorotan kedua ini untuk melihat bagaimana kajian lapangan
+              dan pemerhatian strategik digabungkan dalam menilai masa depan
+              Putrajaya.
+            </p>
+          </div>
+
+          <div class="md:col-span-6">
+            <ScrollVideo
+              src="/WhatsApp Video 2026-10-28 at 11.44.41.mp4"
+              label="Analisis Visual 02"
+              caption="Sorotan bagaimana data kajian lapangan dan analisis statistik digunakan untuk menilai peluang penguasaan Putrajaya secara objektif."
+            />
+          </div>
+        </div>
+      </section>
+
+      <CheckoutCTA totalQuota={200} />
+    </main>
+
+    <footer class="border-t border-slate-800 bg-putrajaya-navy py-12 text-center text-sm text-slate-300">
+      <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+        <p class="font-semibold text-white">
+          Siapa Akan Menguasai Putrajaya?: Karya Ronifira Rejab
+        </p>
+        <p class="mt-2 text-xs text-slate-300">
+          Diterbitkan bersama oleh Brainwave Communications &amp; Prestasi Media
+          &bull; ISBN 978-967-5131-28-8
+        </p>
+        <p class="mt-4 text-xs text-slate-400">
+          &copy; {new Date().getFullYear()} Hak Cipta Terpelihara. Semua
+          transaksi dalam talian dilindungi oleh CHIP Collect.
+        </p>
+      </div>
+    </footer>
+
+    <style is:global>
+      a[href],
+      button:not(:disabled),
+      select:not(:disabled),
+      summary,
+      label[for],
+      label:has(input:not(:disabled)),
+      input[type="radio"]:not(:disabled),
+      input[type="checkbox"]:not(:disabled),
+      [role="button"]:not([aria-disabled="true"]) {
+        cursor: pointer;
+      }
+
+      button:disabled,
+      select:disabled,
+      input:disabled,
+      textarea:disabled,
+      [aria-disabled="true"] {
+        cursor: not-allowed;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto !important;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+
+    <script>
+      const mobileBtn = document.getElementById("mobile-menu-btn");
+      const mainNav = document.getElementById("main-nav");
+      const iconMenu = document.getElementById("icon-menu");
+      const iconClose = document.getElementById("icon-close");
+      const navLinks = mainNav?.querySelectorAll("a");
+
+      if (mobileBtn && mainNav && iconMenu && iconClose) {
+        const toggleMenu = (forceClose = false): void => {
+          const isExpanded = mobileBtn.getAttribute("aria-expanded") === "true";
+          const willExpand = forceClose ? false : !isExpanded;
+
+          mobileBtn.setAttribute("aria-expanded", String(willExpand));
+          mobileBtn.setAttribute(
+            "aria-label",
+            willExpand ? "Tutup Menu Utama" : "Buka Menu Utama",
+          );
+
+          if (willExpand) {
+            mainNav.classList.remove("hidden");
+            mainNav.classList.add("flex");
+            iconMenu.classList.add("hidden");
+            iconMenu.classList.remove("block");
+            iconClose.classList.remove("hidden");
+            iconClose.classList.add("block");
+          } else {
+            mainNav.classList.add("hidden");
+            mainNav.classList.remove("flex");
+            iconMenu.classList.remove("hidden");
+            iconMenu.classList.add("block");
+            iconClose.classList.add("hidden");
+            iconClose.classList.remove("block");
+          }
+        };
+
+        mobileBtn.addEventListener("click", () => toggleMenu());
+
+        navLinks?.forEach((link) => {
+          link.addEventListener("click", () => {
+            if (window.innerWidth < 640) {
+              toggleMenu(true);
+            }
+          });
+        });
+
+        document.addEventListener("keydown", (event: KeyboardEvent) => {
+          if (
+            event.key === "Escape" &&
+            mobileBtn.getAttribute("aria-expanded") === "true"
+          ) {
+            toggleMenu(true);
+            mobileBtn.focus();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
