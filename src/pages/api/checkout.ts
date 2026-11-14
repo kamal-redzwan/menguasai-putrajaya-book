@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { CHIP_BRAND_ID, CHIP_SECRET_KEY, getSecret } from 'astro:env/server';
 
 export const prerender = false;
 
@@ -22,12 +21,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = (await request.json()) as Record<string, unknown>;
     const cfEnv = (locals as any)?.runtime?.env || {};
-    const secretKey = cfEnv.CHIP_SECRET_KEY || CHIP_SECRET_KEY || getSecret('CHIP_SECRET_KEY');
-    const brandId =
-      cfEnv.CHIP_BRAND_ID ||
-      CHIP_BRAND_ID ||
-      getSecret('CHIP_BRAND_ID') ||
-      (typeof body.brand_id === 'string' ? body.brand_id : undefined);
+    const secretKey = cfEnv.CHIP_SECRET_KEY;
+    const brandId =  cfEnv.CHIP_BRAND_ID || (typeof body.brand_id === 'string' ? body.brand_id : undefined);
 
     if (!secretKey || !brandId || brandId === 'CHIP_BRAND_ID_ANDA') {
       return new Response(
@@ -74,10 +69,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
-  } catch {
+  } catch (error: any) {
+    console.error("[Checkout API Error]:", error);
     return new Response(
       JSON.stringify({
-        message: 'Ralat pelayan semasa memproses permintaan pembayaran CHIP Collect.',
+        message: `Ralat pelayan semasa memproses permintaan pembayaran. Butiran: ${error.message || 'Ralat tidak diketahui'}`,
       }),
       {
         status: 500,
