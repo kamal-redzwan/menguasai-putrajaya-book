@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { env } from 'cloudflare:workers';
 
 export const prerender = false;
 
@@ -14,18 +13,24 @@ export const GET: APIRoute = async () => {
   );
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = (await request.json()) as Record<string, unknown>;
 
-    const secretKey = env.CHIP_SECRET_KEY as string;
-    const brandId = (env.CHIP_BRAND_ID as string) || (typeof body.brand_id === 'string' ? body.brand_id : undefined);
+    // Read directly from the Astro v6 Cloudflare context, completely bypassing the broken 'cloudflare:workers' module
+    const cfEnv = (locals as any).cloudflare?.env || {};
+
+    const secretKey = cfEnv.CHIP_SECRET_KEY as string;
+    const brandId = (cfEnv.CHIP_BRAND_ID as string) || (typeof body.brand_id === 'string' ? body.brand_id : undefined);
 
     if (!secretKey || !brandId || brandId === 'CHIP_BRAND_ID_ANDA') {
+      // Diagnostic output: Exposes exactly what Cloudflare actually injected into memory
+      const loadedKeys = Object.keys(cfEnv).join(', ');
+
       return new Response(
         JSON.stringify({
           status: 'konfigurasi_diperlukan',
-          message: 'Makluman Konfigurasi CHIP Collect: Sila tetapkan pemboleh ubah persekitaran CHIP_SECRET_KEY dan CHIP_BRAND_ID untuk mengaktifkan pengalihan pembayaran sebenar CHIP Collect.',
+          message: `Makluman Sistem: Kunci gagal dibaca. Kunci yang dikesan dalam memori pelayan: [${loadedKeys || 'TIADA'}]. Pastikan pemboleh ubah ditetapkan untuk persekitaran 'Preview' di papan pemuka Cloudflare.`,
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
