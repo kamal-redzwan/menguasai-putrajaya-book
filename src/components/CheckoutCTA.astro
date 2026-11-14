@@ -4,6 +4,13 @@ export interface Props {
 }
 
 const { totalQuota = 200 } = Astro.props;
+const cfEnv = (Astro.locals as any)?.runtime?.env || {};
+const resolvedBrandId =
+  import.meta.env.CHIP_BRAND_ID ||
+  import.meta.env.PUBLIC_CHIP_BRAND_ID ||
+  cfEnv.CHIP_BRAND_ID ||
+  cfEnv.PUBLIC_CHIP_BRAND_ID ||
+  "";
 ---
 
 <section
@@ -57,7 +64,12 @@ const { totalQuota = 200 } = Astro.props;
         </p>
       </div>
 
-      <form id="chip-checkout-form" class="mt-8 space-y-6" novalidate>
+      <form
+        id="chip-checkout-form"
+        data-brand-id={resolvedBrandId}
+        class="mt-8 space-y-6"
+        novalidate
+      >
         <fieldset>
           <legend class="block text-sm font-semibold text-white">
             Pilih Zon Penghantaran
@@ -398,7 +410,8 @@ const { totalQuota = 200 } = Astro.props;
       region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
 
     const chipPayload: ChipPurchasePayload = {
-      brand_id: PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA",
+      brand_id:
+        form.dataset.brandId || PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA",
       client: {
         email,
         full_name: fullName,

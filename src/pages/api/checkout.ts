@@ -18,11 +18,13 @@ export const GET: APIRoute = async () => {
   );
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = (await request.json()) as Record<string, unknown>;
-    const secretKey = CHIP_SECRET_KEY || getSecret('CHIP_SECRET_KEY');
+    const cfEnv = (locals as any)?.runtime?.env || {};
+    const secretKey = cfEnv.CHIP_SECRET_KEY || CHIP_SECRET_KEY || getSecret('CHIP_SECRET_KEY');
     const brandId =
+      cfEnv.CHIP_BRAND_ID ||
       CHIP_BRAND_ID ||
       getSecret('CHIP_BRAND_ID') ||
       (typeof body.brand_id === 'string' ? body.brand_id : undefined);
