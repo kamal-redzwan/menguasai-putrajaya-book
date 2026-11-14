@@ -256,8 +256,6 @@ const resolvedBrandId = import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_A
 </section>
 
 <script>
-  import { PUBLIC_CHIP_BRAND_ID } from "astro:env/client";
-
   // CHIP Collect API expects unit prices in integer sen (e.g. RM56.00 = 5600).
   interface ChipProduct {
     name: string;
@@ -408,8 +406,7 @@ const resolvedBrandId = import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_A
       region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
 
     const chipPayload: ChipPurchasePayload = {
-      brand_id:
-        form.dataset.brandId || PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA",
+      brand_id: form.dataset.brandId || "CHIP_BRAND_ID_ANDA",
       client: {
         email,
         full_name: fullName,
