@@ -6,6 +6,25 @@ declare const __BUILD_CHIP_PUBLIC_KEY__: string | undefined;
 
 export const prerender = false;
 
+function getOrdersKv(runtimeEnv: Record<string, any>) {
+  if (runtimeEnv.ORDERS_DB && typeof runtimeEnv.ORDERS_DB.put === 'function') {
+    return runtimeEnv.ORDERS_DB;
+  }
+  for (const [key, val] of Object.entries(runtimeEnv)) {
+    if (
+      key !== 'ASSETS' &&
+      key !== 'SESSION' &&
+      val &&
+      typeof val === 'object' &&
+      typeof (val as any).put === 'function' &&
+      typeof (val as any).get === 'function'
+    ) {
+      return val as any;
+    }
+  }
+  return undefined;
+}
+
 // Verifies RSA-SHA256 signature against raw body using standard Web Crypto API
 async function verifySignature(
   rawBody: string,
@@ -230,11 +249,12 @@ export const POST: APIRoute = async ({ request }) => {
     };
 
     // 5. Save order data into Cloudflare KV binding (ORDERS_DB)
-    const ordersDb = workerEnvruntimeEnv.ORDERS_DB;
+    const ordersDb = getOrdersKv(runtimeEnv);
 
     if (ordersDb && typeof ordersDb.put === 'function') {
       try {
         await ordersDb.put(transactionId, JSON.stringify(orderData));
+        await ordersDb.get(transactionId);
       } catch (kvError) {
         console.error(
           `[Webhook] Ralat semasa menyimpan rekod transaksi ${transactionId} ke KV:`,

@@ -1,5 +1,6 @@
 {
-  "previews": {},
+  "name": "menguasai-putrajaya-book",
+  "compatibility_date": "2025-03-01",
   "kv_namespaces": [
     {
       "binding": "ORDERS_DB",
