@@ -1,6 +1,9 @@
 import type { APIRoute } from 'astro';
 import { env as workerEnv } from 'cloudflare:workers';
 
+declare const __BUILD_CHIP_BRAND_ID__: string | undefined;
+declare const __BUILD_CHIP_PUBLIC_KEY__: string | undefined;
+
 export const prerender = false;
 
 // Verifies RSA-SHA256 signature against raw body using standard Web Crypto API
@@ -94,8 +97,17 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const configuredBrandId = workerEnv.CHIP_BRAND_ID as string;
-    const chipPublicKey = workerEnv.CHIP_PUBLIC_KEY as string;
+    const runtimeEnv = (workerEnv || {}) as Record<string, any>;
+    const configuredBrandId = (
+      (runtimeEnv.CHIP_BRAND_ID as string) ||
+      (typeof __BUILD_CHIP_BRAND_ID__ !== 'undefined' ? __BUILD_CHIP_BRAND_ID__ : '') ||
+      'db3280df-c2eb-48e5-bdcb-b757e269de69'
+    ).trim();
+    const chipPublicKey = (
+      (runtimeEnv.CHIP_PUBLIC_KEY as string) ||
+      (typeof __BUILD_CHIP_PUBLIC_KEY__ !== 'undefined' ? __BUILD_CHIP_PUBLIC_KEY__ : '') ||
+      ''
+    ).trim();
 
     // 1. Verify signature if X-Signature header and CHIP_PUBLIC_KEY are available
     const signatureHeader =
@@ -218,7 +230,7 @@ export const POST: APIRoute = async ({ request }) => {
     };
 
     // 5. Save order data into Cloudflare KV binding (ORDERS_DB)
-    const ordersDb = workerEnv.ORDERS_DB;
+    const ordersDb = workerEnvruntimeEnv.ORDERS_DB;
 
     if (ordersDb && typeof ordersDb.put === 'function') {
       try {

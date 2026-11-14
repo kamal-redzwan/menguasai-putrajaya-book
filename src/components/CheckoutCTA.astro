@@ -4,7 +4,10 @@ export interface Props {
 }
 
 const { totalQuota = 200 } = Astro.props;
-const resolvedBrandId = import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA";
+const resolvedBrandId =
+  import.meta.env.PUBLIC_CHIP_BRAND_ID ||
+  import.meta.env.CHIP_BRAND_ID ||
+  "db3280df-c2eb-48e5-bdcb-b757e269de69";
 ---
 
 <section
@@ -402,7 +405,7 @@ const resolvedBrandId = import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_A
       region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
 
     const chipPayload: ChipPurchasePayload = {
-      brand_id: form.dataset.brandId || "CHIP_BRAND_ID_ANDA",
+      brand_id: form.dataset.brandId || "db3280df-c2eb-48e5-bdcb-b757e269de69",
       client: {
         email,
         full_name: fullName,
@@ -456,7 +459,7 @@ const resolvedBrandId = import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_A
         "Makluman Konfigurasi CHIP Collect",
         data.message ||
           `Butiran tempahan untuk ${fullName} (Jumlah: RM${(unitPriceRM * quantity).toFixed(2)}) telah disahkan. Sila tetapkan CHIP_SECRET_KEY dan CHIP_BRAND_ID pada pelayan untuk pengalihan pembayaran langsung.`,
-        false,
+        !response.ok,
       );
     } catch {
       showStatus(
