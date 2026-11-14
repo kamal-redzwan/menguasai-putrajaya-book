@@ -250,8 +250,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
         );
       }
     } else {
-      console.warn(
-        `[Webhook] KV binding ORDERS_DB belum dikonfigurasi atau tidak tersedia. Data pesanan (${transactionId}) diterima:`
+      console.error(`[Webhook] KV binding ORDERS_DB tidak tersedia untuk txn ${transactionId}`);
+      return new Response(
+        JSON.stringify({
+          status: 'error',
+          message: 'Gagal menyambung ke pangkalan data KV.',
+        }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        }
       );
     }
 
