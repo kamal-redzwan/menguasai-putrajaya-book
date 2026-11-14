@@ -13,6 +13,8 @@ export const onRequest = defineMiddleware((context, next) => {
         runtimeEnvRecord.PUBLIC_CHIP_BRAND_ID ||
         import.meta.env.CHIP_BRAND_ID ||
         import.meta.env.PUBLIC_CHIP_BRAND_ID,
+      ORDERS_DB:
+        runtimeEnvRecord.ORDERS_DB || (import.meta.env as any).ORDERS_DB,
     };
 
     const locals = context.locals as unknown as Record<string, unknown>;

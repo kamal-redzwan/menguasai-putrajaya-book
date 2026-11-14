@@ -26,6 +26,11 @@ export default defineConfig({
         access: 'public',
         optional: true,
       }),
+      ORDERS_DB: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
     },
   },
 });
