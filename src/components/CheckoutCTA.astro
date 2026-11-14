@@ -4,12 +4,7 @@ export interface Props {
 }
 
 const { totalQuota = 200 } = Astro.props;
-const cfEnv = (Astro.locals as any)?.runtime?.env || {};
-const resolvedBrandId =
-  import.meta.env.CHIP_BRAND_ID ||
-  import.meta.env.PUBLIC_CHIP_BRAND_ID ||
-  cfEnv.CHIP_BRAND_ID ||
-  cfEnv.PUBLIC_CHIP_BRAND_ID || "";
+const resolvedBrandId = import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA";
 ---
 
 <section
