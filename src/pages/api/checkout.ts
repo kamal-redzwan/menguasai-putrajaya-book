@@ -1,4 +1,7 @@
 import type { APIRoute } from 'astro';
+import { CHIP_BRAND_ID, CHIP_SECRET_KEY, getSecret } from 'astro:env/server';
+
+export const prerender = false;
 
 // Proxy purchase creation to CHIP Collect (POST https://gate.chip-in.asia/api/v1/purchases/) so CHIP_SECRET_KEY stays server-side.
 export const GET: APIRoute = async () => {
@@ -17,9 +20,12 @@ export const GET: APIRoute = async () => {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json();
-    const secretKey = import.meta.env.CHIP_SECRET_KEY;
-    const brandId = import.meta.env.CHIP_BRAND_ID || body.brand_id;
+    const body = (await request.json()) as Record<string, unknown>;
+    const secretKey = CHIP_SECRET_KEY || getSecret('CHIP_SECRET_KEY');
+    const brandId =
+      CHIP_BRAND_ID ||
+      getSecret('CHIP_BRAND_ID') ||
+      (typeof body.brand_id === 'string' ? body.brand_id : undefined);
 
     if (!secretKey || !brandId || brandId === 'CHIP_BRAND_ID_ANDA') {
       return new Response(

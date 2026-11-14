@@ -1,6 +1,7 @@
 # Build output
 dist/
 .output/
+.wrangler/
 
 # Generated Astro types
 .astro/

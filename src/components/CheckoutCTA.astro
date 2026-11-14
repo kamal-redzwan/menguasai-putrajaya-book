@@ -246,6 +246,8 @@ const { totalQuota = 200 } = Astro.props;
 </section>
 
 <script>
+  import { PUBLIC_CHIP_BRAND_ID } from "astro:env/client";
+
   // CHIP Collect API expects unit prices in integer sen (e.g. RM56.00 = 5600).
   interface ChipProduct {
     name: string;
@@ -396,7 +398,7 @@ const { totalQuota = 200 } = Astro.props;
       region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
 
     const chipPayload: ChipPurchasePayload = {
-      brand_id: import.meta.env.PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA",
+      brand_id: PUBLIC_CHIP_BRAND_ID || "CHIP_BRAND_ID_ANDA",
       client: {
         email,
         full_name: fullName,
