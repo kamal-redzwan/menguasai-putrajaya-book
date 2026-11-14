@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { env as workerEnv } from 'cloudflare:workers';
 
 export const prerender = false;
 
@@ -60,7 +61,7 @@ export const GET: APIRoute = async () => {
   );
 };
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
     const rawBody = await request.text();
 
@@ -93,9 +94,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const cfEnv = (locals as any).runtime?.env || {};
-    const configuredBrandId = cfEnv.CHIP_BRAND_ID as string;
-    const chipPublicKey = cfEnv.CHIP_PUBLIC_KEY as string;
+    const configuredBrandId = workerEnv.CHIP_BRAND_ID as string;
+    const chipPublicKey = workerEnv.CHIP_PUBLIC_KEY as string;
 
     // 1. Verify signature if X-Signature header and CHIP_PUBLIC_KEY are available
     const signatureHeader =
@@ -218,7 +218,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     };
 
     // 5. Save order data into Cloudflare KV binding (ORDERS_DB)
-    const ordersDb = cfEnv.ORDERS_DB;
+    const ordersDb = workerEnv.ORDERS_DB;
 
     if (ordersDb && typeof ordersDb.put === 'function') {
       try {

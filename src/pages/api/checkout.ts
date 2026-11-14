@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { env } from 'cloudflare:workers';
 
 export const prerender = false;
 
@@ -13,13 +14,12 @@ export const GET: APIRoute = async () => {
   );
 };
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
     const body = (await request.json()) as Record<string, unknown>;
 
-    const cfEnv = (locals as any).runtime?.env || {};
-    const secretKey = cfEnv.CHIP_SECRET_KEY as string;
-    const brandId = (cfEnv.CHIP_BRAND_ID as string) || (typeof body.brand_id === 'string' ? body.brand_id : undefined);
+    const secretKey = env.CHIP_SECRET_KEY as string;
+    const brandId = (env.CHIP_BRAND_ID as string) || (typeof body.brand_id === 'string' ? body.brand_id : undefined);
 
     if (!secretKey || !brandId || brandId === 'CHIP_BRAND_ID_ANDA') {
       return new Response(
