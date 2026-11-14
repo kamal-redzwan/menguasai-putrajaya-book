@@ -425,6 +425,7 @@ const resolvedBrandId =
       },
       success_redirect: `${window.location.origin}/berjaya`,
       failure_redirect: `${window.location.origin}/?status=gagal#tempahan`,
+      success_callback: `${window.location.origin}/api/webhook`,
     };
 
     if (submitBtn) submitBtn.disabled = true;

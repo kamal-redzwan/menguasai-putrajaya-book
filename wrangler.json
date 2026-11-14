@@ -3,10 +3,11 @@
   "kv_namespaces": [
     {
       "binding": "ORDERS_DB",
-      "id": "d4429bc03d3440e1b76fe205d45d3c66"
+      "id": "d4429bc03d3440e1b76fe205d45d3c66",
+      "preview_id": "d4429bc03d3440e1b76fe205d45d3c66"
     }
   ],
-"vars": {
+  "vars": {
     "CHIP_BRAND_ID": "db3280df-c2eb-48e5-bdcb-b757e269de69"
   }
 }
