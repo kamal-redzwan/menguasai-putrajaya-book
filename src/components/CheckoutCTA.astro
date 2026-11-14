@@ -65,9 +65,13 @@ const resolvedBrandId =
       </div>
 
       <form
+
         id="chip-checkout-form"
         data-brand-id={resolvedBrandId}
+
+        data-brand-id={resolvedBrandId}
         class="mt-8 space-y-6"
+
         novalidate
       >
         <fieldset>
@@ -429,7 +433,7 @@ const resolvedBrandId =
         ],
         notes: `Pra-Jualan Buku (${quantity} naskhah) - ${regionLabel}`,
       },
-      success_redirect: `${window.location.origin}/?status=berjaya#tempahan`,
+      success_redirect: `${window.location.origin}/berjaya`,
       failure_redirect: `${window.location.origin}/?status=gagal#tempahan`,
     };
 
