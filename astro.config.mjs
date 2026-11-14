@@ -9,6 +9,15 @@ export default defineConfig({
     imageService: 'passthrough',
   }),
   integrations: [tailwind()],
+  vite: {
+    define: {
+      __CHIP_SECRET_KEY__: JSON.stringify(process.env.CHIP_SECRET_KEY || ''),
+      __CHIP_BRAND_ID__: JSON.stringify(
+        process.env.CHIP_BRAND_ID || process.env.PUBLIC_CHIP_BRAND_ID || ''
+      ),
+      __CHIP_PUBLIC_KEY__: JSON.stringify(process.env.CHIP_PUBLIC_KEY || ''),
+    },
+  },
   env: {
     schema: {
       CHIP_SECRET_KEY: envField.string({

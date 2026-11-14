@@ -94,8 +94,8 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const configuredBrandId = workerEnv.CHIP_BRAND_ID;
-    const chipPublicKey = workerEnv.CHIP_PUBLIC_KEY;
+    const configuredBrandId = (workerEnv.CHIP_BRAND_ID as string) || __CHIP_BRAND_ID__;
+    const chipPublicKey = (workerEnv.CHIP_PUBLIC_KEY as string) || __CHIP_PUBLIC_KEY__;
 
     // 1. Verify signature if X-Signature header and CHIP_PUBLIC_KEY are available
     const signatureHeader =
