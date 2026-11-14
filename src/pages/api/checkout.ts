@@ -1,5 +1,5 @@
+import { CHIP_BRAND_ID, CHIP_SECRET_KEY } from 'astro:env/server';
 import type { APIRoute } from 'astro';
-import { env } from 'cloudflare:workers';
 
 export const prerender = false;
 
@@ -21,11 +21,8 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = (await request.json()) as Record<string, unknown>;
-    const secretKey = env(env.CHIP_SECRET_KEY as string) || __CHIP_SECRET_KEY__;
-    const brandId = env
-      (env.CHIP_BRAND_ID as string) ||
-      __CHIP_BRAND_ID__ ||
-      (typeof body.brand_id === 'string' ? body.brand_id : undefined);
+    const secretKey = CHIP_SECRET_KEY;
+    const brandId = CHIP_BRAND_ID || (typeof body.brand_id === 'string' ? body.brand_id : undefined);
 
     if (!secretKey || !brandId || brandId === 'CHIP_BRAND_ID_ANDA') {
       return new Response(

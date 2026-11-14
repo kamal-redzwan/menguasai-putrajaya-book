@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { CHIP_BRAND_ID, getSecret } from 'astro:env/server';
 import { env as workerEnv } from 'cloudflare:workers';
 
 export const prerender = false;
@@ -50,6 +51,7 @@ async function verifySignature(
 export const GET: APIRoute = async () => {
   return new Response(
     JSON.stringify({
+      
       service: 'CHIP Collect Webhook Endpoint',
       status: 'sedia',
       message: 'Gunakan kaedah POST untuk memproses webhook daripada CHIP Collect.',
@@ -94,8 +96,8 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const configuredBrandId = (workerEnv.CHIP_BRAND_ID as string) || __CHIP_BRAND_ID__;
-    const chipPublicKey = (workerEnv.CHIP_PUBLIC_KEY as string) || __CHIP_PUBLIC_KEY__;
+    const configuredBrandId = CHIP_BRAND_ID || (workerEnv.CHIP_BRAND_ID as string);
+    const chipPublicKey = getSecret('CHIP_PUBLIC_KEY') || (workerEnv.CHIP_PUBLIC_KEY as string);
 
     // 1. Verify signature if X-Signature header and CHIP_PUBLIC_KEY are available
     const signatureHeader =
@@ -260,6 +262,7 @@ export const POST: APIRoute = async ({ request }) => {
         status: 'success',
         message: 'Webhook berjaya diproses dan disimpan.',
         transaction_id: transactionId,
+      
       }),
       {
         status: 200,
