@@ -26,7 +26,6 @@ function getOrdersKv(runtimeEnv: Record<string, any>) {
 }
 
 function buildOrderRecord(
-  transactionId: string,
   body: Record<string, any>,
   status: string,
   chipResponseData?: Record<string, any>
@@ -50,35 +49,39 @@ function buildOrderRecord(
       ''
   ).trim();
 
-  const purchasedItem =
+  const quantity =
     products.length > 0
-      ? products
-          .map((p: any) => `${p.name || 'Buku'} (x${p.quantity || 1})`)
-          .join(', ')
-      : String(purchase.notes || 'Siapa Akan Menguasai Putrajaya?').trim();
+      ? Math.max(1, Math.round(Number(products[0]?.quantity || 1)))
+      : 1;
 
-  const calculatedTotal =
+  const productAndNotes = `${products[0]?.name || ''} ${purchase.notes || ''}`;
+  const shippingZone = productAndNotes.includes('Sabah & Sarawak')
+    ? 'Sabah & Sarawak'
+    : 'Semenanjung Malaysia';
+
+  const calculatedTotalSen =
     products.length > 0
       ? products.reduce(
           (sum: number, p: any) =>
-            sum + Number(p.price || 0) * Number(p.quantity || 1),
+            sum + Number(p.price || 0) * Math.round(Number(p.quantity || 1)),
           0
         )
-      : null;
+      : 5600;
+
+  const totalSen = Number(
+    chipResponseData?.purchase?.total ?? purchase.total ?? calculatedTotalSen
+  );
 
   return {
-    transaction_id: transactionId,
-    customer_name: customerName,
+    zon_penghantaran: shippingZone,
+    nama_penuh: customerName,
     email: customerEmail,
-    phone: customerPhone,
-    shipping_address: shippingAddress,
-    purchased_item: purchasedItem,
-    products,
-    total: chipResponseData?.purchase?.total ?? purchase.total ?? calculatedTotal,
-    currency: String(purchase.currency || 'MYR'),
+    telefon: customerPhone,
+    kuantiti: quantity,
+    alamat_penghantaran: shippingAddress,
+    jumlah_bayaran: `RM${(totalSen / 100).toFixed(2)}`,
     status,
-    checkout_url: chipResponseData?.checkout_url ?? null,
-    saved_at: new Date().toISOString(),
+    tarikh: new Date().toISOString(),
   };
 }
 
@@ -155,7 +158,7 @@ export const POST: APIRoute = async ({ request }) => {
     const initialOrderId = `order_${Date.now()}`;
     if (ordersDb) {
       try {
-        const initialRecord = buildOrderRecord(initialOrderId, body, 'submitted');
+        const initialRecord = buildOrderRecord(body, 'submitted');
         await ordersDb.put(initialOrderId, JSON.stringify(initialRecord));
         await ordersDb.get(initialOrderId);
       } catch (kvErr: any) {
@@ -196,14 +199,13 @@ export const POST: APIRoute = async ({ request }) => {
 
     const data = (await chipResponse.json()) as Record<string, any>;
 
-    // 2. Store the finalized transaction record in Cloudflare KV (ORDERS_DB) and verify with get()
+    // 2. Store the finalized form record in Cloudflare KV (ORDERS_DB) and verify with get()
     const transactionId =
       typeof data?.id === 'string' && data.id ? data.id : initialOrderId;
 
     if (ordersDb) {
       try {
         const orderRecord = buildOrderRecord(
-          transactionId,
           body,
           chipResponse.ok ? String(data?.status || 'created') : 'chip_error',
           data

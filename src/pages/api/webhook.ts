@@ -189,7 +189,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // 4. Parse customer details and purchased item
+    // 4. Parse only the customer form fields for simple Excel export
     const client = (payload.client || {}) as Record<string, any>;
     const purchase = (payload.purchase || {}) as Record<string, any>;
     const products = Array.isArray(purchase.products) ? purchase.products : [];
@@ -224,28 +224,28 @@ export const POST: APIRoute = async ({ request }) => {
       ''
     ).trim();
 
-    const purchasedItem =
+    const quantity =
       products.length > 0
-        ? products
-            .map((p: any) => `${p.name || 'Buku'} (x${p.quantity || 1})`)
-            .join(', ')
-        : String(purchase.notes || 'Siapa Akan Menguasai Putrajaya?').trim();
+        ? Math.max(1, Math.round(Number(products[0]?.quantity || 1)))
+        : 1;
+
+    const productAndNotes = `${products[0]?.name || ''} ${purchase.notes || ''}`;
+    const shippingZone = productAndNotes.includes('Sabah & Sarawak')
+      ? 'Sabah & Sarawak'
+      : 'Semenanjung Malaysia';
+
+    const totalSen = Number(purchase.total ?? products[0]?.price ?? 5600);
 
     const orderData = {
-      transaction_id: transactionId,
-      customer_name: customerName,
+      zon_penghantaran: shippingZone,
+      nama_penuh: customerName,
       email: customerEmail,
-      phone: customerPhone,
-      shipping_address: shippingAddress,
-      purchased_item: purchasedItem,
-      products,
-      total: purchase.total ?? null,
-      currency: String(purchase.currency || 'MYR'),
-      status: String(payload.status || payload.event_type || 'paid'),
-      event_type: String(payload.event_type || 'purchase.paid'),
-      payment: payload.payment || null,
-      saved_at: new Date().toISOString(),
-      raw_payload: payload,
+      telefon: customerPhone,
+      kuantiti: quantity,
+      alamat_penghantaran: shippingAddress,
+      jumlah_bayaran: `RM${(totalSen / 100).toFixed(2)}`,
+      status: String(payload.status || 'paid'),
+      tarikh: new Date().toISOString(),
     };
 
     // 5. Save order data into Cloudflare KV binding (ORDERS_DB)
