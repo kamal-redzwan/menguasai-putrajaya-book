@@ -264,10 +264,12 @@ const resolvedBrandId =
 
   interface ChipPurchasePayload {
     brand_id: string;
+    reference?: string;
     client: {
       email: string;
       full_name: string;
       phone: string;
+      street_address?: string;
       shipping_street_address: string;
     };
     purchase: {
@@ -403,14 +405,19 @@ const resolvedBrandId =
     const quantity = getSelectedQuantity();
     const regionLabel =
       region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
+    const totalPriceRM = (unitPriceRM * quantity).toFixed(2);
+    const cleanAddress = address.replace(/\s+/g, " ");
+    const truncatedAddress = cleanAddress.slice(0, 128);
 
     const chipPayload: ChipPurchasePayload = {
       brand_id: form.dataset.brandId || "db3280df-c2eb-48e5-bdcb-b757e269de69",
+      reference: `${fullName} | ${phone} | ${quantity}x (${regionLabel})`.slice(0, 128),
       client: {
         email,
         full_name: fullName,
         phone,
-        shipping_street_address: address,
+        street_address: truncatedAddress,
+        shipping_street_address: truncatedAddress,
       },
       purchase: {
         currency: "MYR",
@@ -421,7 +428,7 @@ const resolvedBrandId =
             quantity,
           },
         ],
-        notes: `Pra-Jualan Buku (${quantity} naskhah) - ${regionLabel}`,
+        notes: `Nama: ${fullName} | Tel: ${phone} | E-mel: ${email} | Zon: ${regionLabel} | Kuantiti: ${quantity} naskhah | Jumlah: RM${totalPriceRM} | Alamat: ${cleanAddress}`,
       },
       success_redirect: `${window.location.origin}/berjaya`,
       failure_redirect: `${window.location.origin}/?status=gagal#tempahan`,
