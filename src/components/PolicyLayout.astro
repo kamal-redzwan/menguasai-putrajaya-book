@@ -1,0 +1,238 @@
+---
+import Footer from "./Footer.astro";
+
+export interface Props {
+  title: string;
+  enTitle: string;
+  description: string;
+  currentPath: string;
+  lastUpdated?: string;
+}
+
+const {
+  title,
+  enTitle,
+  description,
+  currentPath,
+  lastUpdated = "15 November 2026",
+} = Astro.props;
+
+const pageTitle = `${title} (${enTitle}) | Siapa Akan Menguasai Putrajaya?`;
+
+const policyNav = [
+  {
+    href: "/polisi-penghantaran",
+    label: "Polisi Penghantaran",
+  },
+  {
+    href: "/polisi-pemulangan",
+    label: "Polisi Pemulangan",
+  },
+  {
+    href: "/terma-dan-syarat",
+    label: "Terma & Syarat",
+  },
+  {
+    href: "/polisi-privasi",
+    label: "Polisi Privasi",
+  },
+];
+---
+
+<!doctype html>
+<html lang="ms" class="scroll-smooth bg-putrajaya-navy text-white">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="flex min-h-dvh flex-col bg-putrajaya-navy font-sans text-white antialiased selection:bg-yellow-400 selection:text-slate-950">
+    <a
+      href="#kandungan-utama"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-yellow-400 focus:px-4 focus:py-3 focus:text-sm focus:font-extrabold focus:text-slate-950 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-white"
+    >
+      Langkau ke kandungan utama
+    </a>
+
+    <header class="sticky top-0 z-50 border-b border-slate-800 bg-putrajaya-navy/95 backdrop-blur-md">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-6 lg:px-8">
+        <a
+          href="/"
+          class="inline-flex min-h-[44px] items-center text-sm font-extrabold uppercase tracking-wider text-white transition hover:text-yellow-400 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+        >
+          Menguasai <span class="ml-1 text-yellow-400">Putrajaya</span>
+        </a>
+
+        <nav
+          aria-label="Navigasi Halaman Polisi"
+          class="flex items-center gap-3 sm:gap-4"
+        >
+          <a
+            href="/"
+            class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-slate-900 px-3.5 py-2 text-xs font-semibold text-white transition hover:border-slate-300 hover:bg-slate-800 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 sm:text-sm"
+          >
+            Laman Utama
+          </a>
+          <a
+            href="/#tempahan"
+            class="inline-flex min-h-[44px] items-center rounded-lg bg-yellow-400 px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-slate-950 transition hover:bg-yellow-300 active:translate-y-px active:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 sm:px-6"
+          >
+            Beli Sekarang
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main
+      id="kandungan-utama"
+      class="mx-auto w-full max-w-4xl flex-1 px-5 py-12 sm:px-6 sm:py-16 lg:px-8"
+    >
+      <nav
+        aria-label="Senarai Dokumen Polisi"
+        class="mb-8 grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:grid-cols-4"
+      >
+        {policyNav.map((item) => {
+          const isCurrent = item.href === currentPath;
+          return (
+            <a
+              href={item.href}
+              aria-current={isCurrent ? "page" : undefined}
+              class={`inline-flex min-h-[44px] items-center justify-center rounded-xl border px-3.5 py-2.5 text-center text-xs font-bold transition active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 ${
+                isCurrent
+                  ? "border-yellow-400 bg-yellow-400 text-slate-950"
+                  : "border-slate-500 bg-slate-900 text-slate-300 hover:border-slate-300 hover:bg-slate-800 hover:text-white"
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+      </nav>
+
+      <article class="rounded-2xl border border-slate-700 bg-slate-900 p-6 sm:p-10">
+        <header class="border-b border-slate-800 pb-6">
+          <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
+            Dokumen Rasmi &bull; {enTitle}
+          </p>
+          <h1 class="mt-2 text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight tracking-tight text-white">
+            {title}
+          </h1>
+          <p class="mt-2 text-xs text-slate-400">
+            Kemas kini terakhir: {lastUpdated} &bull; Diterbitkan oleh BRAINWAVE
+            COMMUNICATIONS (202203208117 / JM0967023-W)
+          </p>
+        </header>
+
+        <div class="mt-8 space-y-8 text-base leading-relaxed text-slate-300">
+          <slot />
+        </div>
+
+        <aside
+          aria-label="Butiran Rasmi Syarikat dan Khidmat Pelanggan"
+          class="mt-10 rounded-xl border border-slate-700 bg-putrajaya-navy p-5 sm:p-6"
+        >
+          <h2 class="text-base font-bold text-white">
+            Maklumat Syarikat &amp; Saluran Hubungan Rasmi
+          </h2>
+          <p class="mt-1.5 text-sm text-slate-300">
+            Sebarang pertanyaan, tuntutan atau bantuan berkaitan pesanan boleh
+            diajukan terus kepada pihak pengurusan kami:
+          </p>
+          <dl class="mt-4 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Nama Syarikat &amp; No. SSM
+              </dt>
+              <dd class="mt-1 font-semibold text-white">
+                BRAINWAVE COMMUNICATIONS<br />
+                <span class="text-yellow-400">202203208117 (JM0967023-W)</span>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Alamat Perniagaan
+              </dt>
+              <dd class="mt-1 text-white">
+                2-1B, Jalan UP1/1, Ukay Perdana, 68000 Ampang, Selangor,
+                Malaysia.
+              </dd>
+            </div>
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Nombor Telefon / WhatsApp
+              </dt>
+              <dd class="mt-1">
+                <a
+                  href="tel:+60108725969"
+                  class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-slate-900 px-3.5 py-2 text-sm font-semibold tabular-nums text-yellow-400 transition hover:border-yellow-400 hover:bg-slate-800 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+                >
+                  +6010 872 5969
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Alamat E-mel
+              </dt>
+              <dd class="mt-1">
+                <a
+                  href="mailto:ronifira@gmail.com"
+                  class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-slate-900 px-3.5 py-2 text-sm font-semibold text-yellow-400 transition hover:border-yellow-400 hover:bg-slate-800 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
+                >
+                  ronifira@gmail.com
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </aside>
+      </article>
+    </main>
+
+    <Footer />
+
+    <style is:global>
+      a[href],
+      button:not(:disabled),
+      select:not(:disabled),
+      summary,
+      label[for],
+      label:has(input:not(:disabled)),
+      input[type="radio"]:not(:disabled),
+      input[type="checkbox"]:not(:disabled),
+      [role="button"]:not([aria-disabled="true"]) {
+        cursor: pointer;
+      }
+
+      button:disabled,
+      select:disabled,
+      input:disabled,
+      textarea:disabled,
+      [aria-disabled="true"] {
+        cursor: not-allowed;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto !important;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </body>
+</html>

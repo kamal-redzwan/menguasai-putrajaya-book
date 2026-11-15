@@ -4,6 +4,7 @@ import ScrollVideo from "../components/ScrollVideo.astro";
 import Synopsis from "../components/Synopsis.astro";
 import SpecsGrid from "../components/SpecsGrid.astro";
 import CheckoutCTA from "../components/CheckoutCTA.astro";
+import Footer from "../components/Footer.astro";
 
 const pageTitle =
   "Siapa Akan Menguasai Putrajaya? | Rahsia, Analisis, Data dan Strategi Menjelang PRU 16";
@@ -198,25 +199,7 @@ const pageDescription =
       <CheckoutCTA totalQuota={200} />
     </main>
 
-    <footer class="border-t border-slate-800 bg-putrajaya-navy py-12 text-center text-sm text-slate-300">
-      <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-        <p class="font-semibold text-white">
-          Siapa Akan Menguasai Putrajaya?: Karya Ronifira Rejab
-        </p>
-        <p class="mt-2 text-xs text-slate-300">
-          Diterbitkan bersama oleh Brainwave Communications &amp; Prestasi Media
-          &bull; ISBN 978-967-5131-28-8
-        </p>
-        <p class="mt-2 text-xs text-slate-300">
-          <strong>Pengedar:</strong> Brainwave Communications, 2-1B, Jalan
-          UP1/1, Ukay Perdana, 68000 Ampang, Selangor.
-        </p>
-        <p class="mt-4 text-xs text-slate-400">
-          &copy; {new Date().getFullYear()} Hak Cipta Terpelihara. Semua
-          transaksi dalam talian dilindungi oleh CHIP Collect.
-        </p>
-      </div>
-    </footer>
+    <Footer />
 
     <style is:global>
       a[href],

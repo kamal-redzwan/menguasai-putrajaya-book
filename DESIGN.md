@@ -5,7 +5,7 @@ Reading this as: editorial political-analysis book landing page for Malaysian vo
 
 ## Dials
 - **ENERGY: 2 (Balanced)** — Authoritative front-cover presence paired with high-contrast headline typography and disciplined yellow accents that echo the physical book jacket.
-- **RHYTHM: 3 (Varied)** — Sections alternate deliberately in structure: asymmetric 2-column book showcase (`Hero`), narrow vertical media spotlight (`ScrollVideo` 01), single-column long-form editorial prose (`Synopsis`), asymmetric 2-tier specification hierarchy (`SpecsGrid`), split editorial + vertical media layout (`ScrollVideo` 02), and focused single-column conversion ledger (`CheckoutCTA`).
+- **RHYTHM: 3 (Varied)** — Sections alternate deliberately in structure: asymmetric 2-column book showcase (`Hero`), narrow vertical media spotlight (`ScrollVideo` 01), single-column long-form editorial prose (`Synopsis`), asymmetric 2-tier specification hierarchy (`SpecsGrid`), split editorial + vertical media layout (`ScrollVideo` 02), focused single-column conversion ledger (`CheckoutCTA`), and 7/5 asymmetric company + legal ledger (`Footer`).
 - **MOTION: 2 (Viewport-driven)** — Native HTML5 videos play automatically when entering the viewport (`IntersectionObserver`) and pause on exit, with explicit user controls for audio and playback, and full `prefers-reduced-motion: reduce` support.
 
 ## Color Palette & Verified Contrast (WCAG AA via `contrast-check.py`)
@@ -24,3 +24,5 @@ Reading this as: editorial political-analysis book landing page for Malaysian vo
 - **Why asymmetric layout in `SpecsGrid` (R-14)?** The two quantitative book metrics (`430 Muka Surat` and `Terhad 200 Naskhah Terawal`) carry primary typographic scale, while the two qualitative methodology pillars (`Lensa Politik Pasca-Normal` and `Analisis Data & Kajian Lapangan`) sit below as structured editorial rows.
 - **Why single-column `max-w-prose` in `Synopsis`?** Long-form back-cover prose reads fastest at 60–70 characters per line with generous line-height.
 - **Why shadow on the book cover only (R-12)?** Only the physical 3D book artifact and video frame use elevation shadow to lift off the navy page; data rows and prose sit flat on the surface.
+- **Why a 7/5 asymmetric 2-column layout in `Footer` instead of a 4-column template footer (R-05)?** It pairs official SSM business verification and clickable phone/email controls (`md:col-span-7`) directly alongside the four CHIP Collect legal policy cards (`md:col-span-5`) without empty template link columns.
+- **Why a 4-tab document switcher and flat `max-w-4xl` ledger in `PolicyLayout`?** Legal and shipping policies require scannable clause hierarchy and instant switching between all four compliance documents (`/polisi-penghantaran`, `/polisi-pemulangan`, `/terma-dan-syarat`, `/polisi-privasi`).
