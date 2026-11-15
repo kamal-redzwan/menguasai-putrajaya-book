@@ -25,6 +25,97 @@ function getOrdersKv(runtimeEnv: Record<string, any>) {
   return undefined;
 }
 
+function enrichChipPayload(
+  body: Record<string, any>,
+  brandId: string,
+  successCallback: string
+): Record<string, any> {
+  const client = { ...(body.client || {}) } as Record<string, any>;
+  const purchase = { ...(body.purchase || {}) } as Record<string, any>;
+  const rawProducts = Array.isArray(purchase.products) ? purchase.products : [];
+
+  const fullName = String(
+    client.full_name || client.name || body.full_name || ''
+  ).trim();
+  const email = String(client.email || body.email || '').trim();
+  const phone = String(
+    client.phone || client.phone_number || body.phone || ''
+  ).trim();
+  const rawAddress = String(
+    client.shipping_street_address ||
+      client.street_address ||
+      client.shipping_address ||
+      body.shipping_address ||
+      ''
+  ).trim();
+  const cleanAddress = rawAddress.replace(/\s+/g, ' ');
+  const truncatedAddress = cleanAddress.slice(0, 128);
+
+  if (truncatedAddress) {
+    client.street_address = client.street_address || truncatedAddress;
+    client.shipping_street_address =
+      client.shipping_street_address || truncatedAddress;
+  }
+
+  const firstProduct = rawProducts[0] || {};
+  const quantity = Math.max(1, Math.round(Number(firstProduct.quantity || 1)));
+  const unitPriceSen = Number(firstProduct.price || 5600);
+  const totalRM = ((unitPriceSen * quantity) / 100).toFixed(2);
+
+  const productAndNotes = `${firstProduct.name || ''} ${purchase.notes || ''}`;
+  const regionLabel = productAndNotes.includes('Sabah & Sarawak')
+    ? 'Sabah & Sarawak'
+    : 'Semenanjung Malaysia';
+
+  const baseProductName = `Siapa Akan Menguasai Putrajaya? (${regionLabel})`;
+  const enrichedProductName = cleanAddress
+    ? `${baseProductName} | Nota: ${fullName}, ${phone}, Alamat: ${cleanAddress}`.slice(
+        0,
+        256
+      )
+    : String(firstProduct.name || baseProductName).slice(0, 256);
+
+  const products =
+    rawProducts.length > 0
+      ? rawProducts.map((p: any, idx: number) =>
+          idx === 0
+            ? {
+                ...p,
+                name: enrichedProductName,
+              }
+            : p
+        )
+      : [
+          {
+            name: enrichedProductName,
+            price: unitPriceSen,
+            quantity,
+          },
+        ];
+
+  const fullNotes = `Nama: ${fullName} | Tel: ${phone} | E-mel: ${email} | Zon: ${regionLabel} | Kuantiti: ${quantity} naskhah | Jumlah: RM${totalRM} | Alamat: ${cleanAddress}`;
+
+  purchase.products = products;
+  purchase.notes =
+    purchase.notes && String(purchase.notes).includes('Alamat:')
+      ? String(purchase.notes).slice(0, 10000)
+      : fullNotes.slice(0, 10000);
+
+  const reference =
+    typeof body.reference === 'string' && body.reference.trim()
+      ? body.reference.trim().slice(0, 128)
+      : `${fullName} | ${phone} | ${cleanAddress}`.slice(0, 128);
+
+  return {
+    ...body,
+    brand_id: brandId,
+    reference,
+    client,
+    purchase,
+    success_callback: successCallback,
+  };
+}
+
 function buildOrderRecord(
   body: Record<string, any>,
   status: string,
@@ -184,17 +275,15 @@ export const POST: APIRoute = async ({ request }) => {
         ? body.success_callback
         : `${origin}/api/webhook`;
 
+    const enrichedPayload = enrichChipPayload(body, brandId, successCallback);
+
     const chipResponse = await fetch('https://gate.chip-in.asia/api/v1/purchases/', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${secretKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        ...body,
-        brand_id: brandId,
-        success_callback: successCallback,
-      }),
+      body: JSON.stringify(enrichedPayload),
     });
 
     const data = (await chipResponse.json()) as Record<string, any>;
@@ -206,7 +295,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (ordersDb) {
       try {
         const orderRecord = buildOrderRecord(
-          body,
+          enrichedPayload,
           chipResponse.ok ? String(data?.status || 'created') : 'chip_error',
           data
         );
