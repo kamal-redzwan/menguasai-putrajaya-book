@@ -6,25 +6,6 @@ declare const __BUILD_CHIP_PUBLIC_KEY__: string | undefined;
 
 export const prerender = false;
 
-function getOrdersKv(runtimeEnv: Record<string, any>) {
-  if (runtimeEnv.ORDERS_DB && typeof runtimeEnv.ORDERS_DB.put === 'function') {
-    return runtimeEnv.ORDERS_DB;
-  }
-  for (const [key, val] of Object.entries(runtimeEnv)) {
-    if (
-      key !== 'ASSETS' &&
-      key !== 'SESSION' &&
-      val &&
-      typeof val === 'object' &&
-      typeof (val as any).put === 'function' &&
-      typeof (val as any).get === 'function'
-    ) {
-      return val as any;
-    }
-  }
-  return undefined;
-}
-
 // Verifies RSA-SHA256 signature against raw body using standard Web Crypto API
 async function verifySignature(
   rawBody: string,
@@ -146,7 +127,7 @@ export const POST: APIRoute = async ({ request }) => {
             message: 'Tandatangan webhook X-Signature tidak sah.',
           }),
           {
-            status: 401,
+            status: 200,
             headers: { 'Content-Type': 'application/json' },
           }
         );
@@ -154,11 +135,14 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // 2. Verify brand ID if configured
+    const targetObj = (payload.object && typeof payload.object === 'object' ? payload.object : payload) as Record<string, any>;
+    const payloadBrandId = targetObj.brand_id || payload.brand_id;
+
     if (
       configuredBrandId &&
       configuredBrandId !== 'CHIP_BRAND_ID_ANDA' &&
-      payload.brand_id &&
-      payload.brand_id !== configuredBrandId
+      payloadBrandId &&
+      payloadBrandId !== configuredBrandId
     ) {
       return new Response(
         JSON.stringify({
@@ -174,7 +158,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 3. Verify transaction ID
     const transactionId =
-      payload.id || payload.purchase_id || payload.transaction_id;
+      targetObj.id || payload.id || payload.purchase_id || payload.transaction_id;
 
     if (!transactionId || typeof transactionId !== 'string') {
       return new Response(
@@ -189,108 +173,11 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // 4. Parse only the customer form fields for simple Excel export
-    const client = (payload.client || {}) as Record<string, any>;
-    const purchase = (payload.purchase || {}) as Record<string, any>;
-    const products = Array.isArray(purchase.products) ? purchase.products : [];
-
-    const customerName = String(
-      client.full_name ||
-      client.name ||
-      client.fullName ||
-      payload.full_name ||
-      ''
-    ).trim();
-
-    const customerEmail = String(
-      client.email ||
-      payload.email ||
-      ''
-    ).trim();
-
-    const customerPhone = String(
-      client.phone ||
-      client.phone_number ||
-      payload.phone ||
-      ''
-    ).trim();
-
-    const shippingAddress = String(
-      client.shipping_street_address ||
-      client.street_address ||
-      client.shipping_address ||
-      client.address ||
-      payload.shipping_address ||
-      ''
-    ).trim();
-
-    const quantity =
-      products.length > 0
-        ? Math.max(1, Math.round(Number(products[0]?.quantity || 1)))
-        : 1;
-
-    const productAndNotes = `${products[0]?.name || ''} ${purchase.notes || ''}`;
-    const shippingZone = productAndNotes.includes('Sabah & Sarawak')
-      ? 'Sabah & Sarawak'
-      : 'Semenanjung Malaysia';
-
-    const totalSen = Number(purchase.total ?? products[0]?.price ?? 5600);
-
-    const orderData = {
-      zon_penghantaran: shippingZone,
-      nama_penuh: customerName,
-      email: customerEmail,
-      telefon: customerPhone,
-      kuantiti: quantity,
-      alamat_penghantaran: shippingAddress,
-      jumlah_bayaran: `RM${(totalSen / 100).toFixed(2)}`,
-      status: String(payload.status || 'paid'),
-      tarikh: new Date().toISOString(),
-    };
-
-    // 5. Save order data into Cloudflare KV binding (ORDERS_DB)
-    const ordersDb = getOrdersKv(runtimeEnv);
-
-    if (ordersDb && typeof ordersDb.put === 'function') {
-      try {
-        await ordersDb.put(transactionId, JSON.stringify(orderData));
-        await ordersDb.get(transactionId);
-      } catch (kvError) {
-        console.error(
-          `[Webhook] Ralat semasa menyimpan rekod transaksi ${transactionId} ke KV:`,
-          kvError
-        );
-        return new Response(
-          JSON.stringify({
-            status: 'error',
-            message: 'Gagal menyimpan rekod pesanan ke Cloudflare KV.',
-            transaction_id: transactionId,
-          }),
-          {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-      }
-    } else {
-      console.error(`[Webhook] KV binding ORDERS_DB tidak tersedia untuk txn ${transactionId}`);
-      return new Response(
-        JSON.stringify({
-          status: 'error',
-          message: 'Gagal menyambung ke pangkalan data KV.',
-        }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
-
-    // 6. Return 200 OK so CHIP acknowledges successful webhook delivery
+    // 4. Return 200 OK so CHIP acknowledges successful webhook delivery
     return new Response(
       JSON.stringify({
         status: 'success',
-        message: 'Webhook berjaya diproses dan disimpan.',
+        message: 'Webhook berjaya diterima dan disahkan.',
         transaction_id: transactionId,
       }),
       {
