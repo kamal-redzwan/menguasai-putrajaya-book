@@ -264,7 +264,6 @@ const resolvedBrandId =
 
   interface ChipPurchasePayload {
     brand_id: string;
-    reference?: string;
     client: {
       email: string;
       full_name: string;
@@ -408,15 +407,9 @@ const resolvedBrandId =
     const totalPriceRM = (unitPriceRM * quantity).toFixed(2);
     const cleanAddress = address.replace(/\s+/g, " ");
     const truncatedAddress = cleanAddress.slice(0, 128);
-    const itemNameWithNotes =
-      `Siapa Akan Menguasai Putrajaya? (${regionLabel}) | Nota: ${fullName}, ${phone}, Alamat: ${cleanAddress}`.slice(
-        0,
-        256,
-      );
 
     const chipPayload: ChipPurchasePayload = {
       brand_id: form.dataset.brandId || "db3280df-c2eb-48e5-bdcb-b757e269de69",
-      reference: `${fullName} | ${phone} | ${cleanAddress}`.slice(0, 128),
       client: {
         email,
         full_name: fullName,
@@ -428,7 +421,7 @@ const resolvedBrandId =
         currency: "MYR",
         products: [
           {
-            name: itemNameWithNotes,
+            name: `Siapa Akan Menguasai Putrajaya? (${regionLabel})`,
             price: unitPriceRM * 100,
             quantity,
           },

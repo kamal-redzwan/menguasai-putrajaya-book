@@ -67,13 +67,7 @@ function enrichChipPayload(
     ? 'Sabah & Sarawak'
     : 'Semenanjung Malaysia';
 
-  const baseProductName = `Siapa Akan Menguasai Putrajaya? (${regionLabel})`;
-  const enrichedProductName = cleanAddress
-    ? `${baseProductName} | Nota: ${fullName}, ${phone}, Alamat: ${cleanAddress}`.slice(
-        0,
-        256
-      )
-    : String(firstProduct.name || baseProductName).slice(0, 256);
+  const cleanProductName = `Siapa Akan Menguasai Putrajaya? (${regionLabel})`;
 
   const products =
     rawProducts.length > 0
@@ -81,13 +75,13 @@ function enrichChipPayload(
           idx === 0
             ? {
                 ...p,
-                name: enrichedProductName,
+                name: cleanProductName,
               }
             : p
         )
       : [
           {
-            name: enrichedProductName,
+            name: cleanProductName,
             price: unitPriceSen,
             quantity,
           },
@@ -101,19 +95,18 @@ function enrichChipPayload(
       ? String(purchase.notes).slice(0, 10000)
       : fullNotes.slice(0, 10000);
 
-  const reference =
-    typeof body.reference === 'string' && body.reference.trim()
-      ? body.reference.trim().slice(0, 128)
-      : `${fullName} | ${phone} | ${cleanAddress}`.slice(0, 128);
-
-  return {
+  const payload: Record<string, any> = {
     ...body,
     brand_id: brandId,
-    reference,
     client,
     purchase,
     success_callback: successCallback,
   };
+
+  // Leave reference unset so CHIP uses reference_generated (e.g. CH15) as the Receipt Invoice number
+  delete payload.reference;
+
+  return payload;
 }
 
 function buildOrderRecord(
