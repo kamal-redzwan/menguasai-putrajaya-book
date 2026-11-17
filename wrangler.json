@@ -1,10 +1,12 @@
 {
   "name": "menguasai-putrajaya-book",
   "compatibility_date": "2025-03-01",
+  "kv_namespaces": [],
   "vars": {
     "CHIP_BRAND_ID": "db3280df-c2eb-48e5-bdcb-b757e269de69"
   },
   "previews": {
+    "kv_namespaces": [],
     "vars": {
       "CHIP_BRAND_ID": "db3280df-c2eb-48e5-bdcb-b757e269de69"
     }
