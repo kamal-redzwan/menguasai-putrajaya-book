@@ -1,0 +1,130 @@
+@import "@fontsource/barlow-condensed/600.css";
+@import "@fontsource/barlow-condensed/800.css";
+@import "@fontsource/barlow/400.css";
+@import "@fontsource/barlow/500.css";
+@import "@fontsource/barlow/700.css";
+@import "@fontsource/newsreader/400.css";
+@import "@fontsource/newsreader/400-italic.css";
+@import "@fontsource/newsreader/600.css";
+
+/* Focus colour follows the surface: yellow reads on navy, navy reads on paper. */
+:root {
+  --focus: #facc15;
+}
+
+.surface-paper {
+  --focus: #09111e;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+a[href],
+button:not(:disabled),
+select:not(:disabled),
+summary,
+label[for],
+label:has(input:not(:disabled)),
+input[type="radio"]:not(:disabled),
+input[type="checkbox"]:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+select:disabled,
+input:disabled,
+textarea:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Policy documents are slotted as plain HTML, so their typography lives here. */
+.doc h2 {
+  margin-top: 2.5rem;
+  border-top: 2px solid #09111e;
+  padding-top: 0.75rem;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.doc h2:first-child {
+  margin-top: 0;
+}
+
+.doc section + section {
+  margin-top: 3rem;
+}
+
+.doc p,
+.doc ul {
+  margin-top: 0.875rem;
+}
+
+.doc ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.doc li + li {
+  margin-top: 0.5rem;
+}
+
+.doc strong {
+  font-weight: 600;
+  color: #09111e;
+}
+
+.doc dl {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .doc dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.doc dl > div {
+  border-top: 4px solid #09111e;
+  padding-top: 0.5rem;
+}
+
+.doc dt {
+  font-family: Barlow, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.doc dd {
+  font-family: Barlow, system-ui, sans-serif;
+}
+
+.doc dd:first-of-type {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+}

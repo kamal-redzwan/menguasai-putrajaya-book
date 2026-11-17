@@ -1,0 +1,46 @@
+---
+import ScrollVideo from "./ScrollVideo.astro";
+---
+
+<section id="tonton" aria-labelledby="watch-heading" class="bg-navy">
+  <div
+    class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 md:grid-cols-12 md:gap-10 md:py-24 lg:px-8"
+  >
+    <div class="md:col-span-4">
+      <p aria-hidden="true" class="font-display text-8xl font-extrabold leading-none text-white/15">
+        02
+      </p>
+      <h2
+        id="watch-heading"
+        class="mt-2 font-display text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold uppercase leading-[0.95] text-white"
+      >
+        Tonton sebelum membaca
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-on-navy-muted">
+        Perubahan demografi pengundi, peranan media sosial, faktor ekonomi
+        semasa serta dinamika antara gabungan politik membentuk ekosistem
+        baharu yang tidak lagi bergerak mengikut congakan tradisional. Dua
+        sorotan ini memberi gambaran awal tentang isi buku.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-6 md:col-span-8">
+      <div class="mx-auto w-full max-w-[340px] sm:max-w-none">
+        <ScrollVideo
+          src="/WhatsApp Video 2026-10-28 at 11.43.11.mp4"
+          poster="/poster-video-01.jpg"
+          title="Realiti baharu landskap politik negara"
+          caption="Mengapa pergolakan politik Malaysia selepas 2018 memerlukan satu kerangka bacaan baharu menjelang PRU 16."
+        />
+      </div>
+      <div class="mx-auto w-full max-w-[340px] sm:max-w-none sm:pt-16">
+        <ScrollVideo
+          src="/WhatsApp Video 2026-10-28 at 11.44.41.mp4"
+          poster="/poster-video-02.jpg"
+          title="Data, demografi dan tingkah laku pengundi"
+          caption="Bagaimana data kajian lapangan dan analisis statistik digunakan untuk menilai peluang penguasaan Putrajaya."
+        />
+      </div>
+    </div>
+  </div>
+</section>

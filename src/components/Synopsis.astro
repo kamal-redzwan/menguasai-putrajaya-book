@@ -1,37 +1,42 @@
 ---
-export interface Props {
-  heading?: string;
-  subheading?: string;
-}
-
-const {
-  heading = "Sinopsis Kulit Belakang",
-  subheading = "Sebuah Analisis Berasaskan Lensa Politik Pasca-Normal",
-} = Astro.props;
+const methods = [
+  {
+    label: "Kerangka",
+    title: "Lensa Politik Pasca-Normal",
+    body: "Cara membaca politik Malaysia yang menerima kerumitan, percanggahan dan ketidaktentuan, bukan memaksanya masuk ke dalam formula lama.",
+  },
+  {
+    label: "Kaedah",
+    title: "Data dan kajian lapangan",
+    body: "Statistik pilihan raya, perubahan demografi pengundi, ekosistem media sosial, faktor ekonomi dan pemerhatian strategik di lapangan.",
+  },
+];
 ---
 
 <section
   id="sinopsis"
   aria-labelledby="synopsis-heading"
-  class="border-y border-slate-800 bg-slate-900/60 py-14 sm:py-20 lg:py-24"
+  class="surface-paper bg-paper text-navy"
 >
-  <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-prose">
-      <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
-        {heading}
-      </p>
+  <div
+    class="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-16 sm:px-6 md:grid-cols-12 md:gap-10 md:py-24 lg:px-8"
+  >
+    <div class="md:col-span-5">
+      <div class="md:sticky md:top-24">
+        <p aria-hidden="true" class="font-display text-8xl font-extrabold leading-none text-navy/15">
+          01
+        </p>
+        <h2
+          id="synopsis-heading"
+          class="mt-2 font-display text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold uppercase leading-[0.95]"
+        >
+          Mengapa formula politik lama tidak lagi menjelaskan Malaysia?
+        </h2>
+      </div>
+    </div>
 
-      <h2
-        id="synopsis-heading"
-        class="mt-2 text-[clamp(1.65rem,3vw,2.25rem)] font-extrabold leading-tight tracking-tight text-white"
-      >
-        Mengapa Formula Politik Lama Tidak Lagi Mampu Menjelaskan Realiti
-        Malaysia?
-      </h2>
-
-      <p class="mt-2 text-sm font-semibold text-slate-300">{subheading}</p>
-
-      <div class="mt-8 space-y-6 text-base leading-relaxed text-slate-300 sm:text-lg sm:leading-relaxed">
+    <div class="md:col-span-7">
+      <div class="space-y-6 font-serif text-[1.1875rem] leading-[1.7] sm:text-xl sm:leading-[1.7]">
         <p>
           Malaysia sedang memasuki era politik yang paling mencabar sejak
           kemerdekaan. Kejatuhan Barisan Nasional pada tahun 2018, pembentukan
@@ -41,18 +46,14 @@ const {
           Formula politik yang selama ini dianggap kukuh semakin kehilangan
           keupayaannya untuk menjelaskan perubahan yang berlaku.
         </p>
-
         <p>
-          Melalui pendekatan{" "}
-          <strong class="font-semibold text-white">Politik Pasca-Normal</strong>
-          , buku ini menghimpunkan data pilihan raya, kajian lapangan, analisis
+          Melalui pendekatan <strong class="font-semibold">Politik Pasca-Normal</strong>,
+          buku ini menghimpunkan data pilihan raya, kajian lapangan, analisis
           statistik dan pemerhatian strategik bagi menjelaskan bagaimana
           prestasi kerajaan, pembangkang, tingkah laku pengundi, perubahan
           demografi, media sosial, ekonomi, geopolitik dan ekosistem politik
-          saling mempengaruhi dalam menentukan hala tuju negara menjelang{" "}
-          <strong class="font-semibold text-yellow-400">PRU 16</strong>.
+          saling mempengaruhi dalam menentukan hala tuju negara menjelang PRU 16.
         </p>
-
         <p>
           Lebih daripada sebuah buku politik, karya ini mengajak pembaca
           memahami mengapa politik Malaysia tidak lagi boleh dinilai menggunakan
@@ -62,16 +63,19 @@ const {
         </p>
       </div>
 
-      <footer class="mt-10 rounded-xl border border-slate-700 bg-putrajaya-navy p-5 text-sm text-slate-300">
-        <p class="font-semibold text-white">Butiran Penerbitan Rasmi</p>
-        <p class="mt-1 text-slate-300">
-          ISBN 978-967-5131-28-8. Terbitan bersama{" "}
-          <strong class="font-semibold text-white">
-            BRAINWAVE COMMUNICATIONS (202203208117 / JM0967023-W)
-          </strong>{" "}
-          dan Prestasi Media.
-        </p>
-      </footer>
+      <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
+        {
+          methods.map((item) => (
+            <div class="border-t-4 border-navy pt-3">
+              <p class="text-sm font-bold text-on-paper-muted">{item.label}</p>
+              <h3 class="mt-1 font-display text-2xl font-extrabold uppercase leading-tight">
+                {item.title}
+              </h3>
+              <p class="mt-2 leading-relaxed text-on-paper-muted">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>

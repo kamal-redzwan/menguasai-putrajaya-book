@@ -8,289 +8,185 @@ const resolvedBrandId =
   import.meta.env.PUBLIC_CHIP_BRAND_ID ||
   import.meta.env.CHIP_BRAND_ID ||
   "db3280df-c2eb-48e5-bdcb-b757e269de69";
+
+const fieldClass =
+  "mt-2 min-h-[48px] w-full border-2 border-navy bg-white px-3 py-2.5 text-base text-navy placeholder:text-on-paper-muted";
+const labelClass = "block font-bold text-navy";
+
+const policyLinks = [
+  { href: "/terma-dan-syarat", label: "Terma & Syarat" },
+  { href: "/polisi-penghantaran", label: "Polisi Penghantaran" },
+  { href: "/polisi-pemulangan", label: "Polisi Pemulangan" },
+  { href: "/polisi-privasi", label: "Polisi Privasi" },
+];
 ---
 
 <section
   id="tempahan"
   aria-labelledby="checkout-heading"
-  class="border-t border-slate-800 bg-slate-900/70 py-14 sm:py-20 lg:py-28"
+  class="surface-paper border-t-2 border-white bg-paper text-navy"
 >
-  <div class="mx-auto max-w-3xl px-5 sm:px-6 lg:px-8">
-    <div class="rounded-2xl border border-slate-700 bg-slate-900 p-6 sm:p-10">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
-          Pra-Jualan Cetakan Pertama
-        </p>
-        <h2
-          id="checkout-heading"
-          class="mt-2 text-[clamp(1.65rem,3vw,2.25rem)] font-extrabold tracking-tight text-white"
-        >
-          Tempah Naskhah Anda Sekarang
-        </h2>
-        <p class="mt-2 text-base leading-relaxed text-slate-300">
-          Miliki analisis lengkap menjelang PRU 16. Harga pra-jualan RM56.00
-          (Semenanjung) dan RM70.00 (Sabah &amp; Sarawak) termasuk kos
-          penghantaran. Dikhaskan untuk {totalQuota} naskhah terawal.
-        </p>
-      </div>
-
-      <div class="mt-7 rounded-xl border border-slate-700 bg-putrajaya-navy p-5">
-        <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
-          <span class="font-semibold text-white">
-            Had Kuota Pra-Jualan (RM56 / RM70)
-          </span>
-          <span class="font-bold tabular-nums text-yellow-400">
-            Kuota: {totalQuota} Naskhah Terawal ([DATA SEBENAR] Stok Langsung)
-          </span>
-        </div>
-
-        <div
-          class="mt-3 h-3 w-full overflow-hidden rounded-full border border-slate-600 bg-slate-900"
-          role="progressbar"
-          aria-valuenow={totalQuota}
-          aria-valuemin={0}
-          aria-valuemax={totalQuota}
-          aria-label="Had kuota pra-jualan 200 naskhah terawal"
-        >
-          <div class="h-full w-3/4 rounded-full bg-yellow-400"></div>
-        </div>
-
-        <p class="mt-2.5 text-xs leading-relaxed text-slate-300">
-          Harga kembali kepada kadar biasa selepas kuota {totalQuota} naskhah
-          cetakan awal penuh. Jangkaan penghantaran pra-jualan adalah{" "}
-          <strong class="font-semibold text-white">
-            3 hingga 5 hari bekerja (Semenanjung)
-          </strong>{" "}
-          dan{" "}
-          <strong class="font-semibold text-white">
-            5 hingga 7 hari bekerja (Sabah &amp; Sarawak)
-          </strong>{" "}
-          selepas proses cetakan selesai.
-        </p>
-      </div>
-
-      <form
-        id="chip-checkout-form"
-        data-brand-id={resolvedBrandId}
-        class="mt-8 space-y-6"
-        novalidate
+  <div
+    class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 md:grid-cols-12 md:gap-10 md:py-24 lg:px-8"
+  >
+    <div class="md:col-span-5">
+      <p aria-hidden="true" class="font-display text-8xl font-extrabold leading-none text-navy/15">
+        03
+      </p>
+      <h2
+        id="checkout-heading"
+        class="mt-2 font-display text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold uppercase leading-[0.95]"
       >
-        <fieldset>
-          <legend class="block text-sm font-semibold text-white">
-            Pilih Zon Penghantaran
-          </legend>
-          <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <label
-              class="relative flex min-h-[64px] cursor-pointer items-center justify-between rounded-xl border-2 border-yellow-400 bg-putrajaya-navy p-4 transition hover:bg-slate-900 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-yellow-400"
-              data-region-card="semenanjung"
-            >
-              <span class="flex items-center gap-3">
-                <input
-                  type="radio"
-                  name="region"
-                  value="semenanjung"
-                  data-price-rm="56"
-                  checked
-                  class="h-5 w-5 accent-yellow-400"
-                />
-                <span>
-                  <span class="block text-sm font-bold text-white">
-                    Semenanjung Malaysia
-                  </span>
-                  <span class="block text-xs text-slate-300">
-                    Buku RM48 + Pos RM8
-                  </span>
-                </span>
-              </span>
-              <span class="text-lg font-extrabold tabular-nums text-yellow-400">
-                RM56
-              </span>
-            </label>
+        Tempah naskhah anda
+      </h2>
 
-            <label
-              class="relative flex min-h-[64px] cursor-pointer items-center justify-between rounded-xl border-2 border-slate-500 bg-putrajaya-navy p-4 transition hover:border-slate-300 hover:bg-slate-900 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-yellow-400"
-              data-region-card="borneo"
-            >
-              <span class="flex items-center gap-3">
-                <input
-                  type="radio"
-                  name="region"
-                  value="borneo"
-                  data-price-rm="70"
-                  class="h-5 w-5 accent-yellow-400"
-                />
-                <span>
-                  <span class="block text-sm font-bold text-white">
-                    Sabah &amp; Sarawak
-                  </span>
-                  <span class="block text-xs text-slate-300">
-                    Buku RM55 + Pos RM15
-                  </span>
-                </span>
-              </span>
-              <span class="text-lg font-extrabold tabular-nums text-white">
-                RM70
-              </span>
-            </label>
-          </div>
-        </fieldset>
+      <div class="mt-5 space-y-4 text-lg leading-relaxed">
+        <p>
+          Harga sudah termasuk kos penghantaran. Harga pra-jualan ini untuk{" "}
+          {totalQuota} naskhah cetakan pertama sahaja, selepas itu harga biasa
+          dikenakan.
+        </p>
+        <p class="text-on-paper-muted">
+          Buku dihantar selepas cetakan selesai: 3 hingga 5 hari bekerja ke
+          Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.
+        </p>
+      </div>
 
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div>
-            <label for="full_name" class="block text-sm font-medium text-white">
-              Nama Penuh <span class="text-yellow-400">*</span>
-            </label>
-            <input
-              type="text"
-              id="full_name"
-              name="full_name"
-              autocomplete="name"
-              required
-              placeholder="Nama penuh penerima"
-              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            />
-          </div>
-
-          <div>
-            <label for="email" class="block text-sm font-medium text-white">
-              Alamat E-mel <span class="text-yellow-400">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              autocomplete="email"
-              required
-              placeholder="emel@contoh.com"
-              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div>
-            <label for="phone" class="block text-sm font-medium text-white">
-              Nombor Telefon (WhatsApp) <span class="text-yellow-400">*</span>
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              autocomplete="tel"
-              required
-              placeholder="Nombor telefon bimbit"
-              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            />
-          </div>
-
-          <div>
-            <label for="quantity" class="block text-sm font-medium text-white">
-              Kuantiti Naskhah
-            </label>
-            <select
-              id="quantity"
-              name="quantity"
-              class="mt-2 min-h-[48px] w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            >
-              <option value="1">1 Naskhah</option>
-              <option value="2">2 Naskhah</option>
-              <option value="3">3 Naskhah</option>
-              <option value="5">5 Naskhah</option>
-              <option value="10">10 Naskhah</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label
-            for="shipping_address"
-            class="block text-sm font-medium text-white"
-          >
-            Alamat Penghantaran Lengkap <span class="text-yellow-400">*</span>
-          </label>
-          <textarea
-            id="shipping_address"
-            name="shipping_address"
-            autocomplete="street-address"
-            rows="3"
-            required
-            placeholder="Nombor rumah, nama jalan, poskod, bandar dan negeri"
-            class="mt-2 w-full rounded-lg border border-slate-500 bg-putrajaya-navy px-4 py-3 text-sm text-white placeholder-slate-400 focus-visible:border-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-          ></textarea>
-        </div>
-
-        <div class="rounded-xl border border-slate-700 bg-putrajaya-navy p-5">
-          <div class="flex items-center justify-between text-sm text-slate-300">
-            <span>Buku: Siapa Akan Menguasai Putrajaya?</span>
-            <span id="summary-unit-price" class="tabular-nums">
-              RM56.00 / naskhah
-            </span>
-          </div>
-          <div class="mt-3 flex items-baseline justify-between border-t border-slate-800 pt-3">
-            <span class="text-base font-bold text-white">Jumlah Bayaran</span>
-            <span
-              id="summary-total-price"
-              class="text-2xl font-extrabold tabular-nums text-yellow-400"
-            >
-              RM56.00
-            </span>
-          </div>
-        </div>
-
-        <div
-          id="checkout-status"
-          role="status"
-          aria-live="polite"
-          class="hidden rounded-lg border p-4 text-sm"
-        ></div>
-
-        <button
-          type="submit"
-          id="submit-payment-btn"
-          class="flex min-h-[52px] w-full items-center justify-center gap-3 rounded-xl bg-yellow-400 px-8 py-4 text-base font-extrabold text-slate-950 transition hover:bg-yellow-300 active:translate-y-px active:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <span id="submit-btn-text">Bayar Sekarang (RM56.00)</span>
-        </button>
-
-        <div class="space-y-3 pt-1 text-center text-xs leading-relaxed text-slate-300">
-          <p>
-            Pembayaran selamat diproses melalui gerbang pembayaran{" "}
-            <strong class="font-semibold text-white">CHIP Collect</strong> (FPX
-            Perbankan Dalam Talian, DuitNow QR, Kad Kredit/Debit &amp; E-Dompet)
-            untuk{" "}
-            <strong class="font-semibold text-white">
-              BRAINWAVE COMMUNICATIONS (202203208117 / JM0967023-W)
-            </strong>.
-          </p>
-          <div class="flex flex-wrap items-center justify-center gap-2">
-            <a
-              href="/terma-dan-syarat"
-              class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-putrajaya-navy px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-yellow-400 hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            >
-              Terma &amp; Syarat
-            </a>
-            <a
-              href="/polisi-penghantaran"
-              class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-putrajaya-navy px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-yellow-400 hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            >
-              Polisi Penghantaran
-            </a>
-            <a
-              href="/polisi-pemulangan"
-              class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-putrajaya-navy px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-yellow-400 hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            >
-              Polisi Pemulangan
-            </a>
-            <a
-              href="/polisi-privasi"
-              class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-putrajaya-navy px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-yellow-400 hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-            >
-              Polisi Privasi
-            </a>
-          </div>
-        </div>
-      </form>
+      <div class="mt-8 border-t-2 border-navy pt-4 text-sm leading-relaxed text-on-paper-muted">
+        <p>
+          Pembayaran melalui CHIP Collect (FPX, DuitNow QR, kad kredit/debit dan
+          e-dompet) kepada Brainwave Communications (202203208117 /
+          JM0967023-W).
+        </p>
+        <ul class="mt-2 flex flex-wrap gap-x-4">
+          {
+            policyLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="inline-flex min-h-[44px] items-center font-semibold text-navy underline decoration-1 underline-offset-4 hover:decoration-2"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
+
+    <form
+      id="chip-checkout-form"
+      data-brand-id={resolvedBrandId}
+      class="space-y-6 border-2 border-navy bg-white p-5 sm:p-8 md:col-span-7"
+      novalidate
+    >
+      <fieldset>
+        <legend class={labelClass}>Zon penghantaran</legend>
+        <div class="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <label
+            class="flex min-h-[64px] items-center justify-between gap-3 border-2 border-navy bg-accent p-4 transition-colors"
+            data-region-card="semenanjung"
+          >
+            <span class="flex items-center gap-3">
+              <input
+                type="radio"
+                name="region"
+                value="semenanjung"
+                data-price-rm="56"
+                checked
+                class="h-5 w-5 accent-navy"
+              />
+              <span>
+                <span class="block font-bold">Semenanjung</span>
+                <span class="block text-sm">Buku RM48 + pos RM8</span>
+              </span>
+            </span>
+            <span class="font-display text-3xl font-extrabold tabular-nums">RM56</span>
+          </label>
+
+          <label
+            class="flex min-h-[64px] items-center justify-between gap-3 border-2 border-navy bg-white p-4 transition-colors hover:bg-paper"
+            data-region-card="borneo"
+          >
+            <span class="flex items-center gap-3">
+              <input
+                type="radio"
+                name="region"
+                value="borneo"
+                data-price-rm="70"
+                class="h-5 w-5 accent-navy"
+              />
+              <span>
+                <span class="block font-bold">Sabah &amp; Sarawak</span>
+                <span class="block text-sm">Buku RM55 + pos RM15</span>
+              </span>
+            </span>
+            <span class="font-display text-3xl font-extrabold tabular-nums">RM70</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div>
+          <label for="full_name" class={labelClass}>Nama penuh</label>
+          <input type="text" id="full_name" name="full_name" autocomplete="name" required placeholder="Nama penerima" class={fieldClass} />
+        </div>
+        <div>
+          <label for="email" class={labelClass}>E-mel</label>
+          <input type="email" id="email" name="email" autocomplete="email" required placeholder="emel@contoh.com" class={fieldClass} />
+        </div>
+        <div>
+          <label for="phone" class={labelClass}>Telefon (WhatsApp)</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" required placeholder="01X XXX XXXX" class={fieldClass} />
+        </div>
+        <div>
+          <label for="quantity" class={labelClass}>Kuantiti</label>
+          <select id="quantity" name="quantity" class={fieldClass}>
+            <option value="1">1 naskhah</option>
+            <option value="2">2 naskhah</option>
+            <option value="3">3 naskhah</option>
+            <option value="5">5 naskhah</option>
+            <option value="10">10 naskhah</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="shipping_address" class={labelClass}>Alamat penghantaran</label>
+        <textarea
+          id="shipping_address"
+          name="shipping_address"
+          autocomplete="street-address"
+          rows="3"
+          required
+          placeholder="No. rumah, jalan, poskod, bandar dan negeri"
+          class={fieldClass}
+        ></textarea>
+      </div>
+
+      <p class="text-sm text-on-paper-muted">Semua ruangan wajib diisi.</p>
+
+      <div class="flex items-end justify-between gap-4 border-t-4 border-navy pt-4">
+        <div>
+          <p class="font-bold">Jumlah bayaran</p>
+          <p id="summary-unit-price" class="text-sm tabular-nums text-on-paper-muted">RM56.00 / naskhah</p>
+        </div>
+        <p id="summary-total-price" class="font-display text-5xl font-extrabold tabular-nums leading-none">
+          RM56.00
+        </p>
+      </div>
+
+      <div id="checkout-status" role="status" aria-live="polite" class="hidden border-2 p-4 text-sm"></div>
+
+      <button
+        type="submit"
+        id="submit-payment-btn"
+        class="flex min-h-[60px] w-full items-center justify-center bg-accent px-6 font-display text-2xl font-extrabold uppercase text-navy transition-colors hover:bg-navy hover:text-accent active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        <span id="submit-btn-text">Bayar RM56.00</span>
+      </button>
+    </form>
   </div>
 </section>
 
@@ -370,7 +266,7 @@ const resolvedBrandId =
       totalPriceEl.textContent = `RM${totalRM.toFixed(2)}`;
     }
     if (submitBtnText) {
-      submitBtnText.textContent = `Bayar Sekarang (RM${totalRM.toFixed(2)})`;
+      submitBtnText.textContent = `Bayar RM${totalRM.toFixed(2)}`;
     }
 
     regionCards.forEach((card) => {
@@ -378,8 +274,9 @@ const resolvedBrandId =
         'input[name="region"]',
       );
       const isChecked = Boolean(input?.checked);
-      card.classList.toggle("border-yellow-400", isChecked);
-      card.classList.toggle("border-slate-500", !isChecked);
+      card.classList.toggle("bg-accent", isChecked);
+      card.classList.toggle("bg-white", !isChecked);
+      card.classList.toggle("hover:bg-paper", !isChecked);
     });
   };
 
@@ -395,27 +292,11 @@ const resolvedBrandId =
     isError = false,
   ): void => {
     if (!statusBox) return;
-    statusBox.classList.remove(
-      "hidden",
-      "border-red-400",
-      "bg-red-950/80",
-      "text-red-100",
-      "border-yellow-400",
-      "bg-slate-950",
-      "text-yellow-200",
-    );
+    statusBox.classList.remove("hidden", "border-red-700", "bg-red-50", "text-red-800", "border-navy", "bg-paper", "text-navy");
     if (isError) {
-      statusBox.classList.add(
-        "border-red-400",
-        "bg-red-950/80",
-        "text-red-100",
-      );
+      statusBox.classList.add("border-red-700", "bg-red-50", "text-red-800");
     } else {
-      statusBox.classList.add(
-        "border-yellow-400",
-        "bg-slate-950",
-        "text-yellow-200",
-      );
+      statusBox.classList.add("border-navy", "bg-paper", "text-navy");
     }
     statusBox.textContent = `${prefix}: ${message}`;
   };
@@ -475,7 +356,7 @@ const resolvedBrandId =
 
     if (submitBtn) submitBtn.disabled = true;
     if (submitBtnText)
-      submitBtnText.textContent = "Sedang Memproses Permintaan CHIP Collect...";
+      submitBtnText.textContent = "Menghubungi CHIP Collect...";
     showStatus(
       "Memuatkan",
       "Sedang menghubungi gerbang pembayaran CHIP Collect. Sila tunggu sebentar...",

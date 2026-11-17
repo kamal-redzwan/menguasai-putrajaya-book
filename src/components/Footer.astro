@@ -2,128 +2,65 @@
 const currentYear = new Date().getFullYear();
 
 const policyLinks = [
-  {
-    href: "/polisi-penghantaran",
-    label: "Polisi Penghantaran",
-    enLabel: "Shipping & Delivery Policy",
-  },
-  {
-    href: "/polisi-pemulangan",
-    label: "Polisi Pemulangan & Bayaran Balik",
-    enLabel: "Refund & Return Policy",
-  },
-  {
-    href: "/terma-dan-syarat",
-    label: "Terma dan Syarat",
-    enLabel: "Terms & Conditions",
-  },
-  {
-    href: "/polisi-privasi",
-    label: "Polisi Privasi",
-    enLabel: "Privacy Policy",
-  },
+  { href: "/polisi-penghantaran", label: "Polisi Penghantaran" },
+  { href: "/polisi-pemulangan", label: "Polisi Pemulangan & Bayaran Balik" },
+  { href: "/terma-dan-syarat", label: "Terma dan Syarat" },
+  { href: "/polisi-privasi", label: "Polisi Privasi" },
 ];
+
+const linkClass =
+  "inline-flex min-h-[44px] items-center text-white underline decoration-white/40 decoration-1 underline-offset-4 transition-colors hover:decoration-accent hover:decoration-2";
 ---
 
-<footer class="border-t border-slate-800 bg-putrajaya-navy py-12 text-sm text-slate-300 sm:py-16">
-  <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 gap-10 md:grid-cols-12 lg:gap-12">
-      <div class="md:col-span-7">
-        <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
-          Maklumat Syarikat &amp; Hubungan Rasmi
-        </p>
-        <p class="mt-2 text-lg font-extrabold tracking-tight text-white">
-          BRAINWAVE COMMUNICATIONS{" "}
-          <span class="font-semibold text-yellow-400">
-            (202203208117 / JM0967023-W)
-          </span>
-        </p>
-        <p class="mt-2 text-sm leading-relaxed text-slate-300">
-          Penerbit bersama dan pengedar rasmi buku{" "}
-          <strong class="font-semibold text-white">
-            Siapa Akan Menguasai Putrajaya?
-          </strong>{" "}
-          karya Ronifira Rejab (ISBN 978-967-5131-28-8, diterbitkan bersama
-          Prestasi Media).
-        </p>
-
-        <dl class="mt-5 grid grid-cols-1 gap-4 rounded-xl border border-slate-700 bg-slate-900/70 p-4 text-xs sm:grid-cols-2 sm:p-5">
-          <div class="sm:col-span-2">
-            <dt class="font-semibold uppercase tracking-wider text-slate-400">
-              Alamat Perniagaan
-            </dt>
-            <dd class="mt-1 text-sm font-medium leading-relaxed text-white">
-              BRAINWAVE COMMUNICATIONS (202203208117 / JM0967023-W)<br />
-              2-1B, Jalan UP1/1, Ukay Perdana, 68000 Ampang, Selangor, Malaysia.
-            </dd>
-          </div>
-
-          <div>
-            <dt class="font-semibold uppercase tracking-wider text-slate-400">
-              Telefon / WhatsApp
-            </dt>
-            <dd class="mt-1">
-              <a
-                href="tel:+60108725969"
-                class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-putrajaya-navy px-3.5 py-2 text-sm font-semibold tabular-nums text-yellow-400 transition hover:border-yellow-400 hover:bg-slate-800 hover:text-yellow-300 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-              >
-                +6010 872 5969
-              </a>
-            </dd>
-          </div>
-
-          <div>
-            <dt class="font-semibold uppercase tracking-wider text-slate-400">
-              E-mel Rasmi
-            </dt>
-            <dd class="mt-1">
-              <a
-                href="mailto:ronifira@gmail.com"
-                class="inline-flex min-h-[44px] items-center rounded-lg border border-slate-500 bg-putrajaya-navy px-3.5 py-2 text-sm font-semibold text-yellow-400 transition hover:border-yellow-400 hover:bg-slate-800 hover:text-yellow-300 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-              >
-                ronifira@gmail.com
-              </a>
-            </dd>
-          </div>
-        </dl>
-      </div>
-
-      <div class="md:col-span-5">
-        <p class="text-xs font-bold uppercase tracking-widest text-yellow-400">
-          Dokumen &amp; Polisi Rasmi
-        </p>
-        <p class="mt-2 text-sm leading-relaxed text-slate-300">
-          Rujukan rasmi syarat pembelian, jadual penghantaran pra-jualan,
-          pemulangan dan perlindungan data pelanggan:
-        </p>
-
-        <nav aria-label="Pautan Polisi dan Undang-Undang" class="mt-4">
-          <ul class="grid grid-cols-1 gap-2.5">
-            {policyLinks.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  class="flex min-h-[48px] flex-col justify-center rounded-xl border border-slate-500 bg-slate-900 px-4 py-2.5 transition hover:border-yellow-400 hover:bg-slate-800 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400"
-                >
-                  <span class="text-sm font-bold text-white">{link.label}</span>
-                  <span class="text-xs text-slate-400">{link.enLabel}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+<footer class="border-t-2 border-white bg-navy text-on-navy-muted">
+  <div
+    class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-12 sm:px-6 md:grid-cols-12 md:gap-8 lg:px-8"
+  >
+    <div class="md:col-span-5">
+      <p class="font-display text-3xl font-extrabold uppercase leading-none text-white">
+        Menguasai Putrajaya
+      </p>
+      <p class="mt-3 max-w-sm leading-relaxed">
+        Diterbitkan dan diedarkan oleh Brainwave Communications (202203208117 /
+        JM0967023-W) bersama Prestasi Media.
+      </p>
+      <address class="mt-3 not-italic leading-relaxed">
+        2-1B, Jalan UP1/1, Ukay Perdana,<br />
+        68000 Ampang, Selangor.
+      </address>
     </div>
 
-    <div class="mt-10 border-t border-slate-800 pt-6 text-center text-xs text-slate-400 sm:flex sm:items-center sm:justify-between sm:text-left">
-      <p>
-        &copy; {currentYear} BRAINWAVE COMMUNICATIONS (SSM: 202203208117 /
-        JM0967023-W). Hak Cipta Terpelihara.
-      </p>
-      <p class="mt-2 sm:mt-0">
-        Semua transaksi pembayaran dalam talian diproses dengan selamat melalui
-        CHIP Collect.
-      </p>
+    <div class="md:col-span-3">
+      <h2 class="font-display text-xl font-extrabold uppercase text-white">Hubungi</h2>
+      <ul class="mt-2">
+        <li>
+          <a href="tel:+60108725969" class={`${linkClass} tabular-nums`}>+6010 872 5969</a>
+        </li>
+        <li>
+          <a href="mailto:ronifira@gmail.com" class={linkClass}>ronifira@gmail.com</a>
+        </li>
+      </ul>
     </div>
+
+    <nav aria-label="Polisi" class="md:col-span-4">
+      <h2 class="font-display text-xl font-extrabold uppercase text-white">Polisi</h2>
+      <ul class="mt-2">
+        {
+          policyLinks.map((link) => (
+            <li>
+              <a href={link.href} class={linkClass}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="border-t border-white/20">
+    <p class="mx-auto max-w-6xl px-4 py-5 text-sm text-on-navy-faint sm:px-6 lg:px-8">
+      &copy; {currentYear} Brainwave Communications. Hak cipta terpelihara.
+    </p>
   </div>
 </footer>
