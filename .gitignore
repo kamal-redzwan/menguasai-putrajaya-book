@@ -16,3 +16,8 @@ node_modules/
 
 # macOS
 .DS_Store
+
+# taste-skill checker output (the waivers and deal history stay in git)
+.taste-skill/chrome-*
+.taste-skill/gate/
+.taste-skill/cons.txt

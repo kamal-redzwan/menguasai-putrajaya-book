@@ -1,0 +1,31 @@
+{
+ "palettes": [],
+ "types": [],
+ "dealt": [
+  "urbanist",
+  "rethink",
+  "bricolage"
+ ],
+ "moments": [
+  {
+   "id": "photo-chapters",
+   "at": "2026-11-17T09:14:33.984Z",
+   "seed": "3062b855"
+  },
+  {
+   "id": "word-highlight",
+   "at": "2026-11-17T09:14:33.984Z",
+   "seed": "3062b855"
+  },
+  {
+   "id": "pinned-chapters",
+   "at": "2026-11-17T09:39:20.861Z",
+   "seed": "f37e6809"
+  },
+  {
+   "id": "word-highlight",
+   "at": "2026-11-17T09:39:20.861Z",
+   "seed": "f37e6809"
+  }
+ ]
+}

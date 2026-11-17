@@ -1,19 +1,141 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
-import Synopsis from "../components/Synopsis.astro";
-import VideoSection from "../components/VideoSection.astro";
-import CheckoutCTA from "../components/CheckoutCTA.astro";
+import KitLayout from "../layouts/KitLayout.astro";
+import OrderSection from "../components/OrderSection.astro";
 
-const pageTitle =
-  "Siapa Akan Menguasai Putrajaya? | Rahsia, Analisis, Data dan Strategi Menjelang PRU 16";
-const pageDescription =
-  "Sebuah analisis berasaskan lensa Politik Pasca-Normal karya Ronifira Rejab. Menghimpunkan data pilihan raya, kajian lapangan dan pemerhatian strategik menjelang PRU 16.";
+const title = "Siapa Akan Menguasai Putrajaya?: buku analisis PRU 16 karya Ronifira Rejab";
+const description =
+  "Buku 430 muka surat yang membaca politik Malaysia menjelang PRU 16 melalui data pilihan raya dan kajian lapangan. Pra-jualan RM56 termasuk pos.";
+const cover = encodeURI("/COVER 16 copy 2.jpg");
+const back = encodeURI("/COVER 16 BACK copy.png");
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription} nav="home">
-  <Hero />
-  <Synopsis />
-  <VideoSection />
-  <CheckoutCTA totalQuota={200} />
-</BaseLayout>
+<KitLayout title={title} description={description} home moments={["pinned-chapters", "word-highlight"]}>
+  <style is:inline slot="head">
+    /* page CSS: only what sits inside a visual */
+    .covers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); }
+    .covers .frame { aspect-ratio: 1748 / 2480; }
+    .films { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); max-width: 760px; }
+    .films .frame { aspect-ratio: 478 / 850; }
+    .faq__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
+    @media (max-width: 1023px) { .faq__pic { margin-top: var(--s-7); } }
+    .faq__pic img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+    .films .frame { overflow: visible; background: none; }
+    .films .frame > video.frame__img { border-radius: var(--r-lg); background: #000; }
+    .films video:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+    @media (max-width: 639px) {
+      .covers { gap: var(--s-3); }
+      .films { grid-template-columns: minmax(0, 1fr); max-width: 342px; }
+    }
+  </style>
+
+  <!-- HERO: photo (dealt). The picture is a chart generated for this page: the 222 seats of the Dewan Rakyat, the 112
+       a simple majority needs in the accent. No photograph fetched, by the client's request. -->
+  <section class="hero hero--photo" data-enter data-calm="left" aria-labelledby="hero-h">
+    <img class="hero__bg" src="/img/hero-dewan-rakyat.jpg" alt="Rajah 222 kerusi Dewan Rakyat dalam bentuk separuh bulatan, 112 kerusi ditanda kuning" style="--ly-pos: 70% 60%; --ly-pos-phone: 78% 60%" fetchpriority="high" width="2400" height="1500" data-source="illustration" data-subject="Dewan Rakyat seat chart" />
+    <div class="wrap"><div class="hero-text">
+      <div class="hero__text">
+        <h1 id="hero-h">Buku: siapa akan menguasai Putrajaya?</h1>
+        <p class="hero__lead">Buku 430 muka surat karya Ronifira Rejab tentang siapa yang mampu mengumpul 112 daripada 222 kerusi pada PRU 16. Pra-jualan RM56 termasuk pos ke Semenanjung.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="#tempah">Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- split: the specs beside the book whole, front and back (object 1 of 3) -->
+  <section class="section" id="buku" aria-labelledby="buku-h">
+    <div class="wrap grid">
+      <div class="span-5">
+        <div class="section-head">
+          <h2 id="buku-h">Buku 430 muka surat. <span class="muted">Cetakan pertama dihadkan kepada 200 naskhah.</span></h2>
+        </div>
+        <ul class="rows rows--spec">
+          <li><span class="rows__name">Penulis</span><span class="rows__value">Ronifira Rejab</span></li>
+          <li><span class="rows__name">Muka surat</span><span class="rows__value">430</span></li>
+          <li><span class="rows__name">ISBN</span><span class="rows__value">978-967-5131-28-8</span></li>
+          <li><span class="rows__name">Penerbit</span><p>Brainwave Communications dan Prestasi Media</p></li>
+          <li><span class="rows__name">Penghantaran</span><span class="rows__value">Selepas cetakan selesai</span></li>
+        </ul>
+      </div>
+      <div class="span-6 start-7 covers">
+        <div class="frame frame--photo"><img class="frame__img" src={cover} alt="Kulit hadapan buku: wajah lima pemimpin politik dan bangunan Perdana Putra pada waktu malam" width="1748" height="2480" loading="lazy" data-source="client" data-subject="the book, front cover" /></div>
+        <div class="frame frame--photo"><img class="frame__img" src={back} alt="Kulit belakang buku dengan sinopsis dan butiran penerbitan" width="1748" height="2480" loading="lazy" data-source="client" data-subject="the book, back cover" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- word-highlight (dealt moment): the synopsis in one statement -->
+  <section class="section statement" id="sinopsis" data-moment="word-highlight" aria-label="Sinopsis">
+    <div class="wrap">
+      <p class="t-label">Sinopsis</p>
+      <p class="mo-wh__text">Kejatuhan Barisan Nasional pada 2018, Langkah Sheraton, pandemik COVID-19 dan beberapa kali pertukaran Perdana Menteri telah mengubah politik Malaysia. Buku ini menjelaskan mengapa <strong>formula lama</strong> tidak lagi mampu membacanya.</p>
+    </div>
+  </section>
+
+  <!-- pinned-chapters (dealt moment): three steps, each a frame from the client's own videos -->
+  <section class="section" id="kaedah" style="--h: 2" data-moment="pinned-chapters" aria-labelledby="kaedah-h">
+    <div class="wrap mo-pc__grid">
+      <div class="mo-pc__text">
+        <h2 id="kaedah-h">Cara buku ini membaca PRU 16</h2>
+        <ol class="mo-pc__steps">
+          <li class="mo-pc__step">
+            <h3>Data pilihan raya sejak PRU 14</h3>
+            <p>Keputusan, peralihan undi dan perubahan demografi pengundi dihimpun dan dibandingkan dari satu pilihan raya ke pilihan raya seterusnya.</p>
+            <figure class="mo-pc__visual"><img src="/img/bab-data.jpg" alt="Seorang lelaki berdiri di hadapan dinding skrin peta Malaysia dan carta data" width="1024" height="766" /></figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Peta kerusi dan analisis lapangan</h3>
+            <p>Kajian lapangan dan peta kawasan menunjukkan di mana sokongan berpecah, dan mengapa parti yang nampak kuat belum tentu selesa.</p>
+            <figure class="mo-pc__visual"><img src="/img/bab-peta.jpg" alt="Tangan menyusun bidak catur pada meja peta kawasan pilihan raya" width="1024" height="766" /></figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Senario menjelang PRU 16</h3>
+            <p>Melalui lensa Politik Pasca-Normal, buku ini menyusun laluan yang mungkin membawa sesebuah gabungan ke Putrajaya.</p>
+            <figure class="mo-pc__visual"><img src="/img/bab-senario.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di kerusi" width="1024" height="766" /></figure>
+          </li>
+        </ol>
+      </div>
+      <div class="mo-pc__visuals frame"></div>
+    </div>
+  </section>
+
+  <!-- brand-band (dealt rhythm): the client's two videos, played only when pressed -->
+  <section class="section ground-brand" id="video" aria-labelledby="video-h">
+    <div class="wrap grid">
+      <div class="span-5">
+        <div class="section-head">
+          <h2 id="video-h">Video sorotan buku</h2>
+          <p>Dua video pendek sebelum anda membaca: yang pertama tentang landskap politik selepas 2018, yang kedua tentang data, demografi dan tingkah laku pengundi.</p>
+        </div>
+      </div>
+      <div class="span-6 start-7 films">
+        <div class="frame frame--photo"><video class="frame__img" src={encodeURI("/WhatsApp Video 2026-10-28 at 11.43.11.mp4")} poster="/poster-video-01.jpg" controls playsinline preload="none" width="478" height="850" aria-label="Video sorotan pertama: landskap politik selepas 2018"></video></div>
+        <div class="frame frame--photo"><video class="frame__img" src={encodeURI("/WhatsApp Video 2026-10-28 at 11.44.41.mp4")} poster="/poster-video-02.jpg" controls playsinline preload="none" width="478" height="850" aria-label="Video sorotan kedua: data, demografi dan tingkah laku pengundi"></video></div>
+      </div>
+    </div>
+  </section>
+
+  <OrderSection totalQuota={200} />
+
+  <!-- faq: the questions a buyer asks before paying; every answer open -->
+  <section class="section" id="soalan" aria-labelledby="soalan-h">
+    <div class="wrap grid">
+      <div class="span-6">
+        <div class="section-head">
+          <h2 id="soalan-h">Soalan tentang tempahan buku</h2>
+          <p>Ada soalan lain? <a class="link" href="mailto:ronifira@gmail.com">E-mel kami</a> atau WhatsApp <a class="link" href="tel:+60108725969">+6010 872 5969</a>.</p>
+        </div>
+        <div class="faq">
+          <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>Selepas cetakan selesai: 3 hingga 5 hari bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.</p></div>
+          <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. RM56 ke Semenanjung (buku RM48, pos RM8) dan RM70 ke Sabah dan Sarawak (buku RM55, pos RM15).</p></div>
+          <div class="faq__item"><h3>Bagaimana saya membayar buku?</h3><p>Melalui CHIP Collect: FPX, DuitNow QR, kad kredit atau debit, dan e-dompet.</p></div>
+          <div class="faq__item"><h3>Bagaimana jika buku rosak semasa sampai?</h3><p>Hubungi kami dalam tempoh 7 hari dengan gambar kerosakan. Butirannya dalam <a class="link" href="/polisi-pemulangan">polisi pemulangan</a>.</p></div>
+        </div>
+      </div>
+      <div class="span-6 start-7">
+        <figure class="faq__pic"><img src="/img/soalan-penyampai.jpg" alt="Penyampai video buku duduk di meja dengan skrin data di belakangnya" width="1024" height="766" loading="lazy" data-source="client" data-subject="the presenter, from the client's video" /></figure>
+      </div>
+    </div>
+  </section>
+</KitLayout>

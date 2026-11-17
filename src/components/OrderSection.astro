@@ -1,0 +1,217 @@
+---
+export interface Props {
+  totalQuota?: number;
+}
+
+const { totalQuota = 200 } = Astro.props;
+const resolvedBrandId =
+  import.meta.env.PUBLIC_CHIP_BRAND_ID ||
+  import.meta.env.CHIP_BRAND_ID ||
+  "db3280df-c2eb-48e5-bdcb-b757e269de69";
+---
+
+<!-- order section (product plan): the order card beside the book (object 2 of 3). Payment goes through CHIP Collect
+     via /api/checkout; system.js checks the fields first, then the script below sends the order. -->
+<section class="section" id="tempah" aria-labelledby="tempah-h">
+  <div class="wrap grid">
+    <div class="span-6">
+      <div class="section-head">
+        <h2 id="tempah-h">Borang tempahan buku</h2>
+        <p>Harga pra-jualan untuk {totalQuota} naskhah cetakan pertama.</p>
+      </div>
+      <form
+        id="chip-checkout-form"
+        class="form order"
+        action="/api/checkout"
+        method="post"
+        data-brand-id={resolvedBrandId}
+        data-fix="{n} ruangan perlu dibetulkan."
+        novalidate
+      >
+        <fieldset class="field field--full zones">
+          <legend>Zon penghantaran</legend>
+          <label class="zone">
+            <input type="radio" name="region" value="semenanjung" data-price-rm="56" checked />
+            <span class="zone__name">Semenanjung<span class="zone__note">Buku RM48, pos RM8</span></span>
+            <span class="zone__price">RM56</span>
+          </label>
+          <label class="zone">
+            <input type="radio" name="region" value="borneo" data-price-rm="70" />
+            <span class="zone__name">Sabah dan Sarawak<span class="zone__note">Buku RM55, pos RM15</span></span>
+            <span class="zone__price">RM70</span>
+          </label>
+        </fieldset>
+
+        <div class="field">
+          <label for="full_name">Nama penerima</label>
+          <input id="full_name" name="full_name" type="text" autocomplete="name" required aria-describedby="full_name-err" />
+          <p class="field__error" id="full_name-err" hidden>Tulis nama penerima buku.</p>
+        </div>
+        <div class="field">
+          <label for="email">E-mel untuk resit</label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="email-err" />
+          <p class="field__error" id="email-err" hidden>Tulis alamat e-mel dengan @, contohnya nama@contoh.com.</p>
+        </div>
+        <div class="field">
+          <label for="phone">Telefon (WhatsApp)</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="phone-err" />
+          <p class="field__error" id="phone-err" hidden>Tulis nombor telefon untuk makluman kurier.</p>
+        </div>
+        <div class="field">
+          <label for="quantity">Bilangan naskhah</label>
+          <select id="quantity" name="quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div class="field field--full">
+          <label for="shipping_address">Alamat penghantaran</label>
+          <input id="shipping_address" name="shipping_address" type="text" autocomplete="street-address" required aria-describedby="shipping_address-err" />
+          <p class="field__error" id="shipping_address-err" hidden>Tulis alamat penuh dengan poskod dan negeri.</p>
+        </div>
+
+        <p class="order__sum"><span>Jumlah bayaran (<span id="summary-unit-price">RM56.00</span> senaskhah)</span><span class="order__total" id="summary-total-price">RM56.00</span></p>
+
+        <div class="btn-row">
+          <button class="btn btn--primary" type="submit" id="submit-payment-btn">Tempah buku</button>
+        </div>
+        <p class="form__status" role="status" data-form-status id="checkout-status"></p>
+        <p class="t-small">
+          Bayaran di halaman CHIP Collect: FPX, DuitNow QR, kad atau e-dompet. Tertakluk kepada{" "}
+          <a class="link" href="/terma-dan-syarat">terma dan syarat</a>.
+        </p>
+      </form>
+    </div>
+    <div class="span-6 start-7 order__side">
+      <div class="frame frame--photo order__pic"><img class="frame__img" src="/img/tempah-buku.jpg" alt="Buku Siapa Akan Menguasai Putrajaya? di atas meja kecil, penyampai di sebelahnya dan Putrajaya pada waktu senja di luar tingkap" width="956" height="1240" loading="lazy" data-source="client" data-subject="the book in a study, from the client's video" /></div>
+    </div>
+  </div>
+</section>
+
+<style is:inline>
+  /* page CSS: the zone choice and the cover frame (the kit has no radio card) */
+  .zones { border: 0; padding: 0; margin: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--s-5); }
+  .zones legend { grid-column: 1 / -1; padding: 0; margin-bottom: 0; font-size: var(--t-small); font-weight: 500; }
+  .zone { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); min-height: 48px;
+    padding-block: var(--s-2); border-bottom: 1px solid var(--line-strong); }
+  .zone:has(input:checked) { border-bottom: 2px solid var(--ink); }
+  .zone:has(input:checked) .zone__name { font-weight: 600; }
+  .zone input { width: 18px; height: 18px; margin: 0; accent-color: var(--ink); }
+  .zone__name { font-size: var(--t-body); font-weight: 500; }
+  .zone__note { display: block; font-size: var(--t-small); font-weight: 400; color: var(--muted); }
+  .zone__price { font-size: var(--t-lead); font-variant-numeric: tabular-nums; }
+  .order__sum { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+  .order__total { font-size: var(--t-lead); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .order__side { display: grid; }
+  .order__pic { height: 100%; min-height: 0; }
+  @media (max-width: 639px) { .zones { grid-template-columns: minmax(0, 1fr); } .order__pic { height: auto; aspect-ratio: 4 / 5; margin-top: var(--s-6); } }
+</style>
+
+<script>
+  // CHIP Collect expects unit prices in integer sen (RM56.00 = 5600).
+  interface ChipPurchaseResponse {
+    checkout_url?: string;
+    message?: string;
+  }
+
+  const form = document.querySelector<HTMLFormElement>("#chip-checkout-form");
+  const quantitySelect = document.querySelector<HTMLSelectElement>("#quantity");
+  const unitPriceEl = document.querySelector<HTMLElement>("#summary-unit-price");
+  const totalPriceEl = document.querySelector<HTMLElement>("#summary-total-price");
+  const submitBtn = document.querySelector<HTMLButtonElement>("#submit-payment-btn");
+  const statusEl = document.querySelector<HTMLElement>("#checkout-status");
+
+  const priceRM = (): number => {
+    const checked = document.querySelector<HTMLInputElement>('input[name="region"]:checked');
+    return checked ? Number(checked.dataset.priceRm || 56) : 56;
+  };
+  const quantity = (): number => (quantitySelect ? Number(quantitySelect.value || 1) : 1);
+  const rm = (n: number): string => `RM${n.toFixed(2)}`;
+
+  const updateSummary = (): void => {
+    if (unitPriceEl) unitPriceEl.textContent = rm(priceRM());
+    if (totalPriceEl) totalPriceEl.textContent = rm(priceRM() * quantity());
+  };
+  document.querySelectorAll<HTMLInputElement>('input[name="region"]').forEach((r) => r.addEventListener("change", updateSummary));
+  quantitySelect?.addEventListener("change", updateSummary);
+  updateSummary();
+
+  const say = (text: string): void => {
+    if (statusEl) statusEl.textContent = text;
+  };
+
+  form?.addEventListener("submit", async (event: SubmitEvent) => {
+    event.preventDefault();
+    // system.js marks each field that fails and says how many; nothing is sent until all pass
+    if (!form.checkValidity()) return;
+
+    const data = new FormData(form);
+    const fullName = String(data.get("full_name") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const phone = String(data.get("phone") || "").trim();
+    const address = String(data.get("shipping_address") || "").trim();
+    const region = String(data.get("region") || "semenanjung");
+    const unit = priceRM();
+    const qty = quantity();
+    const regionLabel = region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
+    const total = (unit * qty).toFixed(2);
+    const cleanAddress = address.replace(/\s+/g, " ");
+    const shortAddress = cleanAddress.slice(0, 128);
+
+    const payload = {
+      brand_id: form.dataset.brandId || "db3280df-c2eb-48e5-bdcb-b757e269de69",
+      client: {
+        email,
+        full_name: fullName,
+        phone,
+        street_address: shortAddress,
+        shipping_street_address: shortAddress,
+      },
+      purchase: {
+        currency: "MYR",
+        products: [{ name: `Siapa Akan Menguasai Putrajaya? (${regionLabel})`, price: unit * 100, quantity: qty }],
+        notes: `Nama: ${fullName} | Tel: ${phone} | E-mel: ${email} | Zon: ${regionLabel} | Kuantiti: ${qty} naskhah | Jumlah: RM${total} | Alamat: ${cleanAddress}`,
+      },
+      success_redirect: `${window.location.origin}/berjaya`,
+      failure_redirect: `${window.location.origin}/?status=gagal#tempah`,
+      success_callback: `${window.location.origin}/api/webhook`,
+    };
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.setAttribute("aria-busy", "true");
+    }
+    const wait = setTimeout(() => say("Menghubungi CHIP Collect"), 300);
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json()) as ChipPurchaseResponse;
+      clearTimeout(wait);
+      if (response.ok && result.checkout_url) {
+        say("Membawa anda ke halaman bayaran CHIP Collect");
+        window.location.href = result.checkout_url;
+        return;
+      }
+      say(`Tempahan belum dihantar: ${result.message || "halaman bayaran tidak dapat dibuka"}. Butiran anda masih di sini; cuba sekali lagi.`);
+    } catch {
+      clearTimeout(wait);
+      say("Tempahan belum dihantar: sambungan terputus. Butiran anda masih di sini; cuba sekali lagi.");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute("aria-busy");
+      }
+    }
+  });
+
+  if (new URLSearchParams(window.location.search).get("status") === "gagal") {
+    say("Bayaran tidak selesai. Cuba sekali lagi, atau hubungi kami di +6010 872 5969.");
+  }
+</script>

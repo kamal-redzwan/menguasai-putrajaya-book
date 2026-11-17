@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import KitLayout from "../layouts/KitLayout.astro";
 
 export interface Props {
   title: string;
@@ -9,65 +9,49 @@ export interface Props {
   lastUpdated?: string;
 }
 
-const {
-  title,
-  enTitle,
-  description,
-  currentPath,
-  lastUpdated = "15 November 2026",
-} = Astro.props;
-
-const pageTitle = `${title} (${enTitle}) | Siapa Akan Menguasai Putrajaya?`;
+const { title, enTitle, description, currentPath, lastUpdated = "15 November 2026" } = Astro.props;
 
 const policyNav = [
   { href: "/polisi-penghantaran", label: "Penghantaran" },
   { href: "/polisi-pemulangan", label: "Pemulangan" },
-  { href: "/terma-dan-syarat", label: "Terma & Syarat" },
+  { href: "/terma-dan-syarat", label: "Terma dan syarat" },
   { href: "/polisi-privasi", label: "Privasi" },
 ];
 ---
 
-<BaseLayout title={pageTitle} description={description} mainClass="surface-paper bg-paper text-navy">
-  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-    <nav aria-label="Dokumen polisi" class="border-b-2 border-navy">
-      <ul class="-mb-[2px] flex flex-wrap gap-x-1">
-        {
-          policyNav.map((item) => {
-            const isCurrent = item.href === currentPath;
-            return (
-              <li>
-                <a
-                  href={item.href}
-                  aria-current={isCurrent ? "page" : undefined}
-                  class={`inline-flex min-h-[44px] items-center border-b-4 px-2 font-display text-lg font-semibold uppercase transition-colors ${
-                    isCurrent
-                      ? "border-navy text-navy"
-                      : "border-transparent text-on-paper-muted hover:border-on-paper-rule hover:text-navy"
-                  }`}
-                >
-                  {item.label}
-                </a>
-              </li>
-            );
-          })
-        }
-      </ul>
-    </nav>
-
-    <article class="mt-10">
-      <header>
-        <h1 class="font-display text-[clamp(2.75rem,8vw,4.5rem)] font-extrabold uppercase leading-[0.92]">
-          {title}
-        </h1>
-        <p class="mt-3 text-sm text-on-paper-muted">
-          {enTitle}. Kemas kini terakhir {lastUpdated}. Dikeluarkan oleh
-          Brainwave Communications (202203208117 / JM0967023-W).
-        </p>
-      </header>
-
-      <div class="doc mt-10 font-serif text-lg leading-[1.7]">
-        <slot />
+<KitLayout title={`${title}: Siapa Akan Menguasai Putrajaya?`} description={description}>
+  <style is:inline slot="head">
+    /* a legal document is read top to bottom, not screen by screen: its one section grows with its text */
+    main > section.doc-page { height: auto; min-height: 100svh; }
+    main > section.doc-page > .wrap { height: auto; }
+    .doc-nav { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin-bottom: var(--s-7); }
+    .doc-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+    .doc-nav a[aria-current="page"] { font-weight: 600; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+    .doc section + section { margin-top: var(--s-7); }
+    .doc h2 { font-size: var(--t-card, 22px); line-height: 1.3; margin-bottom: var(--s-3); }
+    .doc p, .doc ul { line-height: 1.7; }
+    .doc p + p, .doc p + ul, .doc ul + p { margin-top: var(--s-3); }
+    .doc ul { padding-left: 1.25em; list-style: disc; }
+    .doc li + li { margin-top: var(--s-2); }
+    .doc dl { display: grid; gap: var(--s-4); margin-top: var(--s-4); }
+    .doc dl > div { border-top: 1px solid var(--line); padding-top: var(--s-3); }
+    .doc dt { font-weight: 500; }
+    .doc dd { margin: 0; }
+  </style>
+  <section class="section doc-page" aria-labelledby="doc-h">
+    <div class="wrap">
+      <nav class="doc-nav" aria-label="Dokumen polisi">
+        {policyNav.map((item) => (
+          <a class="link" href={item.href} aria-current={item.href === currentPath ? "page" : undefined}>{item.label}</a>
+        ))}
+      </nav>
+      <div class="section-head measure">
+        <h1 id="doc-h">{title}</h1>
+        <p class="muted">{enTitle}. Kemas kini {lastUpdated}. Dikeluarkan oleh Brainwave Communications (202203208117 / JM0967023-W).</p>
       </div>
-    </article>
-  </div>
-</BaseLayout>
+      <article class="doc measure">
+        <slot />
+      </article>
+    </div>
+  </section>
+</KitLayout>

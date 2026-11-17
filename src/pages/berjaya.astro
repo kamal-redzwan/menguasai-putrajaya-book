@@ -1,39 +1,26 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import KitLayout from "../layouts/KitLayout.astro";
+const cover = encodeURI("/COVER 16 copy 2.jpg");
 ---
 
-<BaseLayout
-  title="Tempahan Diterima | Siapa Akan Menguasai Putrajaya?"
-  description="Pengesahan tempahan buku Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab."
-  mainClass="surface-paper bg-paper text-navy"
->
-  <section
-    aria-labelledby="confirmation-heading"
-    class="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-24 lg:px-8"
-  >
-    <h1
-      id="confirmation-heading"
-      class="font-display text-[clamp(3rem,9vw,6rem)] font-extrabold uppercase leading-[0.9]"
-    >
-      Terima kasih. Tempahan anda diterima.
-    </h1>
-
-    <div class="mt-8 max-w-prose space-y-4 border-t-4 border-navy pt-5 font-serif text-xl leading-relaxed">
-      <p>
-        Pembayaran anda telah diproses melalui CHIP Collect. Resit rasmi dan
-        butiran tempahan dihantar ke e-mel anda.
-      </p>
-      <p>
-        Naskhah anda akan dihantar selepas cetakan selesai: 3 hingga 5 hari
-        bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.
-      </p>
+<KitLayout title="Tempahan diterima: Siapa Akan Menguasai Putrajaya?" description="Pengesahan tempahan buku Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab.">
+  <section class="section" aria-labelledby="ok-h">
+    <div class="wrap grid">
+      <div class="span-7">
+        <div class="section-head">
+          <h1 id="ok-h">Terima kasih. Tempahan anda diterima.</h1>
+          <p class="t-lead">Resit dan butiran tempahan dihantar ke e-mel anda oleh CHIP Collect.</p>
+        </div>
+        <ul class="rows rows--spec">
+          <li><span class="rows__name">Semenanjung</span><span class="rows__value">3 hingga 5 hari bekerja selepas cetakan</span></li>
+          <li><span class="rows__name">Sabah dan Sarawak</span><span class="rows__value">5 hingga 7 hari bekerja selepas cetakan</span></li>
+          <li><span class="rows__name">Nombor penjejakan</span><span class="rows__value">Melalui WhatsApp atau e-mel</span></li>
+        </ul>
+        <div class="btn-row" style="margin-top: var(--s-7)"><a class="btn btn--secondary" href="/">Kembali ke laman utama</a></div>
+      </div>
+      <div class="span-4 start-9">
+        <div class="frame frame--photo" style="aspect-ratio: 1748 / 2480"><img class="frame__img" src={cover} alt="Kulit hadapan buku Siapa Akan Menguasai Putrajaya?" width="1748" height="2480" /></div>
+      </div>
     </div>
-
-    <a
-      href="/"
-      class="mt-10 inline-flex min-h-[56px] items-center justify-center bg-navy px-8 font-display text-2xl font-extrabold uppercase text-white transition-colors hover:bg-accent hover:text-navy active:translate-y-px"
-    >
-      Kembali ke laman utama
-    </a>
   </section>
-</BaseLayout>
+</KitLayout>

@@ -1,0 +1,467 @@
+{
+ "start": "2026-11-17T09:14:17.932Z",
+ "round": 3,
+ "idle": 0,
+ "errors": 0,
+ "status": "open",
+ "history": [
+  {
+   "at": "2026-11-17T10:03:15.148Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 4,
+   "round": 1,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-17T10:06:47.242Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 3,
+   "round": 2,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-17T10:09:09.172Z",
+   "mode": "manual",
+   "status": "open",
+   "fails": 1,
+   "round": 3,
+   "reused": false,
+   "stopHookActive": false
+  }
+ ],
+ "max": 3,
+ "marker": {
+  "page": "dist/client/index.html",
+  "url": null,
+  "root": "dist/client",
+  "kind": "product",
+  "category": "buku analisis politik",
+  "primary": "Tempah buku",
+  "rounds": 3,
+  "start": "2026-11-17T09:14:17.932Z",
+  "by": "gate.mjs --start"
+ },
+ "manual": true,
+ "roundKey": "8a87986b94ac82bc:835a0436",
+ "roundFree": false,
+ "idleFree": false,
+ "blockKey": null,
+ "fp": "8a87986b94ac82bc",
+ "page": "dist/client/index.html",
+ "found": {
+  "fails": [
+   {
+    "check": "product-shown",
+    "where": "main#top > section.hero.hero--photo > img.hero__bg \"img: Rajah 222 kerusi Dewan Rakyat dalam\"",
+    "msg": "the hero's product is drawn 333 x 333px, 26% of the 1280px content width at 1440px (its img is 1440px wide): a product page shows the product at 80% of the content width or more (under 60% FAILs)",
+    "fix": "make the product the hero: the picture across the full content width (a stage as wide as the container, the product filling it, not a rounded box with the product at its middle); a render's still cropped to the product (data-product-fill up to 1.2, a wide view such as side), or the client's photograph at full width",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "product-shown"
+    ],
+    "wheres": [
+     "main#top > section.hero.hero--photo > img.hero__bg \"img: Rajah 222 kerusi Dewan Rakyat dalam\""
+    ]
+   },
+   {
+    "check": "postcode",
+    "where": "div.closing__links > div.grid > div.span-2.footer__col:nth-of-type(5) > address.footer__addr \"68000 Ampang\"",
+    "msg": "a postcode with its town: \"68000 Ampang\"; with the street it points at one building, which the brief does not give",
+    "fix": "drop the postcode: the street and the district say where it is (copy.md, Address)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "postcode"
+    ],
+    "wheres": [
+     "div.closing__links > div.grid > div.span-2.footer__col:nth-of-type(5) > address.footer__addr \"68000 Ampang\""
+    ]
+   },
+   {
+    "check": "phone-number",
+    "where": "div.wrap.grid > div.span-6:nth-of-type(1) > div.section-head > p \"+6010 872 5969\"",
+    "msg": "a phone number in international format: \"+6010 872 5969\"; a visitor can dial it and reach a stranger (and 3 more like it: div.grid > div.span-2.footer__col:nth-of-type(5) > ul > li:nth-of-type(1), div.span-6:nth-of-type(1) > div.section-head > p > a.link:nth-of-type(2), div.span-2.footer__col:nth-of-type(5) > ul > li:nth-of-type(1) > a)",
+    "fix": "drop the number and its tel: link (a \"Request a call\" form may stand in), unless the brief gives the number",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "phone-number"
+    ],
+    "wheres": [
+     "div.wrap.grid > div.span-6:nth-of-type(1) > div.section-head > p \"+6010 872 5969\""
+    ]
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#tempah / section#soalan",
+    "msg": "241px between these sections, +70% against the median 142px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "section-gaps"
+    ],
+    "wheres": [
+     "section#tempah / section#soalan"
+    ]
+   }
+  ],
+  "warns": [
+   {
+    "check": "scroll-reveal",
+    "where": "section#sinopsis > div.wrap > p.mo-wh__text \"Kejatuhan Barisan Nasional pada 2018, La\"",
+    "msg": "starts \"color\" (0.2 s) the moment it is scrolled into view (an IntersectionObserver) on span.mo-w:nth-of-type(1) (inside a dealt moment's section, [data-moment]: an enter moment is expected on every kind; its still is judged under reduced motion)",
+    "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "scroll-reveal",
+    "where": "section#kaedah \"Cara buku ini membaca PRU 16 Data piliha\"",
+    "msg": "starts \"border-left-color\" (0.3 s) the moment it is scrolled into view (an IntersectionObserver) on li.mo-pc__step:nth-of-type(1) (inside a dealt moment's section, [data-moment]: an enter moment is expected on every kind; its still is judged under reduced motion)",
+    "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "pinned",
+    "where": "section#kaedah > div.wrap.mo-pc__grid \"Cara buku ini membaca PRU 16 Data piliha\"",
+    "msg": "held on screen for 1 screen of scroll (position: sticky) while the page moves on (inside a dealt moment's section, [data-moment]: expected on every kind, two moments at most, house rule; its still is judged under reduced motion)",
+    "fix": "let the section scroll with the page",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cta",
+    "where": "section#kaedah \"Cara buku ini membaca PRU 16\"",
+    "msg": "a section over 1.5 screens long with no link or button in it",
+    "fix": "add the action: a button in the hero, one on every priced item, one in the closing section",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "main#top > section.hero.hero--photo / section#buku",
+    "msg": "117px between these sections, -59% against the median 287px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#tempah / section#soalan",
+    "msg": "194px between these sections, -32% against the median 287px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "photo-set",
+    "where": "div.wrap.grid > div.span-6.start-7 > div.frame.frame--photo:nth-of-type(1) > img.frame__img \"COVER 16 copy 2.jpg\"",
+    "msg": "7 photographs in more than one look: saturation from 0.20 to 0.56; warm and cool photographs mixed (b* -6 to +8); the odd one out is COVER 16 copy 2.jpg",
+    "fix": "grade the photographs to one look (light, colour, warmth), or replace the odd one out",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "nav-labels",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(3) > a.nav__link \"Kaedah\"",
+    "msg": "\"Kaedah\" opens a section headed \"Cara buku ini membaca PRU 16\"",
+    "fix": "name each nav link after the heading of the section it opens",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "label-centre",
+    "where": "header.nav.nav--split > div.wrap.nav__bar > div.nav__actions > a.btn.btn--primary \"Tempah buku\"",
+    "msg": "its label sits 18px off-centre (25px of room at the left, 43px at the right) (and 1 more like it: \"Tempah buku\")",
+    "fix": "centre the label in its button, or fill the empty side with an icon",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "copy-length",
+    "where": "h2#buku-h \"Buku 430 muka surat. Cetakan pertama dih\"",
+    "msg": "a section heading of 10 words on 4 lines at 48px: a paragraph set in display type",
+    "fix": "cut the heading to one short line (2 to 12 words) and move the rest into the text under it",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "nav-current",
+    "where": "header.nav.nav--split",
+    "msg": "the nav stays on screen with 4 links to the page's sections, but never marks the one you are in (no link changes as the page scrolls)",
+    "fix": "mark the link of the section on screen (a colour, a weight or a line under it) as the visitor scrolls",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "grounds",
+    "where": "main#top > section.hero.hero--photo \"Buku: siapa akan menguasai Putrajaya? Bu\"",
+    "msg": "4 flat grounds across the page (#1b1b1b section, #f4f1ea section x5, #facc15 section, #09111e footer): three at most (the base, a surface, an inverse)",
+    "fix": "three flat grounds at most (the base, one surface, one inverse): lay the other bands on one of them",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "skip-link",
+    "where": "header.nav.nav--split > div.wrap.nav__bar > a.skip-link:nth-of-type(1) \"Langkau ke kandungan\"",
+    "msg": "the first Tab stop is \"Langkau ke kandungan\", not a skip link: a keyboard user tabs through the whole nav on every visit",
+    "fix": "add the starter's skip link as the header's first child: <a class=\"skip-link\" href=\"#top\">Skip to content</a>",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "action-repeat",
+    "where": "header.nav.nav--split > div.wrap.nav__bar > div.nav__actions > a.btn.btn--primary \"tempah buku\"",
+    "msg": "\"tempah buku\" shows 2 times on the first screen at 1440px (nav, hero): the nav's button and the hero's; nothing else on the screen may repeat it",
+    "fix": "show the action once a screen besides the nav's button: the hero's, the close's or the phone bar's, never all at once",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-air",
+    "where": "section#video \"Video sorotan bukuDua video pendek sebel\"",
+    "msg": "the content fills 54.5% of the section's height (491 of 900px): 55% or more (40% WARN) (SR-3)",
+    "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "container-edges",
+    "where": "div.wrap.mo-pc__grid > div.mo-pc__text > ol.mo-pc__steps > li.mo-pc__step:nth-of-type(1) \"Data pilihan raya sejak PRU 14Keputusan,\"",
+    "msg": "3 text blocks start on a left line at x 106, 26px from the container's left: text starts on the container's left, or on one split line (x 623, 732, 841) (also \"Peta kerusi dan analisis lapanga\", \"Senario menjelang PRU 16Melalui \") (it is in a scroll scene: told as a WARN) (SR-6)",
+    "fix": "start the text on the container's left, or on the one split line every split shares",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "nav",
+    "where": "header.nav.nav--split > div.wrap.nav__bar > button.nav__toggle",
+    "msg": "the nav is lopsided: its last item ends 13px inside the content's edge (366px), while its first starts on the other edge",
+    "fix": "start the nav's first item and end its last on the content's two edges",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "tap-size",
+    "where": "header.nav.nav--split > div.wrap.nav__bar > a.nav__logo \"Menguasai Putrajaya\"",
+    "msg": "a 20x44px tap target: under the 44px a phone needs",
+    "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box",
+    "widths": [
+     390,
+     320
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "no-visual",
+    "where": "section#soalan \"Soalan tentang tempahan buku\"",
+    "msg": "pictures, effects and mocks cover 21% of this section; a feature section needs a visual (about 25% or more)",
+    "fix": "give the section a visual: a UI fragment on a ground, real icons, or a photograph that fits",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cta",
+    "where": "section#video \"Video sorotan buku\"",
+    "msg": "a section over 1.5 screens long with no link or button in it",
+    "fix": "add the action: a button in the hero, one on every priced item, one in the closing section",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#kaedah / section#video",
+    "msg": "uneven space at the edge of a band: 48px outside its edge, 94px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#video / section#tempah",
+    "msg": "uneven space at the edge of a band: 94px outside its edge, 48px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#soalan / footer#contact",
+    "msg": "uneven space at the edge of a band: 48px outside its edge, 94px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "photo-set",
+    "where": "main#top > section.hero.hero--photo > img.hero__bg \"hero-dewan-rakyat.jpg\"",
+    "msg": "8 photographs in more than one look: saturation from 0.17 to 0.53; warm and cool photographs mixed (b* -6 to +10); the odd one out is hero-dewan-rakyat.jpg",
+    "fix": "grade the photographs to one look (light, colour, warmth), or replace the odd one out",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "orphan",
+    "where": "div.wrap.grid > div.span-5 > ul.rows.rows--spec > li:nth-of-type(3) \"ISBN 978-967-5131-28-8\"",
+    "msg": "its last line holds only \"978-967-5131-28-8\"",
+    "fix": "rebalance the text (text-wrap: pretty, or a shorter line) so the last line holds more than one short word",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "photo-weight",
+    "where": "div.wrap.grid > div.span-6.start-7 > div.frame.frame--photo:nth-of-type(2) > img.frame__img \"COVER%2016%20BACK%20copy.png\"",
+    "msg": "2 photographs are 3x or more wider than drawn on the phone, with no srcset: COVER%2016%20BACK%20copy.png is 1748px (659 KB) for a 165px frame; on a phone it arrives late and its frame shows only its ground until then",
+    "fix": "give each photograph srcset and sizes (a 800px and a 1600px file), or a smaller file: the frame never shows empty",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   }
+  ],
+  "crashed": [],
+  "seconds": {
+   "consistency": 124,
+   "layout": 4
+  }
+ },
+ "open": [
+  {
+   "check": "section-gaps",
+   "where": "section#tempah / section#soalan",
+   "msg": "241px between these sections, +70% against the median 142px",
+   "fix": "use one gap between sections (all within 25% of each other)",
+   "widths": [
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "section-gaps"
+   ],
+   "wheres": [
+    "section#tempah / section#soalan"
+   ]
+  }
+ ],
+ "waived": [
+  {
+   "check": "product-shown",
+   "where": "main#top > section.hero.hero--photo > img.hero__bg \"img: Rajah 222 kerusi Dewan Rakyat dalam\"",
+   "msg": "the hero's product is drawn 333 x 333px, 26% of the 1280px content width at 1440px (its img is 1440px wide): a product page shows the product at 80% of the content width or more (under 60% FAILs)",
+   "fix": "make the product the hero: the picture across the full content width (a stage as wide as the container, the product filling it, not a rounded box with the product at its middle); a render's still cropped to the product (data-product-fill up to 1.2, a wide view such as side), or the client's photograph at full width",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "product-shown"
+   ],
+   "wheres": [
+    "main#top > section.hero.hero--photo > img.hero__bg \"img: Rajah 222 kerusi Dewan Rakyat dalam\""
+   ],
+   "reason": "The client asked for no photographs and own generated images; the hero is a generated seat chart of the book's question (112 of 222). The book itself is shown whole in #buku and in the order section."
+  },
+  {
+   "check": "postcode",
+   "where": "div.closing__links > div.grid > div.span-2.footer__col:nth-of-type(5) > address.footer__addr \"68000 Ampang\"",
+   "msg": "a postcode with its town: \"68000 Ampang\"; with the street it points at one building, which the brief does not give",
+   "fix": "drop the postcode: the street and the district say where it is (copy.md, Address)",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "postcode"
+   ],
+   "wheres": [
+    "div.closing__links > div.grid > div.span-2.footer__col:nth-of-type(5) > address.footer__addr \"68000 Ampang\""
+   ],
+   "reason": "CHIP Collect card-payment activation requires the registered business address in full (SSM details), supplied by the client."
+  },
+  {
+   "check": "phone-number",
+   "where": "div.wrap.grid > div.span-6:nth-of-type(1) > div.section-head > p \"+6010 872 5969\"",
+   "msg": "a phone number in international format: \"+6010 872 5969\"; a visitor can dial it and reach a stranger (and 3 more like it: div.grid > div.span-2.footer__col:nth-of-type(5) > ul > li:nth-of-type(1), div.span-6:nth-of-type(1) > div.section-head > p > a.link:nth-of-type(2), div.span-2.footer__col:nth-of-type(5) > ul > li:nth-of-type(1) > a)",
+   "fix": "drop the number and its tel: link (a \"Request a call\" form may stand in), unless the brief gives the number",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "phone-number"
+   ],
+   "wheres": [
+    "div.wrap.grid > div.span-6:nth-of-type(1) > div.section-head > p \"+6010 872 5969\""
+   ],
+   "reason": "The client supplied this number. CHIP Collect card-payment activation requires a reachable business phone on the site, and the brief asks for it."
+  }
+ ],
+ "warnCount": 26,
+ "at": "2026-11-17T10:09:09.172Z",
+ "openTold": true
+}

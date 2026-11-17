@@ -1,0 +1,11 @@
+{
+ "page": "dist/client/index.html",
+ "url": null,
+ "root": "dist/client",
+ "kind": "product",
+ "category": "buku analisis politik",
+ "primary": "Tempah buku",
+ "rounds": 3,
+ "start": "2026-11-17T09:14:17.932Z",
+ "by": "gate.mjs --start"
+}

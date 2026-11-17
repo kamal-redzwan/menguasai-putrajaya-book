@@ -1,43 +1,52 @@
 # DESIGN.md: Siapa Akan Menguasai Putrajaya?
 
+Built on **tasteskill 2.5.1** (MIT, github.com/Leonxlnx/taste-skill). Its kit (system.css, system.js, motion,
+layout, the two dealt moments) is copied as plain files into `public/assets` and is never edited. The skill's
+scripts were run from a local checkout; they are not committed.
+
 ## Design Read
-Reading this as: a single-title political book sales page for Malaysian readers, in a campaign-poster / newspaper front-page language taken from the book jacket, dial `ENERGY 3 / RHYTHM 3 / MOTION 1`.
+Reading this as: a product page for one printed political book, sold to Malaysian readers before PRU 16, in
+taste-skill's quiet company-site language with the book jacket's colours, dial `ENERGY 2 / RHYTHM 3 / MOTION 2`.
 
-## Dials
-- **ENERGY 3 (Bold):** the H1 is set like an election poster: condensed, uppercase, up to 116px, with one yellow word echoing the cover.
-- **RHYTHM 3 (Varied):** surfaces alternate between night navy (cover, videos, footer) and printed paper (synopsis, order, policies), and each section has its own composition: stacked poster hero with a fact strip, sticky heading beside long serif prose, staggered pair of portrait videos, split copy and order form.
-- **MOTION 1 (Hover only):** colour changes on hover and a 1px press on buttons. The two videos play when scrolled into view and pause when they leave; both have play/pause and sound buttons, and nothing plays under `prefers-reduced-motion`.
+## The deal (dealt by the skill's scripts, not chosen by taste)
+- **Kind:** product (a physical book sold online), `site-kind other`: flat grounds, no effects.
+- **Hero:** `photo` (`deal.mjs --type product`). With no photographs allowed (the owner's request), the picture
+  is a generated chart: the 222 seats of the Dewan Rakyat with the 112 a simple majority needs in yellow. That
+  number is the book's question.
+- **Nav** `nav-split` · **close** `close-photo`, turned into close-word's head row because the page has no
+  photographs (sections.md section 2) · **footer** `footer-dark` · **rhythm** `brand-band` (the yellow video
+  section) · **buttons** `pill` · **mark** `stack`.
+- **Moments:** `word-highlight` (the synopsis as one statement) and `pinned-chapters` (how the book reads PRU 16,
+  three steps). `photo-chapters` was dealt first and dealt again because it needs large photographs.
 
-## Tokens (`tailwind.config.mjs`)
+## Tokens (`start.mjs brand`, the jacket's own colours)
 | Token | Value | Use |
 |---|---|---|
-| `navy` | `#09111e` | Night surface, and ink on paper. Sampled from the jacket. |
-| `paper` | `#F4F1EA` | Printed-page surface for reading and ordering. |
-| `accent` | `#FACC15` | Jacket yellow. Only for: the word "Menguasai" in the H1, buy buttons, the selected delivery zone, focus rings on navy. |
-| `on-navy-muted` / `on-navy-faint` | `#cbd5e1` / `#9aa3b2` | Secondary text on navy. |
-| `on-paper-muted` / `on-paper-rule` | `#4b5563` / `#7c8392` | Secondary text and inactive tab rules on paper. |
+| `--p-bg` | `#f4f1ea` | Page ground (paper) |
+| `--p-ink` / `--p-action` | `#09111e` | Text, primary button (jacket navy) |
+| `--p-accent` | `#facc15` | Jacket yellow: the brand band, the primary on the dark footer, the word "formula lama" |
+| inverse | `#09111e` ground | The hero chart and the dark footer |
 
-Radius is 0 everywhere (`borderRadius` is overridden in the Tailwind config).
+Radius `soft`. Type: Urbanist (the first pairing `start.mjs` dealt), self-hosted with `@fontsource-variable/urbanist`.
 
-## Verified contrast (WCAG AA)
-- White on navy 18.91:1; `#cbd5e1` on navy 12.74:1; `#9aa3b2` on navy 7.43:1
-- Yellow on navy 12.35:1; navy on yellow 12.35:1
-- Navy on paper 16.76:1; `#4b5563` on paper 6.70:1; `#4b5563` on white 7.56:1
-- Error text `#991b1b` on `#fef2f2` passes 4.5:1 (about 8:1)
-- Yellow on paper is 1.36:1, so yellow never carries text or focus on paper; `.surface-paper` switches the focus ring to navy.
+## Pictures (no fetched photographs, by request)
+| File | What it is |
+|---|---|
+| `img/hero-dewan-rakyat.jpg` | Generated in Python: the 222-seat hemicycle, 112 seats in yellow |
+| `img/buku-kulit-depan-belakang.jpg` | Generated: the client's back and front cover side by side on navy (nav panel card) |
+| `COVER 16 copy 2.jpg`, `COVER 16 BACK copy.png` | The client's cover files (the book section) |
+| `img/bab-*.jpg`, `img/tempah-buku.jpg`, `img/soalan-penyampai.jpg` | Frames cut from the client's two videos, above the burned-in subtitles |
+| `poster-video-0*.jpg` | First frames of the client's videos (posters) |
 
-## Typography (self-hosted via `@fontsource`, no third-party font request)
-- **Barlow Condensed 600/800**: headings, prices, buttons. Closest open match to the jacket's condensed title type.
-- **Newsreader 400/600**: synopsis and policy text. A reading serif for long Bahasa Melayu prose; it makes those sections feel like printed pages.
-- **Barlow 400/500/700**: form, labels, captions. Same family as the display face, so UI text sits quietly beside the headlines.
+The videos are 478px wide, so the frames are upscaled 2x and look soft at full size. A real photo shoot of
+the book would replace them (see the follow-up report).
 
-## Identity motif
-Heavy rules (2px/4px) and chapter numerals (01, 02, 03) in the margin, like a newspaper or ballot sheet. These replace the small yellow labels and bordered cards the previous version used. The numerals are `aria-hidden` because the headings carry the meaning.
+## Decisions that break a taste-skill rule, on purpose (waived in `.taste-skill/waivers.json`)
+- **Phone number, full address with postcode, SSM number:** taste-skill rule 9 forbids them. CHIP Collect
+  card-payment activation needs them, and the owner supplied them.
+- **Hero product size:** the checker wants the book across 80% of the hero. The owner asked for no
+  photographs; the book is shown whole in the book section instead.
 
-## One-line decisions (R-31)
-- **Why paper sections?** Reading and ordering are calm tasks; dark surfaces stay for the poster and video moments.
-- **Why one boxed element?** The order form is the only bordered box, so the eye finds the place to act.
-- **Why no stock bar?** There is no live order count; the 200-copy limit is stated as text instead.
-- **Why a fact strip under the hero?** Page count, ISBN, publisher and print run are reference facts, so they sit in one row instead of four cards.
-- **Why posters on the videos?** Frames extracted from the videos themselves (`public/poster-video-0*.jpg`) so the slot is not black while the 8MB files load.
-- **Why a white offset block behind the cover?** It lifts the dark jacket off the dark page without a blur shadow.
+## Policy pages
+Legal text reads top to bottom, so the policy pages' one section grows with its text (page CSS
+`section.doc-page`) instead of the kit's one-screen sections.

@@ -1,0 +1,17 @@
+[
+ {
+  "check": "phone-number",
+  "target": "div.span-6:nth-of-type(1) > div.section-head > p",
+  "reason": "The client supplied this number. CHIP Collect card-payment activation requires a reachable business phone on the site, and the brief asks for it."
+ },
+ {
+  "check": "postcode",
+  "target": "address.footer__addr",
+  "reason": "CHIP Collect card-payment activation requires the registered business address in full (SSM details), supplied by the client."
+ },
+ {
+  "check": "product-shown",
+  "target": "img.hero__bg",
+  "reason": "The client asked for no photographs and own generated images; the hero is a generated seat chart of the book's question (112 of 222). The book itself is shown whole in #buku and in the order section."
+ }
+]
