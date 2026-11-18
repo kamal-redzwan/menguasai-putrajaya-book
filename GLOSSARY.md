@@ -22,8 +22,17 @@ Buku Novel Kanak-kanak, Buku Tokoh-tokoh and Buku Ilmiah.
 _Avoid_: Genre, collection, tag
 
 **Upcoming Category**:
-A Category with no Book on sale yet, shown to readers as "Akan datang".
+A Category with no Book that is Pre-order or On sale, shown to readers as "Akan datang".
 _Avoid_: Empty category, coming soon page
+
+**Availability**:
+Whether a Book can be ordered: Pre-order (ordered now, sent after printing), On sale (in stock), or Akan datang
+(announced, not yet orderable).
+_Avoid_: Status (that word means draft or published in the CMS), stock
+
+**Featured Book**:
+A Book the owner has chosen to show on the homepage.
+_Avoid_: Highlight, pick, bestseller
 
 **Book Page**:
 The page for one Book, where a reader learns about it and places an Order.

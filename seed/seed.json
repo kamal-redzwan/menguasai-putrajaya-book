@@ -1,0 +1,82 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Brainwave Communications bookstore",
+    "description": "Books and their Categories. Apply to a running site with: npm run emdash:sync",
+    "author": "Brainwave Communications"
+  },
+  "settings": {
+    "title": "Brainwave Communications Bookstore"
+  },
+  "collections": [
+    {
+      "slug": "books",
+      "label": "Books",
+      "labelSingular": "Book",
+      "supports": ["drafts", "revisions", "search"],
+      "fields": [
+        { "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },
+        { "slug": "author", "label": "Author", "type": "string", "required": true, "searchable": true },
+        { "slug": "cover", "label": "Cover", "type": "image", "required": true },
+        {
+          "slug": "availability",
+          "label": "Status",
+          "type": "select",
+          "required": true,
+          "validation": { "options": ["Pre-order", "On sale", "Akan datang"] }
+        },
+        { "slug": "featured", "label": "Featured on homepage", "type": "boolean" },
+        { "slug": "price_semenanjung", "label": "Price, Semenanjung (RM, incl. postage)", "type": "number", "required": true },
+        { "slug": "price_sabah_sarawak", "label": "Price, Sabah & Sarawak (RM, incl. postage)", "type": "number", "required": true },
+        { "slug": "isbn", "label": "ISBN", "type": "string" },
+        { "slug": "pages", "label": "Page count", "type": "integer" },
+        { "slug": "synopsis", "label": "Short synopsis", "type": "text", "searchable": true }
+      ]
+    }
+  ],
+  "taxonomies": [
+    {
+      "name": "category",
+      "label": "Categories",
+      "labelSingular": "Category",
+      "hierarchical": true,
+      "collections": ["books"],
+      "terms": [
+        { "slug": "umum-politik", "label": "Umum Politik" },
+        { "slug": "umum-motivasi", "label": "Umum Motivasi" },
+        { "slug": "buku-novel-remaja", "label": "Buku Novel Remaja" },
+        { "slug": "buku-novel-kanak-kanak", "label": "Buku Novel Kanak-kanak" },
+        { "slug": "buku-tokoh-tokoh", "label": "Buku Tokoh-tokoh" },
+        { "slug": "buku-ilmiah", "label": "Buku Ilmiah" }
+      ]
+    }
+  ],
+  "content": {
+    "books": [
+      {
+        "id": "book-menguasai-putrajaya",
+        "slug": "menguasai-putrajaya",
+        "status": "published",
+        "data": {
+          "title": "Siapa Akan Menguasai Putrajaya?",
+          "author": "Ronifira Rejab",
+          "cover": {
+            "$media": {
+              "file": "public/COVER 16 copy 2.jpg",
+              "alt": "Kulit hadapan buku Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab"
+            }
+          },
+          "availability": "Pre-order",
+          "featured": true,
+          "price_semenanjung": 56,
+          "price_sabah_sarawak": 70,
+          "isbn": "978-967-5131-28-8",
+          "pages": 430,
+          "synopsis": "Rahsia, analisis, data dan strategi menjelang PRU 16. Sebuah analisis berasaskan lensa Politik Pasca-Normal yang menjelaskan mengapa formula politik lama tidak lagi mampu membaca realiti Malaysia."
+        },
+        "taxonomies": { "category": ["umum-politik"] }
+      }
+    ]
+  }
+}

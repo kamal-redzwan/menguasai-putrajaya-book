@@ -5,6 +5,28 @@
 
 import type { BylineSummary, ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
+export interface Book {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  author: string;
+  cover: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  availability: "Pre-order" | "On sale" | "Akan datang";
+  featured?: boolean;
+  price_semenanjung: number;
+  price_sabah_sarawak: number;
+  isbn?: string;
+  pages?: number;
+  synopsis?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Page {
   id: string;
   slug: string | null;
@@ -37,6 +59,7 @@ export interface Post {
 
 declare module "emdash" {
   interface EmDashCollections {
+    books: Book;
     pages: Page;
     posts: Post;
   }
