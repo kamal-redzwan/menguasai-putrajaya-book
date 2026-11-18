@@ -25,9 +25,10 @@ const back = encodeURI("/COVER 16 BACK copy.png");
     .hero-book__by strong { color: var(--ink); font-weight: 600; }
     .hero-book__prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); margin: var(--s-7) 0; padding: var(--s-5) 0;
       border-block: 1px solid var(--line-strong); }
+    .hero-book__prices > div { display: flex; flex-direction: column; }
     .hero-book__prices dt { font-size: var(--t-small); color: var(--muted); }
     .hero-book__prices dt span { display: block; }
-    .hero-book__prices dd { margin: var(--s-2) 0 0; font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+    .hero-book__prices dd { margin: auto 0 0; padding-top: var(--s-2); font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
     .hero-book__prices dd.is-accent { color: var(--p-accent); }
     .hero-book__prices dd.is-small { font-size: var(--t-lead); }
     @media (max-width: 1023px) {
@@ -51,7 +52,7 @@ const back = encodeURI("/COVER 16 BACK copy.png");
     .films .frame { aspect-ratio: 478 / 850; }
     .faq__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
     @media (max-width: 1023px) { .faq__pic { margin-top: var(--s-7); } }
-    .faq__pic img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+    .faq__pic img { display: block; width: 100%; height: auto; }
     .films .frame { overflow: visible; background: none; }
     .films .frame > video.frame__img { border-radius: var(--r-lg); background: #000; }
     .films video:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
@@ -179,7 +180,7 @@ const back = encodeURI("/COVER 16 BACK copy.png");
         </div>
       </div>
       <div class="span-6 start-7">
-        <figure class="faq__pic"><img src="/img/soalan-penyampai.jpg" alt="Penyampai video buku duduk di meja dengan skrin data di belakangnya" width="1024" height="766" loading="lazy" data-source="client" data-subject="the presenter, from the client's video" /></figure>
+        <figure class="faq__pic"><img src="/img/soalan-buku.jpg" alt="Buku Siapa Akan Menguasai Putrajaya? di atas meja penuh nota dan kertas pelekat bertulis soalan pembaca" width="1600" height="893" loading="lazy" data-source="client" data-subject="the book among readers' questions, the owner's image" /></figure>
       </div>
     </div>
   </section>

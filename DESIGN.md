@@ -35,7 +35,7 @@ Radius `soft`. Type: Urbanist (the first pairing `start.mjs` dealt), self-hosted
 | `COVER 16 copy 2.jpg`, `COVER 16 BACK copy.png` | The client's cover files (hero, book section) |
 | `img/bab-dinding-data.jpg`, `img/bab-peta-meja.jpg`, `img/bab-membaca.jpg` | The owner's images for the three method steps |
 | `img/tempah-putrajaya.jpg` | The owner's image of Putrajaya at night, beside the order form |
-| `img/soalan-penyampai.jpg` | A frame from the client's second video (questions section) |
+| `img/soalan-buku.jpg` | The owner's image of the book among readers' questions (questions section) |
 | `img/buku-kulit-depan-belakang.jpg` | Generated: back and front cover side by side (nav panel card) |
 | `poster-video-0*.jpg` | First frames of the client's videos (posters) |
 
