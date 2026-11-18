@@ -1,4 +1,4 @@
-import { defineConfig, envField, sessionDrivers } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import emdash from 'emdash/astro';
@@ -9,7 +9,10 @@ export default defineConfig({
   // EmDash keeps signed-in admin users in the Astro session. Sessions live in the R2 bucket (own folder) so the
   // Worker needs no KV namespace.
   session: {
-    driver: sessionDrivers.cloudflareR2Binding({ binding: 'MEDIA', base: 'sessions' }),
+    driver: {
+      entrypoint: new URL('./src/lib/session-r2-driver.ts', import.meta.url),
+      config: { binding: 'MEDIA', base: 'sessions' },
+    },
   },
   adapter: cloudflare({
     imageService: 'passthrough',
