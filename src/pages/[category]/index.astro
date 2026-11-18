@@ -1,0 +1,60 @@
+---
+// A Category's shelf: every Book filed under it in EmDash. Upcoming Categories have no page (Q6), so they 404.
+import KitLayout from "../../layouts/KitLayout.astro";
+import { CATEGORIES, getShelf } from "../../lib/catalog";
+
+export const prerender = false;
+
+const category = CATEGORIES.find((c) => c.slug === Astro.params.category);
+const books = category ? await getShelf(category.slug) : [];
+const orderable = books.filter((b) => b.availability === "Pre-order" || b.availability === "On sale");
+if (!category || orderable.length === 0) {
+  return new Response(null, { status: 404 });
+}
+
+const label: Record<string, string> = { "Pre-order": "Pra-tempahan", "On sale": "Dijual", "Akan datang": "Akan datang" };
+Astro.response.headers.set("Cache-Control", "public, max-age=60");
+---
+
+<KitLayout
+  title={`${category.label}: buku terbitan Brainwave Communications`}
+  description={`Buku dalam kategori ${category.label}, terus dari penerbit Brainwave Communications. Harga termasuk pos.`}
+>
+  <style is:inline slot="head">
+    /* a shelf grows with its Books instead of the kit's one-screen sections */
+    main > section.shelf-page { height: auto; min-height: 100svh; padding-top: calc(var(--nav) + var(--padt)); }
+    main > section.shelf-page > .wrap { height: auto; }
+    .shelf { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5); }
+    .shelf__card { display: grid; gap: var(--s-2); align-content: start; color: inherit; text-decoration: none; }
+    .shelf__cover { aspect-ratio: 1748 / 2480; border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
+    .shelf__cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .shelf__meta { font-size: var(--t-small); color: var(--muted); }
+    .shelf__title { margin-top: var(--s-2); font-size: var(--t-card, 20px); font-weight: 500; line-height: 1.25; }
+    .shelf__tag { justify-self: start; font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-sm); background: var(--p-accent); color: var(--p-accent-ink); }
+    @media (max-width: 1023px) { .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+  <section class="section shelf-page" aria-labelledby="cat-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="t-small muted"><a class="link" href="/#kategori">Kategori</a></p>
+        <h1 id="cat-h">{category.label}</h1>
+        <p>{orderable.length} buku boleh ditempah. Harga termasuk pos.</p>
+      </div>
+      <ul class="shelf" role="list">
+        {books.map((book) => (
+          <li>
+            <a class="shelf__card" href={book.href}>
+              <div class="shelf__cover">
+                {book.cover && <img src={book.cover.src} alt={book.cover.alt || `Kulit buku ${book.title}`} width={book.cover.width} height={book.cover.height} loading="lazy" />}
+              </div>
+              <span class="shelf__title">{book.title}</span>
+              <span class="shelf__meta">{book.author}</span>
+              <span class="shelf__tag">{label[book.availability] ?? book.availability}</span>
+              <span class="shelf__meta">RM{book.priceSemenanjung}, termasuk pos ke Semenanjung</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</KitLayout>

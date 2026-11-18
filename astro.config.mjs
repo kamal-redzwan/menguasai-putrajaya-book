@@ -34,6 +34,8 @@ export default defineConfig({
   },
   vite: {
     define: {
+      // Cloudflare Workers Builds sets WORKERS_CI_BRANCH; placeholder Books stay off the production branch.
+      __BUILD_BRANCH__: JSON.stringify(process.env.WORKERS_CI_BRANCH ?? 'local'),
       __BUILD_CHIP_SECRET_KEY__: JSON.stringify(process.env.CHIP_SECRET_KEY ?? ''),
       __BUILD_CHIP_BRAND_ID__: JSON.stringify(
         process.env.CHIP_BRAND_ID ??

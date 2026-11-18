@@ -10,12 +10,19 @@ import "@fontsource-variable/urbanist";
 export interface Props {
   title: string;
   description: string;
+  /** store: homepage, Category and policy pages. book: the Book Page of Siapa Akan Menguasai Putrajaya?. */
+  nav?: "store" | "book";
+  /** true on the homepage, so its own section links stay on the page */
   home?: boolean;
   moments?: string[];
 }
 
-const { title, description, home = false, moments = [] } = Astro.props;
-const to = (id: string) => (home ? `#${id}` : `/#${id}`);
+const { title, description, nav = "store", home = false, moments = [] } = Astro.props;
+// The one Book on sale; its order form is the site's main action until a second Book is on sale.
+const BOOK = "/umum-politik/menguasai-putrajaya";
+const store = (id: string) => (home ? `#${id}` : `/#${id}`);
+const book = (id: string) => (nav === "book" ? `#${id}` : `${BOOK}#${id}`);
+const order = book("tempah");
 const year = new Date().getFullYear();
 
 const policies = [
@@ -77,36 +84,66 @@ const policies = [
     <header class="nav nav--split">
       <div class="wrap nav__bar">
         <a class="skip-link" href="#top">Langkau ke kandungan</a>
-        <a class="nav__logo" href={home ? "#top" : "/"}><span class="mark" data-mark="stack" aria-hidden="true"></span><span class="nav__name">Menguasai Putrajaya</span></a>
-        <nav class="nav__links" aria-label="Utama">
-          <div class="nav__item">
-            <a class="nav__link" href={to("buku")}>Buku <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
-            <div class="nav__menu">
-              <div class="wrap grid">
-                <a class="menu-card span-3" href={to("buku")}>
-                  <div class="panel"><img class="frame__img" src="/img/buku-kulit-depan-belakang.jpg" alt="Kulit hadapan dan belakang buku Siapa Akan Menguasai Putrajaya?" loading="lazy" /></div>
-                  <span class="t-card">Buku dan butirannya</span>
-                  <span class="t-small muted">430 muka surat, ISBN 978-967-5131-28-8</span>
-                </a>
-                <a class="menu-card span-3" href={to("kaedah")}>
-                  <div class="panel"><img class="frame__img" src="/img/bab-peta-meja.jpg" alt="Tangan menyusun bidak pada meja skrin peta kawasan pilihan raya" loading="lazy" /></div>
-                  <span class="t-card">Cara buku ini membaca PRU</span>
-                  <span class="t-small muted">Data, peta kerusi dan senario</span>
-                </a>
-                <a class="menu-card span-3" href={to("video")}>
-                  <div class="panel"><img class="frame__img" style="object-position: 50% 30%" src="/poster-video-01.jpg" alt="Penyampai berdiri di hadapan skrin peta Malaysia" loading="lazy" /></div>
-                  <span class="t-card">Dua sorotan video</span>
-                  <span class="t-small muted">Sebelum anda membaca</span>
-                </a>
+        <a class="nav__logo" href={home ? "#top" : "/"}><span class="mark" data-mark="stack" aria-hidden="true"></span><span class="nav__name">Brainwave Communications</span></a>
+        {nav === "book" ? (
+          <nav class="nav__links" aria-label="Utama">
+            <div class="nav__item">
+              <a class="nav__link" href={book("buku")}>Buku <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+              <div class="nav__menu">
+                <div class="wrap grid">
+                  <a class="menu-card span-3" href={book("buku")}>
+                    <div class="panel"><img class="frame__img" src="/img/buku-kulit-depan-belakang.jpg" alt="Kulit hadapan dan belakang buku Siapa Akan Menguasai Putrajaya?" loading="lazy" /></div>
+                    <span class="t-card">Buku dan butirannya</span>
+                    <span class="t-small muted">430 muka surat, ISBN 978-967-5131-28-8</span>
+                  </a>
+                  <a class="menu-card span-3" href={book("kaedah")}>
+                    <div class="panel"><img class="frame__img" src="/img/bab-peta-meja.jpg" alt="Tangan menyusun bidak pada meja skrin peta kawasan pilihan raya" loading="lazy" /></div>
+                    <span class="t-card">Cara buku ini membaca PRU</span>
+                    <span class="t-small muted">Data, peta kerusi dan senario</span>
+                  </a>
+                  <a class="menu-card span-3" href={book("video")}>
+                    <div class="panel"><img class="frame__img" style="object-position: 50% 30%" src="/poster-video-01.jpg" alt="Penyampai berdiri di hadapan skrin peta Malaysia" loading="lazy" /></div>
+                    <span class="t-card">Dua sorotan video</span>
+                    <span class="t-small muted">Sebelum anda membaca</span>
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="nav__item"><a class="nav__link" href={to("sinopsis")}>Sinopsis</a></div>
-          <div class="nav__item"><a class="nav__link" href={to("kaedah")}>Kaedah</a></div>
-          <div class="nav__item"><a class="nav__link" href={to("soalan")}>Soalan</a></div>
-        </nav>
+            <div class="nav__item"><a class="nav__link" href={book("sinopsis")}>Sinopsis</a></div>
+            <div class="nav__item"><a class="nav__link" href={book("kaedah")}>Kaedah</a></div>
+            <div class="nav__item"><a class="nav__link" href={book("soalan")}>Soalan</a></div>
+          </nav>
+        ) : (
+          <nav class="nav__links" aria-label="Utama">
+            <div class="nav__item">
+              <a class="nav__link" href={store("pilihan")}>Buku <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+              <div class="nav__menu">
+                <div class="wrap grid">
+                  <a class="menu-card span-3" href={BOOK}>
+                    <div class="panel"><img class="frame__img" src="/img/buku-kulit-depan-belakang.jpg" alt="Kulit hadapan dan belakang buku Siapa Akan Menguasai Putrajaya?" loading="lazy" /></div>
+                    <span class="t-card">Siapa Akan Menguasai Putrajaya?</span>
+                    <span class="t-small muted">Pra-tempahan RM56, termasuk pos</span>
+                  </a>
+                  <a class="menu-card span-3" href="/umum-politik">
+                    <div class="panel"><img class="frame__img" src="/img/bab-dinding-data.jpg" alt="Seorang lelaki di hadapan dinding skrin data pilihan raya" loading="lazy" /></div>
+                    <span class="t-card">Umum Politik</span>
+                    <span class="t-small muted">Semua buku dalam kategori ini</span>
+                  </a>
+                  <a class="menu-card span-3" href={store("kategori")}>
+                    <div class="panel"><img class="frame__img" src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku di bilik bacaan" loading="lazy" /></div>
+                    <span class="t-card">Semua kategori</span>
+                    <span class="t-small muted">Enam kategori, lima akan datang</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="nav__item"><a class="nav__link" href={store("kategori")}>Kategori</a></div>
+            <div class="nav__item"><a class="nav__link" href={store("tentang")}>Tentang kami</a></div>
+            <div class="nav__item"><a class="nav__link" href={store("soalan")}>Soalan</a></div>
+          </nav>
+        )}
         <div class="nav__actions">
-          <a class="btn btn--primary" href={to("tempah")}>Tempah buku</a>
+          <a class="btn btn--primary" href={order}>Tempah buku</a>
         </div>
         <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
@@ -128,29 +165,29 @@ const policies = [
               <h2 id="close-h">Tempah buku sebelum cetakan pertama habis</h2>
               <p class="t-lead">RM56 ke Semenanjung, RM70 ke Sabah dan Sarawak, pos termasuk.</p>
             </div>
-            <a class="btn btn--primary" href={to("tempah")}>Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
+            <a class="btn btn--primary" href={order}>Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
           </div>
         </div>
         <div class="closing__links">
           <div class="grid">
             <div class="span-4 stack-4">
-              <a class="nav__logo" href={home ? "#top" : "/"}><span class="mark" data-mark="stack" aria-hidden="true"></span>Menguasai Putrajaya</a>
-              <p class="footer__lede">Buku politik karya Ronifira Rejab.</p>
+              <a class="nav__logo" href={home ? "#top" : "/"}><span class="mark" data-mark="stack" aria-hidden="true"></span>Brainwave Communications</a>
+              <p class="footer__lede">Penerbit buku di Ampang, Selangor.</p>
             </div>
             <div class="span-2 footer__col">
-              <h3>Buku</h3>
+              <h3>Kedai</h3>
               <ul>
-                <li><a href={to("buku")}>Butiran</a></li>
-                <li><a href={to("sinopsis")}>Sinopsis</a></li>
-                <li><a href={to("kaedah")}>Kaedah</a></li>
-                <li><a href={to("video")}>Video</a></li>
+                <li><a href={store("pilihan")}>Buku pilihan</a></li>
+                <li><a href={store("kategori")}>Kategori</a></li>
+                <li><a href={store("tentang")}>Tentang kami</a></li>
+                <li><a href={store("soalan")}>Soalan lazim</a></li>
               </ul>
             </div>
             <div class="span-2 footer__col">
-              <h3>Tempahan</h3>
+              <h3>Buku terbaru</h3>
               <ul>
-                <li><a href={to("tempah")}>Borang tempahan</a></li>
-                <li><a href={to("soalan")}>Soalan lazim</a></li>
+                <li><a href={nav === "book" ? "#top" : BOOK}>Siapa Akan Menguasai Putrajaya?</a></li>
+                <li><a href={order}>Borang tempahan</a></li>
               </ul>
             </div>
             <div class="span-2 footer__col">
@@ -177,8 +214,8 @@ const policies = [
     </footer>
 
     <style is:inline>
-      /* a 19-character name: under 400px the bar shows the mark alone (system.css: the client shortens it to its mark) */
-      @media (max-width: 399px) { .nav__bar .nav__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+      /* a 24-character name: on phones the bar shows the mark alone (system.css: the client shortens it to its mark) */
+      @media (max-width: 479px) { .nav__bar .nav__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
       .footer__addr { margin-top: var(--s-4); font-style: normal; font-size: var(--t-small); color: var(--muted); line-height: 1.5; }
     </style>
     <script is:inline type="module" src="/assets/system.js"></script>

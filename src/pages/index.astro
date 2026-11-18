@@ -1,187 +1,237 @@
 ---
+// The Storefront homepage (GLOSSARY.md). Rendered on request so the Category section reads EmDash: a Category with
+// no Book that is Pre-order or On sale shows as "Akan datang". Featured Books are a static grid for now (Q8).
 import KitLayout from "../layouts/KitLayout.astro";
-import OrderSection from "../components/OrderSection.astro";
+import { getCategoryShelves, SHOW_PLACEHOLDERS } from "../lib/catalog";
 
-const title = "Siapa Akan Menguasai Putrajaya?: buku analisis PRU 16 karya Ronifira Rejab";
-const description =
-  "Buku 430 muka surat yang membaca politik Malaysia menjelang PRU 16 melalui data pilihan raya dan kajian lapangan. Pra-jualan RM56 termasuk pos.";
+export const prerender = false;
+
+const BOOK = "/umum-politik/menguasai-putrajaya";
 const cover = encodeURI("/COVER 16 copy 2.jpg");
-const back = encodeURI("/COVER 16 BACK copy.png");
+const categories = await getCategoryShelves();
+
+// Featured Books: the one real Book, then placeholders marked "Contoh" that never reach the production branch (Q9).
+const featured = [
+  {
+    title: "Siapa Akan Menguasai Putrajaya?",
+    author: "Ronifira Rejab",
+    category: "Umum Politik",
+    availability: "Pra-tempahan",
+    price: "RM56, termasuk pos ke Semenanjung",
+    href: BOOK,
+    cover,
+    placeholder: false,
+  },
+  ...(SHOW_PLACEHOLDERS
+    ? ["Umum Motivasi", "Buku Novel Remaja", "Buku Tokoh-tokoh"].map((category) => ({
+        title: "Tajuk buku contoh",
+        author: "Nama penulis",
+        category,
+        availability: "Akan datang",
+        price: "Harga akan diumumkan",
+        href: "",
+        cover: "",
+        placeholder: true,
+      }))
+    : []),
+];
+
+// Testimonials: real readers' words with their names only (GLOSSARY.md). None yet, so the section stays hidden.
+const testimonials: Array<{ quote: string; name: string; detail: string }> = [];
+
+Astro.response.headers.set("Cache-Control", "public, max-age=60");
 ---
 
-<KitLayout title={title} description={description} home moments={["pinned-chapters", "word-highlight"]}>
+<KitLayout
+  title="Brainwave Communications: kedai buku penerbit di Ampang, Selangor"
+  description="Beli buku terbitan Brainwave Communications terus dari penerbit. Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab kini dibuka untuk pra-tempahan."
+  home
+>
   <style is:inline slot="head">
-    /* page CSS: only what sits inside a visual */
-    /* hero: the owner's reference layout */
-    .hero--book { display: grid; align-content: center; padding-top: calc(var(--nav) + var(--s-7)); padding-bottom: var(--s-8); }
-    .hero-book { align-items: center; }
-    .hero-book__cover img { display: block; width: 100%; max-width: 420px; height: auto; max-height: calc(100svh - var(--nav) - 128px); object-fit: contain; object-position: left center;
-      border-radius: var(--r-md); border: 1px solid var(--line-strong); box-shadow: 0 24px 60px rgb(0 0 0 / .45); }
-    .hero-book__label { font-size: var(--t-small); font-weight: 600; color: var(--p-accent); }
-    .hero-book__text h1 { margin-top: var(--s-3); font-size: clamp(44px, 5.4vw, 80px); line-height: 1.02; }
-    .hero-book__accent { color: var(--p-accent); }
-    .hero-book__sub { margin-top: var(--s-5); font-size: var(--t-lead); color: var(--ink); }
-    .hero-book__by { margin-top: var(--s-3); color: var(--muted); }
-    .hero-book__by strong { color: var(--ink); font-weight: 600; }
-    .hero-book__prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); margin: var(--s-7) 0; padding: var(--s-5) 0;
-      border-block: 1px solid var(--line-strong); }
-    .hero-book__prices > div { display: flex; flex-direction: column; }
-    .hero-book__prices dt { font-size: var(--t-small); color: var(--muted); }
-    .hero-book__prices dt span { display: block; }
-    .hero-book__prices dd { margin: auto 0 0; padding-top: var(--s-2); font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
-    .hero-book__prices dd.is-accent { color: var(--p-accent); }
-    .hero-book__prices dd.is-small { font-size: var(--t-lead); }
+    /* page CSS: the store hero, the shelf cards and the category tiles */
+    .hero--store { display: grid; align-content: center; padding-top: calc(var(--nav) + var(--s-7)); padding-bottom: var(--s-8); }
+    .hero-store { align-items: center; }
+    .hero-store__label { font-size: var(--t-small); font-weight: 600; color: var(--p-accent); }
+    .hero-store__text h1 { margin-top: var(--s-3); font-size: clamp(44px, 5.4vw, 80px); line-height: 1.02; }
+    .hero-store__accent { color: var(--p-accent); }
+    .hero-store__lead { margin-top: var(--s-5); font-size: var(--t-lead); max-width: 34ch; }
+    .hero-store__text .btn-row { margin-top: var(--s-7); }
+    .hero-store__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4 / 3; }
+    .hero-store__pic img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
+    .shelf { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5); }
+    .shelf__card { display: grid; gap: var(--s-2); align-content: start; color: inherit; text-decoration: none; }
+    .shelf__cover { aspect-ratio: 1748 / 2480; border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
+    .shelf__cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .shelf__cover--placeholder { display: grid; place-items: center; border: 1px dashed var(--line-strong); color: var(--muted); font-size: var(--t-small); }
+    .shelf__meta { font-size: var(--t-small); color: var(--muted); }
+    .shelf__title { margin-top: var(--s-2); font-size: var(--t-card, 20px); font-weight: 500; line-height: 1.25; }
+    .shelf__tag { justify-self: start; font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-sm); background: var(--p-accent); color: var(--p-accent-ink); }
+    .shelf__tag--muted { background: var(--surface); color: var(--ink); }
+    .cats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); }
+    .cat { display: grid; gap: var(--s-2); align-content: space-between; min-height: 132px; padding: var(--s-5); border-radius: var(--r-md);
+      border: 1px solid var(--line-strong); color: inherit; text-decoration: none; }
+    .cat__name { font-size: var(--t-card, 20px); font-weight: 500; }
+    .cat__state { font-size: var(--t-small); color: var(--muted); }
+    a.cat { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    a.cat .cat__state { color: var(--p-accent); }
+    .about__facts { margin-top: var(--s-6); }
+    .about__pic, .faq__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
+    .about__pic img, .faq__pic img { display: block; width: 100%; height: auto; }
+    .about__pic img { aspect-ratio: 4 / 5; object-fit: cover; }
+    .draft-note { margin-top: var(--s-5); padding: var(--s-4); border: 1px dashed var(--line-strong); border-radius: var(--r-sm); font-size: var(--t-small); }
     @media (max-width: 1023px) {
-      .hero--book { align-content: start; }
-      .hero-book__cover { order: 2; margin-top: var(--s-7); }
-      .hero-book__cover img { max-width: 300px; max-height: none; }
-    }
-    @media (max-width: 479px) {
-      #buku .rows > li { grid-template-columns: auto minmax(0, 1fr); }
-      #buku .rows__value { max-width: none; overflow-wrap: anywhere; }
+      .hero-store__pic { margin-top: var(--s-7); }
+      .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .about__pic, .faq__pic { margin-top: var(--s-7); }
     }
     @media (max-width: 639px) {
-      .hero--book { height: auto; min-height: 100svh; }
-      .hero-book__prices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .hero-book__prices > div:last-child { grid-column: 1 / -1; }
-      .hero-book__cover img { max-width: 240px; }
-    }
-    .covers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); }
-    .covers .frame { aspect-ratio: 1748 / 2480; }
-    .films { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); max-width: 760px; }
-    .films .frame { aspect-ratio: 478 / 850; }
-    .faq__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
-    @media (max-width: 1023px) { .faq__pic { margin-top: var(--s-7); } }
-    .faq__pic img { display: block; width: 100%; height: auto; }
-    .films .frame { overflow: visible; background: none; }
-    .films .frame > video.frame__img { border-radius: var(--r-lg); background: #000; }
-    .films video:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
-    @media (max-width: 639px) {
-      .covers { gap: var(--s-3); }
-      .films { grid-template-columns: minmax(0, 1fr); max-width: 342px; }
+      .hero--store { height: auto; min-height: 100svh; }
+      .cats { grid-template-columns: minmax(0, 1fr); }
+      .cat { min-height: 0; }
     }
   </style>
 
-  <!-- HERO: the owner's layout (their reference): the cover on the left; the label, title, subtitle, author, prices and
-       actions on the right, on the jacket's navy with its yellow. -->
-  <section class="hero hero--book ground-inverse" data-enter aria-labelledby="hero-h">
+  <!-- 1. Hero: the publisher, with the one Book on sale as the main action (Q13) -->
+  <section class="hero hero--store ground-inverse" data-enter aria-labelledby="hero-h">
     <div class="wrap">
-      <div class="grid hero-book">
-        <div class="span-5 hero-book__cover">
-          <img data-enter-media src={cover} alt="Kulit hadapan buku Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab" width="1748" height="2480" fetchpriority="high" data-source="client" data-subject="the book, front cover" />
-        </div>
-        <div class="span-7 start-6 hero-book__text">
-          <p class="hero-book__label">Sebuah analisis berasaskan lensa Politik Pasca-Normal</p>
-          <h1 id="hero-h">Siapa Akan <span class="hero-book__accent">Menguasai</span> Putrajaya?</h1>
-          <p class="hero-book__sub">Rahsia, Analisis, Data dan Strategi Menjelang PRU 16</p>
-          <p class="hero-book__by">Karya <strong>Ronifira Rejab</strong></p>
-          <dl class="hero-book__prices">
-            <div><dt>Semenanjung <span>(termasuk pos)</span></dt><dd class="is-accent">RM56.00</dd></div>
-            <div><dt>Sabah &amp; Sarawak <span>(termasuk pos)</span></dt><dd>RM70.00</dd></div>
-            <div><dt>Cetakan awal</dt><dd class="is-accent is-small">Terhad 200 naskhah</dd></div>
-          </dl>
+      <div class="grid hero-store">
+        <div class="span-6 hero-store__text">
+          <p class="hero-store__label">Penerbit buku dari Ampang, Selangor</p>
+          <h1 id="hero-h">Kedai buku <span class="hero-store__accent">Brainwave</span> Communications</h1>
+          <p class="hero-store__lead">Beli terus dari penerbit. Buku pertama kami, <em>Siapa Akan Menguasai Putrajaya?</em> karya Ronifira Rejab, kini dibuka untuk pra-tempahan pada RM56 termasuk pos.</p>
           <div class="btn-row">
-            <a class="btn btn--primary" href="#tempah">Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
-            <a class="btn btn--secondary" href="#sinopsis">Baca sinopsis buku</a>
+            <a class="btn btn--primary" href={`${BOOK}#tempah`}>Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
+            <a class="btn btn--secondary" href="#pilihan">Lihat buku pilihan</a>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- split: the specs beside the book whole, front and back (object 1 of 3) -->
-  <section class="section" id="buku" aria-labelledby="buku-h">
-    <div class="wrap grid">
-      <div class="span-5">
-        <div class="section-head">
-          <h2 id="buku-h">Buku 430 muka surat. <span class="muted">Cetakan pertama dihadkan kepada 200 naskhah.</span></h2>
+        <div class="span-6 start-7">
+          <figure class="hero-store__pic"><img data-enter-media src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="893" fetchpriority="high" data-source="client" data-subject="a reader with the book" /></figure>
         </div>
-        <ul class="rows rows--spec">
-          <li><span class="rows__name">Penulis</span><span class="rows__value">Ronifira Rejab</span></li>
-          <li><span class="rows__name">Muka surat</span><span class="rows__value">430</span></li>
-          <li><span class="rows__name">ISBN</span><span class="rows__value">978-967-5131-28-8</span></li>
-          <li><span class="rows__name">Penerbit</span><span class="rows__value">Brainwave Communications dan Prestasi Media</span></li>
-          <li><span class="rows__name">Penghantaran</span><span class="rows__value">Selepas cetakan selesai</span></li>
-        </ul>
-      </div>
-      <div class="span-6 start-7 covers">
-        <div class="frame frame--photo"><img class="frame__img" src={cover} alt="Kulit hadapan buku: wajah lima pemimpin politik dan bangunan Perdana Putra pada waktu malam" width="1748" height="2480" loading="lazy" data-source="client" data-subject="the book, front cover" /></div>
-        <div class="frame frame--photo"><img class="frame__img" src={back} alt="Kulit belakang buku dengan sinopsis dan butiran penerbitan" width="1748" height="2480" loading="lazy" data-source="client" data-subject="the book, back cover" /></div>
       </div>
     </div>
   </section>
 
-  <!-- word-highlight (dealt moment): the synopsis in one statement -->
-  <section class="section statement" id="sinopsis" data-moment="word-highlight" aria-label="Sinopsis">
+  <!-- 2. Featured Books: a static grid for now (Q8) -->
+  <section class="section" id="pilihan" aria-labelledby="pilihan-h">
     <div class="wrap">
-      <p class="t-label">Sinopsis</p>
-      <p class="mo-wh__text">Kejatuhan Barisan Nasional pada 2018, Langkah Sheraton, pandemik COVID-19 dan beberapa kali pertukaran Perdana Menteri telah mengubah politik Malaysia. Buku ini menjelaskan mengapa <strong>formula lama</strong> tidak lagi mampu membacanya.</p>
-    </div>
-  </section>
-
-  <!-- pinned-chapters (dealt moment): three steps, each with the owner's image -->
-  <section class="section" id="kaedah" style="--h: 2" data-moment="pinned-chapters" aria-labelledby="kaedah-h">
-    <div class="wrap mo-pc__grid">
-      <div class="mo-pc__text">
-        <h2 id="kaedah-h">Cara buku ini membaca PRU 16</h2>
-        <ol class="mo-pc__steps">
-          <li class="mo-pc__step">
-            <h3>Data pilihan raya sejak PRU 14</h3>
-            <p>Keputusan, peralihan undi dan perubahan demografi pengundi dihimpun dan dibandingkan dari satu pilihan raya ke pilihan raya seterusnya.</p>
-            <figure class="mo-pc__visual"><img src="/img/bab-dinding-data.jpg" alt="Seorang lelaki berdiri di hadapan dinding skrin data pilihan raya PRU 14, PRU 15 dan PRU 16 dengan peta Malaysia" width="1600" height="893" /></figure>
-          </li>
-          <li class="mo-pc__step">
-            <h3>Peta kerusi dan analisis lapangan</h3>
-            <p>Kajian lapangan dan peta kawasan menunjukkan di mana sokongan berpecah, dan mengapa parti yang nampak kuat belum tentu selesa.</p>
-            <figure class="mo-pc__visual"><img src="/img/bab-peta-meja.jpg" alt="Tangan menyusun bidak pada meja skrin peta kawasan pilihan raya" width="1600" height="893" /></figure>
-          </li>
-          <li class="mo-pc__step">
-            <h3>Senario menjelang PRU 16</h3>
-            <p>Melalui lensa Politik Pasca-Normal, buku ini menyusun laluan yang mungkin membawa sesebuah gabungan ke Putrajaya.</p>
-            <figure class="mo-pc__visual"><img src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="893" /></figure>
-          </li>
-        </ol>
+      <div class="section-head">
+        <h2 id="pilihan-h">Buku pilihan. <span class="muted">Terus dari penerbit, pos termasuk dalam harga.</span></h2>
       </div>
-      <div class="mo-pc__visuals frame"></div>
+      <ul class="shelf" role="list">
+        {featured.map((book) => (
+          <li>
+            {book.placeholder ? (
+              <div class="shelf__card" aria-label="Contoh, bukan buku sebenar">
+                <div class="shelf__cover shelf__cover--placeholder"><span>Contoh</span></div>
+                <span class="shelf__meta">{book.category}</span>
+                <span class="shelf__title">{book.title}</span>
+                <span class="shelf__meta">{book.author}</span>
+                <span class="shelf__tag shelf__tag--muted">{book.availability}</span>
+              </div>
+            ) : (
+              <a class="shelf__card" href={book.href}>
+                <div class="shelf__cover"><img src={book.cover} alt={`Kulit buku ${book.title}`} width="1748" height="2480" loading="lazy" /></div>
+                <span class="shelf__meta">{book.category}</span>
+                <span class="shelf__title">{book.title}</span>
+                <span class="shelf__meta">{book.author}</span>
+                <span class="shelf__tag">{book.availability}</span>
+                <span class="shelf__meta">{book.price}</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
-  <!-- brand-band (dealt rhythm): the client's two videos, played only when pressed -->
-  <section class="section ground-brand" id="video" aria-labelledby="video-h">
+  <!-- 3. Books Category: Upcoming Categories show as "Akan datang" with no link (Q6, Q26) -->
+  <section class="section" id="kategori" aria-labelledby="kategori-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="kategori-h">Kategori buku. <span class="muted">Lima lagi akan menyusul.</span></h2>
+      </div>
+      <ul class="cats" role="list">
+        {categories.map((category) => (
+          <li>
+            {category.upcoming ? (
+              <div class="cat">
+                <span class="cat__name">{category.label}</span>
+                <span class="cat__state">Akan datang</span>
+              </div>
+            ) : (
+              <a class="cat" href={`/${category.slug}`}>
+                <span class="cat__name">{category.label}</span>
+                <span class="cat__state">{category.count} buku</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. About Us: facts already on record only (Q14); the owner adds the story before launch -->
+  <section class="section" id="tentang" aria-labelledby="tentang-h">
     <div class="wrap grid">
-      <div class="span-5">
+      <div class="span-6">
         <div class="section-head">
-          <h2 id="video-h">Video sorotan buku</h2>
-          <p>Dua video pendek sebelum anda membaca: yang pertama tentang landskap politik selepas 2018, yang kedua tentang data, demografi dan tingkah laku pengundi.</p>
+          <h2 id="tentang-h">Tentang Brainwave Communications</h2>
+          <p>Kami penerbit buku di Ampang, Selangor. Buku pertama kami, <em>Siapa Akan Menguasai Putrajaya?</em>, diterbitkan bersama Prestasi Media.</p>
         </div>
+        <ul class="rows rows--spec about__facts">
+          <li><span class="rows__name">Syarikat</span><span class="rows__value">Brainwave Communications</span></li>
+          <li><span class="rows__name">No. pendaftaran SSM</span><span class="rows__value">202203208117 (JM0967023-W)</span></li>
+          <li><span class="rows__name">Alamat</span><span class="rows__value">Ukay Perdana, Ampang, Selangor</span></li>
+          <li><span class="rows__name">Rakan penerbit</span><span class="rows__value">Prestasi Media</span></li>
+        </ul>
+        {SHOW_PLACEHOLDERS && (
+          <p class="draft-note">Contoh, staging sahaja: cerita syarikat (bila bermula, mengapa menerbitkan buku) akan ditambah oleh pemilik sebelum dilancarkan.</p>
+        )}
       </div>
-      <div class="span-6 start-7 films">
-        <div class="frame frame--photo"><video class="frame__img" src={encodeURI("/WhatsApp Video 2026-10-28 at 11.43.11.mp4")} poster="/poster-video-01.jpg" controls playsinline preload="none" width="478" height="850" aria-label="Video sorotan pertama: landskap politik selepas 2018"></video></div>
-        <div class="frame frame--photo"><video class="frame__img" src={encodeURI("/WhatsApp Video 2026-10-28 at 11.44.41.mp4")} poster="/poster-video-02.jpg" controls playsinline preload="none" width="478" height="850" aria-label="Video sorotan kedua: data, demografi dan tingkah laku pengundi"></video></div>
+      <div class="span-6 start-7">
+        <figure class="about__pic"><img src="/img/tempah-putrajaya.jpg" alt="Bangunan Perdana Putra dan Masjid Putra di tepi tasik Putrajaya pada waktu malam" width="1200" height="1608" loading="lazy" data-source="client" data-subject="Putrajaya at night" /></figure>
       </div>
     </div>
   </section>
 
-  <OrderSection totalQuota={200} />
-
-  <!-- faq: the questions a buyer asks before paying; every answer open -->
+  <!-- 5. FAQ: shop-wide questions; book-specific ones stay on each Book Page (Q15) -->
   <section class="section" id="soalan" aria-labelledby="soalan-h">
     <div class="wrap grid">
       <div class="span-6">
         <div class="section-head">
-          <h2 id="soalan-h">Soalan tentang tempahan buku</h2>
+          <h2 id="soalan-h">Soalan tentang membeli buku</h2>
           <p>Ada soalan lain? WhatsApp <a class="link" href="https://wa.me/60108725969">+6010 872 5969</a> atau <a class="link" href="mailto:ronifira@gmail.com">e-mel kami</a>.</p>
         </div>
         <div class="faq">
-          <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>Selepas cetakan selesai: 3 hingga 5 hari bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.</p></div>
-          <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. RM56 ke Semenanjung (buku RM48, pos RM8) dan RM70 ke Sabah dan Sarawak (buku RM55, pos RM15).</p></div>
+          <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>Buku pra-tempahan dihantar selepas cetakan selesai: 3 hingga 5 hari bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.</p></div>
+          <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. Harga di setiap buku sudah termasuk pos, mengikut zon Semenanjung atau Sabah dan Sarawak.</p></div>
           <div class="faq__item"><h3>Bagaimana saya membayar buku?</h3><p>Melalui CHIP Collect: FPX, DuitNow QR, kad kredit atau debit, dan e-dompet.</p></div>
           <div class="faq__item"><h3>Bagaimana jika buku rosak semasa sampai?</h3><p>Hubungi kami dalam tempoh 7 hari dengan gambar kerosakan. Butirannya dalam <a class="link" href="/polisi-pemulangan">polisi pemulangan</a>.</p></div>
         </div>
       </div>
       <div class="span-6 start-7">
-        <figure class="faq__pic"><img src="/img/soalan-buku.jpg" alt="Buku Siapa Akan Menguasai Putrajaya? di atas meja penuh nota dan kertas pelekat bertulis soalan pembaca" width="1600" height="893" loading="lazy" data-source="client" data-subject="the book among readers' questions, the owner's image" /></figure>
+        <figure class="faq__pic"><img src="/img/soalan-buku.jpg" alt="Buku Siapa Akan Menguasai Putrajaya? di atas meja penuh nota dan kertas pelekat bertulis soalan pembaca" width="1600" height="893" loading="lazy" data-source="client" data-subject="the book among readers' questions" /></figure>
       </div>
     </div>
   </section>
+
+  <!-- 6. Testimonials: built, hidden until real ones exist (Q4) -->
+  {testimonials.length > 0 && (
+    <section class="section" id="testimoni" aria-labelledby="testimoni-h">
+      <div class="wrap">
+        <div class="section-head"><h2 id="testimoni-h">Kata pembaca</h2></div>
+        <div class="grid">
+          {testimonials.map((t) => (
+            <figure class="quote span-6">
+              <blockquote>{t.quote}</blockquote>
+              <figcaption><span class="person__name">{t.name}</span>, {t.detail}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 7. CTA and 8. Footer: the shared close and footer in KitLayout -->
 </KitLayout>
