@@ -4,6 +4,9 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "observability": {
+    "enabled": true
+  },
   "kv_namespaces": [],
   "d1_databases": [
     {
