@@ -1,7 +1,9 @@
 {
   "name": "menguasai-putrajaya-book",
   "compatibility_date": "2026-02-24",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "kv_namespaces": [],
   "d1_databases": [
     {
@@ -22,6 +24,19 @@
     "kv_namespaces": [],
     "vars": {
       "CHIP_BRAND_ID": "db3280df-c2eb-48e5-bdcb-b757e269de69"
-    }
+    },
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "menguasai-putrajaya-book-preview",
+        "database_id": "e4c2688f-2918-4620-9a83-c230e3582ae6"
+      }
+    ],
+    "r2_buckets": [
+      {
+        "binding": "MEDIA",
+        "bucket_name": "menguasai-putrajaya-book-preview-media"
+      }
+    ]
   }
 }
