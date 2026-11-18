@@ -12,6 +12,39 @@ const back = encodeURI("/COVER 16 BACK copy.png");
 <KitLayout title={title} description={description} home moments={["pinned-chapters", "word-highlight"]}>
   <style is:inline slot="head">
     /* page CSS: only what sits inside a visual */
+    /* hero: the owner's reference layout */
+    .hero--book { display: grid; align-content: center; padding-top: calc(var(--nav) + var(--s-7)); padding-bottom: var(--s-8); }
+    .hero-book { align-items: center; }
+    .hero-book__cover img { display: block; width: 100%; max-width: 420px; height: auto; max-height: calc(100svh - var(--nav) - 128px); object-fit: contain; object-position: left center;
+      border-radius: var(--r-md); border: 1px solid var(--line-strong); box-shadow: 0 24px 60px rgb(0 0 0 / .45); }
+    .hero-book__label { font-size: var(--t-small); font-weight: 600; color: var(--p-accent); }
+    .hero-book__text h1 { margin-top: var(--s-3); font-size: clamp(44px, 5.4vw, 80px); line-height: 1.02; }
+    .hero-book__accent { color: var(--p-accent); }
+    .hero-book__sub { margin-top: var(--s-5); font-size: var(--t-lead); color: var(--ink); }
+    .hero-book__by { margin-top: var(--s-3); color: var(--muted); }
+    .hero-book__by strong { color: var(--ink); font-weight: 600; }
+    .hero-book__prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); margin: var(--s-7) 0; padding: var(--s-5) 0;
+      border-block: 1px solid var(--line-strong); }
+    .hero-book__prices dt { font-size: var(--t-small); color: var(--muted); }
+    .hero-book__prices dt span { display: block; }
+    .hero-book__prices dd { margin: var(--s-2) 0 0; font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+    .hero-book__prices dd.is-accent { color: var(--p-accent); }
+    .hero-book__prices dd.is-small { font-size: var(--t-lead); }
+    @media (max-width: 1023px) {
+      .hero--book { align-content: start; }
+      .hero-book__cover { order: 2; margin-top: var(--s-7); }
+      .hero-book__cover img { max-width: 300px; max-height: none; }
+    }
+    @media (max-width: 479px) {
+      #buku .rows > li { grid-template-columns: auto minmax(0, 1fr); }
+      #buku .rows__value { max-width: none; overflow-wrap: anywhere; }
+    }
+    @media (max-width: 639px) {
+      .hero--book { height: auto; min-height: 100svh; }
+      .hero-book__prices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero-book__prices > div:last-child { grid-column: 1 / -1; }
+      .hero-book__cover img { max-width: 240px; }
+    }
     .covers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); }
     .covers .frame { aspect-ratio: 1748 / 2480; }
     .films { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); max-width: 760px; }
@@ -28,19 +61,31 @@ const back = encodeURI("/COVER 16 BACK copy.png");
     }
   </style>
 
-  <!-- HERO: photo (dealt). The picture is a chart generated for this page: the 222 seats of the Dewan Rakyat, the 112
-       a simple majority needs in the accent. No photograph fetched, by the client's request. -->
-  <section class="hero hero--photo" data-enter data-calm="left" aria-labelledby="hero-h">
-    <img class="hero__bg" src="/img/hero-dewan-rakyat.jpg" alt="Rajah 222 kerusi Dewan Rakyat dalam bentuk separuh bulatan, 112 kerusi ditanda kuning" style="--ly-pos: 70% 60%; --ly-pos-phone: 78% 60%" fetchpriority="high" width="2400" height="1500" data-source="illustration" data-subject="Dewan Rakyat seat chart" />
-    <div class="wrap"><div class="hero-text">
-      <div class="hero__text">
-        <h1 id="hero-h">Buku: siapa akan menguasai Putrajaya?</h1>
-        <p class="hero__lead">Buku 430 muka surat karya Ronifira Rejab tentang siapa yang mampu mengumpul 112 daripada 222 kerusi pada PRU 16. Pra-jualan RM56 termasuk pos ke Semenanjung.</p>
-        <div class="btn-row">
-          <a class="btn btn--primary" href="#tempah">Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
+  <!-- HERO: the owner's layout (their reference): the cover on the left; the label, title, subtitle, author, prices and
+       actions on the right, on the jacket's navy with its yellow. -->
+  <section class="hero hero--book ground-inverse" data-enter aria-labelledby="hero-h">
+    <div class="wrap">
+      <div class="grid hero-book">
+        <div class="span-5 hero-book__cover">
+          <img data-enter-media src={cover} alt="Kulit hadapan buku Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab" width="1748" height="2480" fetchpriority="high" data-source="client" data-subject="the book, front cover" />
+        </div>
+        <div class="span-7 start-6 hero-book__text">
+          <p class="hero-book__label">Sebuah analisis berasaskan lensa Politik Pasca-Normal</p>
+          <h1 id="hero-h">Siapa Akan <span class="hero-book__accent">Menguasai</span> Putrajaya?</h1>
+          <p class="hero-book__sub">Rahsia, Analisis, Data dan Strategi Menjelang PRU 16</p>
+          <p class="hero-book__by">Karya <strong>Ronifira Rejab</strong></p>
+          <dl class="hero-book__prices">
+            <div><dt>Semenanjung <span>(termasuk pos)</span></dt><dd class="is-accent">RM56.00</dd></div>
+            <div><dt>Sabah &amp; Sarawak <span>(termasuk pos)</span></dt><dd>RM70.00</dd></div>
+            <div><dt>Cetakan awal</dt><dd class="is-accent is-small">Terhad 200 naskhah</dd></div>
+          </dl>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="#tempah">Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
+            <a class="btn btn--secondary" href="#sinopsis">Baca sinopsis buku</a>
+          </div>
         </div>
       </div>
-    </div></div>
+    </div>
   </section>
 
   <!-- split: the specs beside the book whole, front and back (object 1 of 3) -->
@@ -54,7 +99,7 @@ const back = encodeURI("/COVER 16 BACK copy.png");
           <li><span class="rows__name">Penulis</span><span class="rows__value">Ronifira Rejab</span></li>
           <li><span class="rows__name">Muka surat</span><span class="rows__value">430</span></li>
           <li><span class="rows__name">ISBN</span><span class="rows__value">978-967-5131-28-8</span></li>
-          <li><span class="rows__name">Penerbit</span><p>Brainwave Communications dan Prestasi Media</p></li>
+          <li><span class="rows__name">Penerbit</span><span class="rows__value">Brainwave Communications dan Prestasi Media</span></li>
           <li><span class="rows__name">Penghantaran</span><span class="rows__value">Selepas cetakan selesai</span></li>
         </ul>
       </div>
@@ -73,7 +118,7 @@ const back = encodeURI("/COVER 16 BACK copy.png");
     </div>
   </section>
 
-  <!-- pinned-chapters (dealt moment): three steps, each a frame from the client's own videos -->
+  <!-- pinned-chapters (dealt moment): three steps, each with the owner's image -->
   <section class="section" id="kaedah" style="--h: 2" data-moment="pinned-chapters" aria-labelledby="kaedah-h">
     <div class="wrap mo-pc__grid">
       <div class="mo-pc__text">
@@ -82,17 +127,17 @@ const back = encodeURI("/COVER 16 BACK copy.png");
           <li class="mo-pc__step">
             <h3>Data pilihan raya sejak PRU 14</h3>
             <p>Keputusan, peralihan undi dan perubahan demografi pengundi dihimpun dan dibandingkan dari satu pilihan raya ke pilihan raya seterusnya.</p>
-            <figure class="mo-pc__visual"><img src="/img/bab-data.jpg" alt="Seorang lelaki berdiri di hadapan dinding skrin peta Malaysia dan carta data" width="1024" height="766" /></figure>
+            <figure class="mo-pc__visual"><img src="/img/bab-dinding-data.jpg" alt="Seorang lelaki berdiri di hadapan dinding skrin data pilihan raya PRU 14, PRU 15 dan PRU 16 dengan peta Malaysia" width="1600" height="893" /></figure>
           </li>
           <li class="mo-pc__step">
             <h3>Peta kerusi dan analisis lapangan</h3>
             <p>Kajian lapangan dan peta kawasan menunjukkan di mana sokongan berpecah, dan mengapa parti yang nampak kuat belum tentu selesa.</p>
-            <figure class="mo-pc__visual"><img src="/img/bab-peta.jpg" alt="Tangan menyusun bidak catur pada meja peta kawasan pilihan raya" width="1024" height="766" /></figure>
+            <figure class="mo-pc__visual"><img src="/img/bab-peta-meja.jpg" alt="Tangan menyusun bidak pada meja skrin peta kawasan pilihan raya" width="1600" height="893" /></figure>
           </li>
           <li class="mo-pc__step">
             <h3>Senario menjelang PRU 16</h3>
             <p>Melalui lensa Politik Pasca-Normal, buku ini menyusun laluan yang mungkin membawa sesebuah gabungan ke Putrajaya.</p>
-            <figure class="mo-pc__visual"><img src="/img/bab-senario.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di kerusi" width="1024" height="766" /></figure>
+            <figure class="mo-pc__visual"><img src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="893" /></figure>
           </li>
         </ol>
       </div>

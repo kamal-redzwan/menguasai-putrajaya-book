@@ -10,9 +10,9 @@ taste-skill's quiet company-site language with the book jacket's colours, dial `
 
 ## The deal (dealt by the skill's scripts, not chosen by taste)
 - **Kind:** product (a physical book sold online), `site-kind other`: flat grounds, no effects.
-- **Hero:** `photo` (`deal.mjs --type product`). With no photographs allowed (the owner's request), the picture
-  is a generated chart: the 222 seats of the Dewan Rakyat with the 112 a simple majority needs in yellow. That
-  number is the book's question.
+- **Hero:** the owner's own layout (their reference, 18 Nov): the front cover on the left; the label, title
+  ("Menguasai" in yellow), subtitle, author, three price facts and two actions on the right, on the jacket's
+  navy. It replaces the dealt `photo` hero.
 - **Nav** `nav-split` · **close** `close-photo`, turned into close-word's head row because the page has no
   photographs (sections.md section 2) · **footer** `footer-dark` · **rhythm** `brand-band` (the yellow video
   section) · **buttons** `pill` · **mark** `stack`.
@@ -25,27 +25,24 @@ taste-skill's quiet company-site language with the book jacket's colours, dial `
 | `--p-bg` | `#f4f1ea` | Page ground (paper) |
 | `--p-ink` / `--p-action` | `#09111e` | Text, primary button (jacket navy) |
 | `--p-accent` | `#facc15` | Jacket yellow: the brand band, the primary on the dark footer, the word "formula lama" |
-| inverse | `#09111e` ground | The hero chart and the dark footer |
+| inverse | `#09111e` ground | The hero and the dark footer |
 
 Radius `soft`. Type: Urbanist (the first pairing `start.mjs` dealt), self-hosted with `@fontsource-variable/urbanist`.
 
-## Pictures (no fetched photographs, by request)
+## Pictures
 | File | What it is |
 |---|---|
-| `img/hero-dewan-rakyat.jpg` | Generated in Python: the 222-seat hemicycle, 112 seats in yellow |
-| `img/buku-kulit-depan-belakang.jpg` | Generated: the client's back and front cover side by side on navy (nav panel card) |
-| `COVER 16 copy 2.jpg`, `COVER 16 BACK copy.png` | The client's cover files (the book section) |
-| `img/bab-*.jpg`, `img/tempah-buku.jpg`, `img/soalan-penyampai.jpg` | Frames cut from the client's two videos, above the burned-in subtitles |
+| `COVER 16 copy 2.jpg`, `COVER 16 BACK copy.png` | The client's cover files (hero, book section) |
+| `img/bab-dinding-data.jpg`, `img/bab-peta-meja.jpg`, `img/bab-membaca.jpg` | The owner's images for the three method steps |
+| `img/tempah-putrajaya.jpg` | The owner's image of Putrajaya at night, beside the order form |
+| `img/soalan-penyampai.jpg` | A frame from the client's second video (questions section) |
+| `img/buku-kulit-depan-belakang.jpg` | Generated: back and front cover side by side (nav panel card) |
 | `poster-video-0*.jpg` | First frames of the client's videos (posters) |
-
-The videos are 478px wide, so the frames are upscaled 2x and look soft at full size. A real photo shoot of
-the book would replace them (see the follow-up report).
 
 ## Decisions that break a taste-skill rule, on purpose (waived in `.taste-skill/waivers.json`)
 - **Phone number, full address with postcode, SSM number:** taste-skill rule 9 forbids them. CHIP Collect
   card-payment activation needs them, and the owner supplied them.
-- **Hero product size:** the checker wants the book across 80% of the hero. The owner asked for no
-  photographs; the book is shown whole in the book section instead.
+- **Hero:** the owner's layout replaces the dealt hero; taste-skill's hero checks no longer apply to it.
 
 ## Policy pages
 Legal text reads top to bottom, so the policy pages' one section grows with its text (page CSS
