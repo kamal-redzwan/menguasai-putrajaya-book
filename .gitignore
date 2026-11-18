@@ -21,3 +21,11 @@ node_modules/
 .taste-skill/chrome-*
 .taste-skill/gate/
 .taste-skill/cons.txt
+
+# EmDash local state (as in EmDash templates)
+.emdash/migrations.json
+uploads
+data.db
+data.db-*
+.dev.vars
+.dev.vars.*
