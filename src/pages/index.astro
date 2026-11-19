@@ -60,8 +60,13 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
     .hero-store__accent { color: var(--p-accent); }
     .hero-store__lead { margin-top: var(--s-5); font-size: var(--t-lead); max-width: 34ch; }
     .hero-store__text .btn-row { margin-top: var(--s-7); }
-    .hero-store__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4 / 3; }
-    .hero-store__pic img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
+    /* the floating book: the cover bobs slowly while its shadow on the ground narrows as it rises */
+    .hero-book { position: relative; margin: 0 auto; width: min(100%, 440px); padding-bottom: var(--s-7); }
+    .hero-book img { position: relative; z-index: 1; display: block; width: 100%; height: auto; animation: book-float 6s ease-in-out infinite; }
+    .hero-book::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 28px; border-radius: 50%;
+      background: radial-gradient(closest-side, rgb(0 0 0 / .6), transparent); animation: book-shadow 6s ease-in-out infinite; }
+    @keyframes book-float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-18px) rotate(1deg); } }
+    @keyframes book-shadow { 0%, 100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(.82); opacity: .6; } }
     .cats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); }
     .cat { display: grid; gap: var(--s-2); align-content: space-between; min-height: 132px; padding: var(--s-5); border-radius: var(--r-md);
       border: 1px solid var(--line-strong); color: inherit; text-decoration: none; }
@@ -71,17 +76,17 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
     a.cat .cat__state { color: var(--p-accent); }
     .about__facts { margin-top: var(--s-6); }
     .about__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
-    .about__pic img { display: block; width: 100%; height: auto; }
-    .about__pic img { aspect-ratio: 4 / 5; object-fit: cover; }
+    .about__pic img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; }
     .draft-note { margin-top: var(--s-5); padding: var(--s-4); border: 1px dashed var(--line-strong); border-radius: var(--r-sm); font-size: var(--t-small); }
     @media (max-width: 1023px) {
-      .hero-store__pic { margin-top: var(--s-7); }
+      .hero-book { margin-top: var(--s-7); width: min(100%, 360px); }
       .cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .about__pic { margin-top: var(--s-7); }
     }
     @media (max-width: 639px) {
       .hero--store { height: auto; min-height: 100svh; }
       .cats { grid-template-columns: minmax(0, 1fr); }
+      .hero-book { width: min(100%, 260px); }
       .cat { min-height: 0; }
     }
   </style>
@@ -93,14 +98,14 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
         <div class="span-6 hero-store__text">
           <p class="hero-store__label">Penerbit buku dari Ampang, Selangor</p>
           <h1 id="hero-h">Kedai buku <span class="hero-store__accent">Brainwave</span> Communications</h1>
-          <p class="hero-store__lead">Beli terus dari penerbit. Buku pertama kami, <em>Siapa Akan Menguasai Putrajaya?</em> karya Ronifira Rejab, kini dibuka untuk pra-tempahan pada RM56 termasuk pos.</p>
+          <p class="hero-store__lead">Beli terus dari penerbit. Buku kami, <em>Siapa Akan Menguasai Putrajaya?</em> karya Ronifira Rejab, kini dibuka untuk pra-tempahan pada RM56 termasuk pos.</p>
           <div class="btn-row">
             <a class="btn btn--primary" href={`${BOOK}#tempah`}>Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
             <a class="btn btn--secondary" href="#pilihan">Lihat buku pilihan</a>
           </div>
         </div>
         <div class="span-6 start-7">
-          <figure class="hero-store__pic"><img data-enter-media src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="894" fetchpriority="high" data-source="client" data-subject="a reader with the book" /></figure>
+          <figure class="hero-book"><img src="/img/buku-terapung.webp" alt="Buku Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab" width="880" height="1218" fetchpriority="high" data-source="client" data-subject="the book, 3D mockup" /></figure>
         </div>
       </div>
     </div>
@@ -165,7 +170,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
         )}
       </div>
       <div class="span-6 start-7">
-        <figure class="about__pic"><img src="/img/tempah-putrajaya.jpg" alt="Bangunan Perdana Putra dan Masjid Putra di tepi tasik Putrajaya pada waktu malam" width="1200" height="1608" loading="lazy" data-source="client" data-subject="Putrajaya at night" /></figure>
+        <figure class="about__pic"><img src="/img/pejabat-brainwave.svg" alt="Lukisan garis pejabat Brainwave Communications" width="800" height="1000" loading="lazy" data-source="client" data-subject="Brainwave office line art" /></figure>
       </div>
     </div>
   </section>
