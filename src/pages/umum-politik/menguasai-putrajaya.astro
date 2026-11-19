@@ -50,9 +50,6 @@ const back = encodeURI("/COVER 16 BACK copy.png");
     .covers .frame { aspect-ratio: 1748 / 2480; }
     .films { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); max-width: 760px; }
     .films .frame { aspect-ratio: 478 / 850; }
-    .faq__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
-    @media (max-width: 1023px) { .faq__pic { margin-top: var(--s-7); } }
-    .faq__pic img { display: block; width: 100%; height: auto; }
     .films .frame { overflow: visible; background: none; }
     .films .frame > video.frame__img { border-radius: var(--r-lg); background: #000; }
     .films video:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
@@ -138,7 +135,7 @@ const back = encodeURI("/COVER 16 BACK copy.png");
           <li class="mo-pc__step">
             <h3>Senario menjelang PRU 16</h3>
             <p>Melalui lensa Politik Pasca-Normal, buku ini menyusun laluan yang mungkin membawa sesebuah gabungan ke Putrajaya.</p>
-            <figure class="mo-pc__visual"><img src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="893" /></figure>
+            <figure class="mo-pc__visual"><img src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="894" /></figure>
           </li>
         </ol>
       </div>
@@ -166,21 +163,16 @@ const back = encodeURI("/COVER 16 BACK copy.png");
 
   <!-- faq: the questions a buyer asks before paying; every answer open -->
   <section class="section" id="soalan" aria-labelledby="soalan-h">
-    <div class="wrap grid">
-      <div class="span-6">
-        <div class="section-head">
-          <h2 id="soalan-h">Soalan tentang tempahan buku</h2>
-          <p>Ada soalan lain? WhatsApp <a class="link" href="https://wa.me/60108725969">+6010 872 5969</a> atau <a class="link" href="mailto:ronifira@gmail.com">e-mel kami</a>.</p>
-        </div>
-        <div class="faq">
-          <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>Selepas cetakan selesai: 3 hingga 5 hari bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.</p></div>
-          <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. RM56 ke Semenanjung (buku RM48, pos RM8) dan RM70 ke Sabah dan Sarawak (buku RM55, pos RM15).</p></div>
-          <div class="faq__item"><h3>Bagaimana saya membayar buku?</h3><p>Melalui CHIP Collect: FPX, DuitNow QR, kad kredit atau debit, dan e-dompet.</p></div>
-          <div class="faq__item"><h3>Bagaimana jika buku rosak semasa sampai?</h3><p>Hubungi kami dalam tempoh 7 hari dengan gambar kerosakan. Butirannya dalam <a class="link" href="/polisi-pemulangan">polisi pemulangan</a>.</p></div>
-        </div>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="soalan-h">Soalan tentang tempahan buku</h2>
+        <p>Ada soalan lain? WhatsApp <a class="link" href="https://wa.me/60108725969">+6010 872 5969</a> atau <a class="link" href="mailto:ronifira@gmail.com">e-mel kami</a>.</p>
       </div>
-      <div class="span-6 start-7">
-        <figure class="faq__pic"><img src="/img/soalan-buku.jpg" alt="Buku Siapa Akan Menguasai Putrajaya? di atas meja penuh nota dan kertas pelekat bertulis soalan pembaca" width="1600" height="893" loading="lazy" data-source="client" data-subject="the book among readers' questions, the owner's image" /></figure>
+      <div class="faq faq--wide">
+        <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>Selepas cetakan selesai: 3 hingga 5 hari bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.</p></div>
+        <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. RM56 ke Semenanjung (buku RM48, pos RM8) dan RM70 ke Sabah dan Sarawak (buku RM55, pos RM15).</p></div>
+        <div class="faq__item"><h3>Bagaimana saya membayar buku?</h3><p>Melalui CHIP Collect: FPX, DuitNow QR, kad kredit atau debit, dan e-dompet.</p></div>
+        <div class="faq__item"><h3>Bagaimana jika buku rosak semasa sampai?</h3><p>Hubungi kami dalam tempoh 7 hari dengan gambar kerosakan. Butirannya dalam <a class="link" href="/polisi-pemulangan">polisi pemulangan</a>.</p></div>
       </div>
     </div>
   </section>

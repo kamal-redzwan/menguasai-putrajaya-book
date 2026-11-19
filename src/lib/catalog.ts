@@ -30,6 +30,7 @@ export interface ShelfBook {
   author: string;
   availability: string;
   priceSemenanjung: number;
+  priceSabahSarawak: number;
   cover?: { src: string; alt: string; width?: number; height?: number };
   href: string;
 }
@@ -51,6 +52,7 @@ function toShelfBook(categorySlug: string, entry: { id: string; data: Record<str
     author: String(d.author ?? ""),
     availability: String(d.availability ?? ""),
     priceSemenanjung: Number(d.price_semenanjung ?? 0),
+    priceSabahSarawak: Number(d.price_sabah_sarawak ?? 0),
     cover: cover?.meta?.storageKey
       ? { src: `/_emdash/api/media/file/${cover.meta.storageKey}`, alt: cover.alt ?? "", width: cover.width, height: cover.height }
       : undefined,

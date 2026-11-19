@@ -1,0 +1,69 @@
+---
+// One Book on a shelf: the homepage's Featured Books and a Category page use the same card. The two postage-included
+// prices sit under the title, larger than the rest of the card, because they decide the purchase.
+export interface Props {
+  title: string;
+  author: string;
+  /** shown above the title on the homepage, where Books from different Categories sit together */
+  category?: string;
+  /** the label already in Malay, e.g. "Pra-tempahan" */
+  availability: string;
+  priceSemenanjung?: number;
+  priceSabahSarawak?: number;
+  href?: string;
+  cover?: { src: string; alt: string; width?: number; height?: number };
+  /** a "Contoh" card: no link, no cover, no prices */
+  placeholder?: boolean;
+}
+
+const { title, author, category, availability, priceSemenanjung, priceSabahSarawak, href, cover, placeholder = false } = Astro.props;
+const hasPrices = !placeholder && !!priceSemenanjung && !!priceSabahSarawak;
+const Tag = placeholder || !href ? "div" : "a";
+---
+
+<Tag class="shelf__card" href={Tag === "a" ? href : undefined} aria-label={placeholder ? "Contoh, bukan buku sebenar" : undefined}>
+  {placeholder || !cover ? (
+    <div class="shelf__cover shelf__cover--placeholder"><span>Contoh</span></div>
+  ) : (
+    <div class="shelf__cover"><img src={cover.src} alt={cover.alt} width={cover.width} height={cover.height} loading="lazy" /></div>
+  )}
+  {category && <span class="shelf__meta">{category}</span>}
+  <span class="shelf__title">{title}</span>
+  <span class="shelf__meta">{author}</span>
+  <span class:list={["shelf__tag", { "shelf__tag--muted": placeholder }]}>{availability}</span>
+  {hasPrices ? (
+    <Fragment>
+      <dl class="shelf__prices">
+        <div><dt>Semenanjung</dt><dd>RM{priceSemenanjung}</dd></div>
+        <div><dt>Sabah &amp; Sarawak</dt><dd>RM{priceSabahSarawak}</dd></div>
+      </dl>
+      <span class="shelf__meta">Termasuk pos</span>
+    </Fragment>
+  ) : (
+    <p class="shelf__prices shelf__prices--none">Harga akan diumumkan</p>
+  )}
+</Tag>
+
+<style is:global>
+  .shelf { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6) var(--s-5); }
+  .shelf__card { display: grid; gap: var(--s-2); align-content: start; color: inherit; text-decoration: none; }
+  .shelf__cover { aspect-ratio: 1748 / 2480; border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
+  .shelf__cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .shelf__cover--placeholder { display: grid; place-items: center; border: 1px dashed var(--line-strong); color: var(--muted); font-size: var(--t-small); }
+  .shelf__meta { font-size: var(--t-small); color: var(--muted); }
+  .shelf__title { margin-top: var(--s-2); font-size: var(--t-card, 20px); font-weight: 500; line-height: 1.25; }
+  .shelf__tag { justify-self: start; font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-sm); background: var(--p-accent); color: var(--p-accent-ink); }
+  .shelf__tag--muted { background: var(--surface); color: var(--ink); }
+  .shelf__prices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin: var(--s-3) 0 0; padding-top: var(--s-3); border-top: 1px solid var(--line); }
+  .shelf__prices > div { display: flex; flex-direction: column; }
+  .shelf__prices dt { font-size: var(--t-small); color: var(--muted); }
+  .shelf__prices dd { margin: auto 0 0; padding-top: var(--s-1, 4px); font-size: clamp(22px, 2vw, 28px); font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .shelf__prices--none { display: block; margin: var(--s-3) 0 0; padding-top: var(--s-3); border-top: 1px solid var(--line); font-size: var(--t-small); color: var(--muted); }
+  @media (max-width: 1023px) { .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* a phone card is too narrow for the prices side by side: one zone per row, label left, price right */
+  @media (max-width: 639px) {
+    .shelf__prices { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+    .shelf__prices > div { flex-direction: row; align-items: baseline; justify-content: space-between; gap: var(--s-2); }
+    .shelf__prices dd { margin: 0; padding-top: 0; font-size: 22px; }
+  }
+</style>

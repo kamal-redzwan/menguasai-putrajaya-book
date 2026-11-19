@@ -2,6 +2,7 @@
 // The Storefront homepage (GLOSSARY.md). Rendered on request so the Category section reads EmDash: a Category with
 // no Book that is Pre-order or On sale shows as "Akan datang". Featured Books are a static grid for now (Q8).
 import KitLayout from "../layouts/KitLayout.astro";
+import BookCard from "../components/BookCard.astro";
 import { getCategoryShelves, SHOW_PLACEHOLDERS } from "../lib/catalog";
 
 export const prerender = false;
@@ -17,9 +18,10 @@ const featured = [
     author: "Ronifira Rejab",
     category: "Umum Politik",
     availability: "Pra-tempahan",
-    price: "RM56, termasuk pos ke Semenanjung",
+    priceSemenanjung: 56,
+    priceSabahSarawak: 70,
     href: BOOK,
-    cover,
+    cover: { src: cover, alt: "Kulit buku Siapa Akan Menguasai Putrajaya?", width: 1748, height: 2480 },
     placeholder: false,
   },
   ...(SHOW_PLACEHOLDERS
@@ -28,9 +30,6 @@ const featured = [
         author: "Nama penulis",
         category,
         availability: "Akan datang",
-        price: "Harga akan diumumkan",
-        href: "",
-        cover: "",
         placeholder: true,
       }))
     : []),
@@ -58,15 +57,6 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
     .hero-store__text .btn-row { margin-top: var(--s-7); }
     .hero-store__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4 / 3; }
     .hero-store__pic img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
-    .shelf { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5); }
-    .shelf__card { display: grid; gap: var(--s-2); align-content: start; color: inherit; text-decoration: none; }
-    .shelf__cover { aspect-ratio: 1748 / 2480; border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
-    .shelf__cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .shelf__cover--placeholder { display: grid; place-items: center; border: 1px dashed var(--line-strong); color: var(--muted); font-size: var(--t-small); }
-    .shelf__meta { font-size: var(--t-small); color: var(--muted); }
-    .shelf__title { margin-top: var(--s-2); font-size: var(--t-card, 20px); font-weight: 500; line-height: 1.25; }
-    .shelf__tag { justify-self: start; font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-sm); background: var(--p-accent); color: var(--p-accent-ink); }
-    .shelf__tag--muted { background: var(--surface); color: var(--ink); }
     .cats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); }
     .cat { display: grid; gap: var(--s-2); align-content: space-between; min-height: 132px; padding: var(--s-5); border-radius: var(--r-md);
       border: 1px solid var(--line-strong); color: inherit; text-decoration: none; }
@@ -75,15 +65,14 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
     a.cat { background: var(--ink); color: var(--bg); border-color: var(--ink); }
     a.cat .cat__state { color: var(--p-accent); }
     .about__facts { margin-top: var(--s-6); }
-    .about__pic, .faq__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
-    .about__pic img, .faq__pic img { display: block; width: 100%; height: auto; }
+    .about__pic { margin: 0; border-radius: var(--r-lg); overflow: hidden; }
+    .about__pic img { display: block; width: 100%; height: auto; }
     .about__pic img { aspect-ratio: 4 / 5; object-fit: cover; }
     .draft-note { margin-top: var(--s-5); padding: var(--s-4); border: 1px dashed var(--line-strong); border-radius: var(--r-sm); font-size: var(--t-small); }
     @media (max-width: 1023px) {
       .hero-store__pic { margin-top: var(--s-7); }
-      .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .about__pic, .faq__pic { margin-top: var(--s-7); }
+      .about__pic { margin-top: var(--s-7); }
     }
     @media (max-width: 639px) {
       .hero--store { height: auto; min-height: 100svh; }
@@ -106,7 +95,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
           </div>
         </div>
         <div class="span-6 start-7">
-          <figure class="hero-store__pic"><img data-enter-media src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="893" fetchpriority="high" data-source="client" data-subject="a reader with the book" /></figure>
+          <figure class="hero-store__pic"><img data-enter-media src="/img/bab-membaca.jpg" alt="Seorang lelaki membaca buku Siapa Akan Menguasai Putrajaya? di bilik bacaan" width="1600" height="894" fetchpriority="high" data-source="client" data-subject="a reader with the book" /></figure>
         </div>
       </div>
     </div>
@@ -120,26 +109,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
       </div>
       <ul class="shelf" role="list">
         {featured.map((book) => (
-          <li>
-            {book.placeholder ? (
-              <div class="shelf__card" aria-label="Contoh, bukan buku sebenar">
-                <div class="shelf__cover shelf__cover--placeholder"><span>Contoh</span></div>
-                <span class="shelf__meta">{book.category}</span>
-                <span class="shelf__title">{book.title}</span>
-                <span class="shelf__meta">{book.author}</span>
-                <span class="shelf__tag shelf__tag--muted">{book.availability}</span>
-              </div>
-            ) : (
-              <a class="shelf__card" href={book.href}>
-                <div class="shelf__cover"><img src={book.cover} alt={`Kulit buku ${book.title}`} width="1748" height="2480" loading="lazy" /></div>
-                <span class="shelf__meta">{book.category}</span>
-                <span class="shelf__title">{book.title}</span>
-                <span class="shelf__meta">{book.author}</span>
-                <span class="shelf__tag">{book.availability}</span>
-                <span class="shelf__meta">{book.price}</span>
-              </a>
-            )}
-          </li>
+          <li><BookCard {...book} /></li>
         ))}
       </ul>
     </div>
@@ -197,21 +167,16 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
 
   <!-- 5. FAQ: shop-wide questions; book-specific ones stay on each Book Page (Q15) -->
   <section class="section" id="soalan" aria-labelledby="soalan-h">
-    <div class="wrap grid">
-      <div class="span-6">
-        <div class="section-head">
-          <h2 id="soalan-h">Soalan tentang membeli buku</h2>
-          <p>Ada soalan lain? WhatsApp <a class="link" href="https://wa.me/60108725969">+6010 872 5969</a> atau <a class="link" href="mailto:ronifira@gmail.com">e-mel kami</a>.</p>
-        </div>
-        <div class="faq">
-          <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>Buku pra-tempahan dihantar selepas cetakan selesai: 3 hingga 5 hari bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.</p></div>
-          <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. Harga di setiap buku sudah termasuk pos, mengikut zon Semenanjung atau Sabah dan Sarawak.</p></div>
-          <div class="faq__item"><h3>Bagaimana saya membayar buku?</h3><p>Melalui CHIP Collect: FPX, DuitNow QR, kad kredit atau debit, dan e-dompet.</p></div>
-          <div class="faq__item"><h3>Bagaimana jika buku rosak semasa sampai?</h3><p>Hubungi kami dalam tempoh 7 hari dengan gambar kerosakan. Butirannya dalam <a class="link" href="/polisi-pemulangan">polisi pemulangan</a>.</p></div>
-        </div>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="soalan-h">Soalan tentang membeli buku</h2>
+        <p>Ada soalan lain? WhatsApp <a class="link" href="https://wa.me/60108725969">+6010 872 5969</a> atau <a class="link" href="mailto:ronifira@gmail.com">e-mel kami</a>.</p>
       </div>
-      <div class="span-6 start-7">
-        <figure class="faq__pic"><img src="/img/soalan-buku.jpg" alt="Buku Siapa Akan Menguasai Putrajaya? di atas meja penuh nota dan kertas pelekat bertulis soalan pembaca" width="1600" height="893" loading="lazy" data-source="client" data-subject="the book among readers' questions" /></figure>
+      <div class="faq faq--wide">
+        <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>Buku pra-tempahan dihantar selepas cetakan selesai: 3 hingga 5 hari bekerja ke Semenanjung, 5 hingga 7 hari bekerja ke Sabah dan Sarawak.</p></div>
+        <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. Harga di setiap buku sudah termasuk pos, mengikut zon Semenanjung atau Sabah dan Sarawak.</p></div>
+        <div class="faq__item"><h3>Bagaimana saya membayar buku?</h3><p>Melalui CHIP Collect: FPX, DuitNow QR, kad kredit atau debit, dan e-dompet.</p></div>
+        <div class="faq__item"><h3>Bagaimana jika buku rosak semasa sampai?</h3><p>Hubungi kami dalam tempoh 7 hari dengan gambar kerosakan. Butirannya dalam <a class="link" href="/polisi-pemulangan">polisi pemulangan</a>.</p></div>
       </div>
     </div>
   </section>

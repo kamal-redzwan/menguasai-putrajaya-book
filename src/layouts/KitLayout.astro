@@ -45,7 +45,8 @@ const policies = [
     <meta property="og:description" content={description} />
     <meta property="og:image" content="/share.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- no favicon until the client supplies their logo; the empty icon stops the browser asking for /favicon.ico -->
+    <link rel="icon" href="data:," />
     <meta name="theme-color" content="#f4f1ea" />
     <meta name="site-kind" content="other" />
     <meta name="page-type" content="product" />
@@ -84,7 +85,7 @@ const policies = [
     <header class="nav nav--split">
       <div class="wrap nav__bar">
         <a class="skip-link" href="#top">Langkau ke kandungan</a>
-        <a class="nav__logo" href={home ? "#top" : "/"}><span class="mark" data-mark="stack" aria-hidden="true"></span><span class="nav__name">Brainwave Communications</span></a>
+        <a class="nav__logo" href={home ? "#top" : "/"}>Brainwave<span class="nav__name-rest"> Communications</span></a>
         {nav === "book" ? (
           <nav class="nav__links" aria-label="Utama">
             <div class="nav__item">
@@ -160,18 +161,28 @@ const policies = [
         <!-- close: close-photo dealt; with no photographs on the page it becomes close-word's head row without the
              name (sections.md section 2) -->
         <div class="closing__cta close--word">
-          <div class="section-head--split">
-            <div>
-              <h2 id="close-h">Tempah buku sebelum cetakan pertama habis</h2>
-              <p class="t-lead">RM56 ke Semenanjung, RM70 ke Sabah dan Sarawak, pos termasuk.</p>
+          {nav === "book" ? (
+            <div class="section-head--split">
+              <div>
+                <h2 id="close-h">Tempah buku sebelum cetakan pertama habis</h2>
+                <p class="t-lead">RM56 ke Semenanjung, RM70 ke Sabah dan Sarawak, pos termasuk.</p>
+              </div>
+              <a class="btn btn--primary" href={order}>Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
             </div>
-            <a class="btn btn--primary" href={order}>Tempah buku<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
-          </div>
+          ) : (
+            <div class="section-head--split">
+              <div>
+                <h2 id="close-h">Pilih buku untuk dibaca seterusnya</h2>
+                <p class="t-lead">Beli terus dari penerbit. Harga setiap buku sudah termasuk pos ke Semenanjung, Sabah dan Sarawak.</p>
+              </div>
+              <a class="btn btn--primary" href={store("pilihan")}>Lihat buku pilihan<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
+            </div>
+          )}
         </div>
         <div class="closing__links">
           <div class="grid">
             <div class="span-4 stack-4">
-              <a class="nav__logo" href={home ? "#top" : "/"}><span class="mark" data-mark="stack" aria-hidden="true"></span>Brainwave Communications</a>
+              <a class="nav__logo" href={home ? "#top" : "/"}>Brainwave Communications</a>
               <p class="footer__lede">Penerbit buku di Ampang, Selangor.</p>
             </div>
             <div class="span-2 footer__col">
@@ -214,8 +225,11 @@ const policies = [
     </footer>
 
     <style is:inline>
-      /* a 24-character name: on phones the bar shows the mark alone (system.css: the client shortens it to its mark) */
-      @media (max-width: 479px) { .nav__bar .nav__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+      /* no mark until the client's logo arrives: the name is the logo, shortened to "Brainwave" where the bar is narrow */
+      @media (max-width: 479px) { .nav__bar .nav__name-rest { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+      /* FAQ at full width: two columns of questions on wide screens */
+      .faq--wide { column-gap: var(--s-8); }
+      @media (min-width: 1024px) { .faq--wide { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .faq--wide > .faq__item:nth-child(2) { padding-top: 0; } }
       .footer__addr { margin-top: var(--s-4); font-style: normal; font-size: var(--t-small); color: var(--muted); line-height: 1.5; }
     </style>
     <script is:inline type="module" src="/assets/system.js"></script>
