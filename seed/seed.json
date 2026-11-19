@@ -45,10 +45,10 @@
       "terms": [
         { "slug": "umum-politik", "label": "Umum Politik" },
         { "slug": "umum-motivasi", "label": "Umum Motivasi" },
-        { "slug": "buku-novel-remaja", "label": "Buku Novel Remaja" },
-        { "slug": "buku-novel-kanak-kanak", "label": "Buku Novel Kanak-kanak" },
-        { "slug": "buku-tokoh-tokoh", "label": "Buku Tokoh-tokoh" },
-        { "slug": "buku-ilmiah", "label": "Buku Ilmiah" }
+        { "slug": "novel-remaja", "label": "Novel Remaja" },
+        { "slug": "kanak-kanak", "label": "Novel Kanak-kanak" },
+        { "slug": "tokoh-tokoh", "label": "Tokoh-tokoh" },
+        { "slug": "ilmiah", "label": "Ilmiah" }
       ]
     }
   ],

@@ -25,7 +25,7 @@ const featured = [
     placeholder: false,
   },
   ...(SHOW_PLACEHOLDERS
-    ? ["Umum Motivasi", "Buku Novel Remaja", "Buku Tokoh-tokoh"].map((category) => ({
+    ? categories.filter((c) => c.upcoming).slice(0, 3).map(({ label: category }) => ({
         title: "Tajuk buku contoh",
         author: "Nama penulis",
         category,
@@ -36,6 +36,11 @@ const featured = [
 ];
 
 // Testimonials: real readers' words with their names only (GLOSSARY.md). None yet, so the section stays hidden.
+// "Lima lagi akan menyusul": how many Categories are still Upcoming, in words up to ten
+const WORDS = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Lapan", "Sembilan", "Sepuluh"];
+const upcomingCount = categories.filter((c) => c.upcoming).length;
+const upcomingNote = upcomingCount === 0 ? "" : `${WORDS[upcomingCount] ?? upcomingCount} lagi akan menyusul.`;
+
 const testimonials: Array<{ quote: string; name: string; detail: string }> = [];
 
 Astro.response.headers.set("Cache-Control", "public, max-age=60");
@@ -119,7 +124,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
   <section class="section" id="kategori" aria-labelledby="kategori-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="kategori-h">Kategori buku. <span class="muted">Lima lagi akan menyusul.</span></h2>
+        <h2 id="kategori-h">Kategori buku.{upcomingNote && <> <span class="muted">{upcomingNote}</span></>}</h2>
       </div>
       <ul class="cats" role="list">
         {categories.map((category) => (

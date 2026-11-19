@@ -17,8 +17,9 @@ Putrajaya?* is the first.
 _Avoid_: Product, item, title
 
 **Category**:
-A shelf a Book belongs to, such as Umum Politik. The six are Umum Politik, Umum Motivasi, Buku Novel Remaja,
-Buku Novel Kanak-kanak, Buku Tokoh-tokoh and Buku Ilmiah.
+A shelf a Book belongs to, such as Umum Politik. The six are Umum Politik, Umum Motivasi, Novel Remaja,
+Novel Kanak-kanak, Tokoh-tokoh and Ilmiah. The owner names, adds and orders them in the EmDash admin, and the site
+reads them from there.
 _Avoid_: Genre, collection, tag
 
 **Upcoming Category**:

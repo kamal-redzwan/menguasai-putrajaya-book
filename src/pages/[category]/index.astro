@@ -2,11 +2,11 @@
 // A Category's shelf: every Book filed under it in EmDash. Upcoming Categories have no page (Q6), so they 404.
 import KitLayout from "../../layouts/KitLayout.astro";
 import BookCard from "../../components/BookCard.astro";
-import { CATEGORIES, getShelf } from "../../lib/catalog";
+import { getCategories, getShelf } from "../../lib/catalog";
 
 export const prerender = false;
 
-const category = CATEGORIES.find((c) => c.slug === Astro.params.category);
+const category = (await getCategories()).find((c) => c.slug === Astro.params.category);
 const books = category ? await getShelf(category.slug) : [];
 const orderable = books.filter((b) => b.availability === "Pre-order" || b.availability === "On sale");
 if (!category || orderable.length === 0) {
