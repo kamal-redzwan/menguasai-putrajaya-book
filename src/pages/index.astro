@@ -65,6 +65,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
     .hero-book img { position: relative; z-index: 1; display: block; width: 100%; height: auto; animation: book-float 6s ease-in-out infinite; }
     .hero-book::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 28px; border-radius: 50%;
       background: radial-gradient(closest-side, rgb(0 0 0 / .6), transparent); animation: book-shadow 6s ease-in-out infinite; }
+    .hero-book.is-still img, .hero-book.is-still::after { animation-play-state: paused; }
     @keyframes book-float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-18px) rotate(1deg); } }
     @keyframes book-shadow { 0%, 100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(.82); opacity: .6; } }
     .cats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); }
@@ -110,6 +111,17 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    // the hero book floats until the reader first scrolls down, then holds still for the rest of the visit
+    (() => {
+      const book = document.querySelector('.hero-book');
+      if (!book) return;
+      const stop = () => { if (window.scrollY > 0) { book.classList.add('is-still'); removeEventListener('scroll', stop); } };
+      addEventListener('scroll', stop, { passive: true });
+      stop();
+    })();
+  </script>
 
   <!-- 2. Featured Books: a static grid for now (Q8) -->
   <section class="section" id="pilihan" aria-labelledby="pilihan-h">
@@ -157,7 +169,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
       <div class="span-6">
         <div class="section-head">
           <h2 id="tentang-h">Tentang Brainwave Communications</h2>
-          <p>Kami penerbit buku di Ampang, Selangor. Buku pertama kami, <em>Siapa Akan Menguasai Putrajaya?</em>, diterbitkan bersama Prestasi Media.</p>
+          <p>Kami penerbit buku di Ampang, Selangor. Buku kami, <em>Siapa Akan Menguasai Putrajaya?</em>, diterbitkan bersama Prestasi Media.</p>
         </div>
         <ul class="rows rows--spec about__facts">
           <li><span class="rows__name">Syarikat</span><span class="rows__value">Brainwave Communications</span></li>
@@ -170,7 +182,7 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60");
         )}
       </div>
       <div class="span-6 start-7">
-        <figure class="about__pic"><img src="/img/pejabat-brainwave.svg" alt="Lukisan garis pejabat Brainwave Communications" width="800" height="1000" loading="lazy" data-source="client" data-subject="Brainwave office line art" /></figure>
+        <figure class="about__pic"><img src="/img/pejabat-brainwave.svg" alt="Lukisan garis ruang kerja penerbit buku" width="800" height="1000" loading="lazy" data-source="client" data-subject="publisher workspace line art" /></figure>
       </div>
     </div>
   </section>

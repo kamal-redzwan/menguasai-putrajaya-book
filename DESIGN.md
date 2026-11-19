@@ -38,11 +38,16 @@ Radius `soft`. Type: Urbanist (the first pairing `start.mjs` dealt), self-hosted
 | `img/soalan-buku.jpg` | The owner's image of the book among readers' questions (questions section) |
 | `img/buku-kulit-depan-belakang.jpg` | Generated: back and front cover side by side (nav panel card) |
 | `poster-video-0*.jpg` | First frames of the client's videos (posters) |
+| `img/buku-terapung.webp` | The client's 3D book mockup, cropped to the book (homepage hero) |
+| `img/pejabat-brainwave.svg` | The client's line drawing of a publisher's workspace (homepage About). Not the real office: it stands for the kind of work, books and parcels on a desk |
 
 ## Decisions that break a taste-skill rule, on purpose (waived in `.taste-skill/waivers.json`)
 - **Phone number, full address with postcode, SSM number:** taste-skill rule 9 forbids them. CHIP Collect
   card-payment activation needs them, and the owner supplied them.
 - **Hero:** the owner's layout replaces the dealt hero; taste-skill's hero checks no longer apply to it.
+- **Floating book (homepage hero):** `site-kind other` means nothing moves by itself, and the dial is MOTION 2.
+  The client asked for the book to float, to draw the eye to the one book on sale. It bobs on a 6 s loop, stops
+  for good once the reader scrolls down, and does not move under `prefers-reduced-motion`.
 
 ## Policy pages
 Legal text reads top to bottom, so the policy pages' one section grows with its text (page CSS
