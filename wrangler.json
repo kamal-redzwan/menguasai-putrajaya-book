@@ -11,7 +11,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "menguasai-putrajaya-book"
+      "database_name": "menguasai-putrajaya-book",
+      "database_id": "e11be999-fd3a-46db-b7e0-5bb2efbdc050"
     }
   ],
   "r2_buckets": [
