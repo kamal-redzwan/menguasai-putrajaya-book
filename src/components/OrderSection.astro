@@ -1,9 +1,4 @@
 ---
-export interface Props {
-  totalQuota?: number;
-}
-
-const { totalQuota = 200 } = Astro.props;
 const resolvedBrandId =
   import.meta.env.PUBLIC_CHIP_BRAND_ID ||
   import.meta.env.CHIP_BRAND_ID ||
@@ -17,7 +12,7 @@ const resolvedBrandId =
     <div class="span-6">
       <div class="section-head">
         <h2 id="tempah-h">Borang tempahan buku</h2>
-        <p>Harga pra-jualan untuk {totalQuota} naskhah cetakan pertama.</p>
+        <p>Stok sedia ada. Buku dipos dalam 2 hingga 3 hari bekerja selepas pesanan diterima.</p>
       </div>
       <form
         id="chip-checkout-form"
