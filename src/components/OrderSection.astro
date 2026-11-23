@@ -1,4 +1,24 @@
 ---
+// The order form. With no props it is Siapa Akan Menguasai Putrajaya?'s, as on its hand-built Book Page. The standard
+// Book Page passes its Book: the form then sends the Book's slug, and /api/checkout reads the title and prices from
+// EmDash instead of trusting the ones on the page. The "side" slot replaces the Putrajaya picture.
+export interface Props {
+  book?: { slug: string; title: string; priceSemenanjung: number; priceSabahSarawak: number };
+  /** the line under the heading: when the Book is posted */
+  lede?: string;
+}
+
+const { book, lede = "Stok sedia ada. Buku dipos dalam 2 hingga 3 hari bekerja selepas pesanan diterima." } = Astro.props;
+const zones = book
+  ? [
+      { value: "semenanjung", name: "Semenanjung", note: "Termasuk pos", price: book.priceSemenanjung },
+      { value: "borneo", name: "Sabah dan Sarawak", note: "Termasuk pos", price: book.priceSabahSarawak },
+    ]
+  : [
+      { value: "semenanjung", name: "Semenanjung", note: "Buku RM48, pos RM8", price: 56 },
+      { value: "borneo", name: "Sabah dan Sarawak", note: "Buku RM55, pos RM15", price: 70 },
+    ];
+const rm = (n: number) => `RM${n.toFixed(2)}`;
 const resolvedBrandId =
   import.meta.env.PUBLIC_CHIP_BRAND_ID ||
   import.meta.env.CHIP_BRAND_ID ||
@@ -12,7 +32,7 @@ const resolvedBrandId =
     <div class="span-6">
       <div class="section-head">
         <h2 id="tempah-h">Borang tempahan buku</h2>
-        <p>Stok sedia ada. Buku dipos dalam 2 hingga 3 hari bekerja selepas pesanan diterima.</p>
+        <p>{lede}</p>
       </div>
       <form
         id="chip-checkout-form"
@@ -21,20 +41,19 @@ const resolvedBrandId =
         method="post"
         data-brand-id={resolvedBrandId}
         data-fix="{n} ruangan perlu dibetulkan."
+        data-book={book?.slug}
+        data-book-title={book?.title ?? "Siapa Akan Menguasai Putrajaya?"}
         novalidate
       >
         <fieldset class="field field--full zones">
           <legend>Zon penghantaran</legend>
-          <label class="zone">
-            <input type="radio" name="region" value="semenanjung" data-price-rm="56" checked />
-            <span class="zone__name">Semenanjung<span class="zone__note">Buku RM48, pos RM8</span></span>
-            <span class="zone__price">RM56</span>
-          </label>
-          <label class="zone">
-            <input type="radio" name="region" value="borneo" data-price-rm="70" />
-            <span class="zone__name">Sabah dan Sarawak<span class="zone__note">Buku RM55, pos RM15</span></span>
-            <span class="zone__price">RM70</span>
-          </label>
+          {zones.map((z, i) => (
+            <label class="zone">
+              <input type="radio" name="region" value={z.value} data-price-rm={z.price} checked={i === 0} />
+              <span class="zone__name">{z.name}<span class="zone__note">{z.note}</span></span>
+              <span class="zone__price">RM{z.price}</span>
+            </label>
+          ))}
         </fieldset>
 
         <div class="field">
@@ -68,7 +87,7 @@ const resolvedBrandId =
           <p class="field__error" id="shipping_address-err" hidden>Tulis alamat penuh dengan poskod dan negeri.</p>
         </div>
 
-        <p class="order__sum"><span>Jumlah bayaran (<span id="summary-unit-price">RM56.00</span> senaskhah)</span><span class="order__total" id="summary-total-price">RM56.00</span></p>
+        <p class="order__sum"><span>Jumlah bayaran (<span id="summary-unit-price">{rm(zones[0].price)}</span> senaskhah)</span><span class="order__total" id="summary-total-price">{rm(zones[0].price)}</span></p>
 
         <div class="btn-row">
           <button class="btn btn--primary" type="submit" id="submit-payment-btn">Tempah buku</button>
@@ -81,7 +100,9 @@ const resolvedBrandId =
       </form>
     </div>
     <div class="span-6 start-7 order__side">
+      {Astro.slots.has("side") ? <slot name="side" /> : (
       <div class="frame frame--photo order__pic"><img class="frame__img" src="/img/tempah-putrajaya.jpg" alt="Bangunan Perdana Putra dan Masjid Putra di tepi tasik Putrajaya pada waktu malam" width="1200" height="1608" loading="lazy" data-source="client" data-subject="Putrajaya at night, the owner's image" /></div>
+      )}
     </div>
   </div>
 </section>
@@ -121,7 +142,7 @@ const resolvedBrandId =
 
   const priceRM = (): number => {
     const checked = document.querySelector<HTMLInputElement>('input[name="region"]:checked');
-    return checked ? Number(checked.dataset.priceRm || 56) : 56;
+    return Number(checked?.dataset.priceRm || 0);
   };
   const quantity = (): number => (quantitySelect ? Number(quantitySelect.value || 1) : 1);
   const rm = (n: number): string => `RM${n.toFixed(2)}`;
@@ -153,10 +174,14 @@ const resolvedBrandId =
     const qty = quantity();
     const regionLabel = region === "borneo" ? "Sabah & Sarawak" : "Semenanjung Malaysia";
     const total = (unit * qty).toFixed(2);
+    const bookSlug = form.dataset.book;
+    const bookTitle = form.dataset.bookTitle || "Siapa Akan Menguasai Putrajaya?";
     const cleanAddress = address.replace(/\s+/g, " ");
     const shortAddress = cleanAddress.slice(0, 128);
 
     const payload = {
+      // a Book from EmDash: the server reads its title and prices and rebuilds the product line from them
+      ...(bookSlug ? { book: bookSlug, region } : {}),
       brand_id: form.dataset.brandId || "db3280df-c2eb-48e5-bdcb-b757e269de69",
       client: {
         email,
@@ -167,11 +192,11 @@ const resolvedBrandId =
       },
       purchase: {
         currency: "MYR",
-        products: [{ name: `Siapa Akan Menguasai Putrajaya? (${regionLabel})`, price: unit * 100, quantity: qty }],
+        products: [{ name: `${bookTitle} (${regionLabel})`, price: unit * 100, quantity: qty }],
         notes: `Nama: ${fullName} | Tel: ${phone} | E-mel: ${email} | Zon: ${regionLabel} | Kuantiti: ${qty} naskhah | Jumlah: RM${total} | Alamat: ${cleanAddress}`,
       },
       success_redirect: `${window.location.origin}/berjaya`,
-      failure_redirect: `${window.location.origin}/umum-politik/menguasai-putrajaya?status=gagal#tempah`,
+      failure_redirect: `${window.location.origin}${window.location.pathname}?status=gagal#tempah`,
       success_callback: `${window.location.origin}/api/webhook`,
     };
 

@@ -15,14 +15,16 @@ export interface Props {
   /** true on the homepage, so its own section links stay on the page */
   home?: boolean;
   moments?: string[];
+  /** where the nav's "Tempah buku" leads; a standard Book Page points it at its own order form */
+  orderHref?: string;
 }
 
-const { title, description, nav = "store", home = false, moments = [] } = Astro.props;
+const { title, description, nav = "store", home = false, moments = [], orderHref } = Astro.props;
 // The one Book on sale; its order form is the site's main action until a second Book is on sale.
 const BOOK = "/umum-politik/menguasai-putrajaya";
 const store = (id: string) => (home ? `#${id}` : `/#${id}`);
 const book = (id: string) => (nav === "book" ? `#${id}` : `${BOOK}#${id}`);
-const order = book("tempah");
+const order = orderHref ?? book("tempah");
 const year = new Date().getFullYear();
 
 const policies = [
@@ -198,7 +200,7 @@ const policies = [
               <h3>Buku terbaru</h3>
               <ul>
                 <li><a href={nav === "book" ? "#top" : BOOK}>Siapa Akan Menguasai Putrajaya?</a></li>
-                <li><a href={order}>Borang tempahan</a></li>
+                <li><a href={book("tempah")}>Borang tempahan</a></li>
               </ul>
             </div>
             <div class="span-2 footer__col">

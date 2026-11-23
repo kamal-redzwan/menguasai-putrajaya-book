@@ -1,0 +1,225 @@
+---
+// The standard Book Page: every Book the owner adds in the EmDash admin gets one at /<category>/<book>, built from its
+// fields. Siapa Akan Menguasai Putrajaya? keeps its hand-built page; Astro serves that static route before this one.
+// tasteskill deal, kept from the site (DESIGN.md): product, site-kind other, nav-split, the owner's cover-left hero on
+// the jacket's navy, footer-dark, buttons pill; moment word-highlight on the synopsis. A Book has one picture (its
+// cover), so the cover leads the hero only and the order section's side holds the Book's details instead.
+import KitLayout from "../../layouts/KitLayout.astro";
+import BookCard from "../../components/BookCard.astro";
+import OrderSection from "../../components/OrderSection.astro";
+import { AVAILABILITY_LABEL, getBookOnShelf, getCategories, isOrderable } from "../../lib/catalog";
+
+export const prerender = false;
+
+const category = (await getCategories()).find((c) => c.slug === Astro.params.category);
+const found = category && Astro.params.book ? await getBookOnShelf(category.slug, Astro.params.book) : null;
+if (!category || !found) {
+  return new Response(null, { status: 404 });
+}
+
+const { book, others } = found;
+const hasPrices = book.priceSemenanjung > 0 && book.priceSabahSarawak > 0;
+const orderable = isOrderable(book.availability) && hasPrices;
+const preorder = book.availability === "Pre-order";
+const status = AVAILABILITY_LABEL[book.availability] ?? book.availability;
+const rm = (n: number) => `RM${n.toFixed(2)}`;
+const coverAlt = book.cover?.alt || `Kulit hadapan buku ${book.title} karya ${book.author}`;
+const shelf = others.slice(0, 4);
+const delivery = preorder
+  ? "Dipos sebaik sahaja buku siap dicetak"
+  : "Dipos 2 hingga 3 hari bekerja selepas pesanan";
+
+const title = `${book.title}: buku ${category.label} karya ${book.author}`;
+const description = [
+  book.synopsis ? book.synopsis.slice(0, 120).replace(/\s+\S*$/, "") + "." : `Buku ${category.label} karya ${book.author}.`,
+  hasPrices ? `${rm(book.priceSemenanjung)} termasuk pos ke Semenanjung.` : "",
+]
+  .filter(Boolean)
+  .join(" ");
+
+Astro.response.headers.set("Cache-Control", "public, max-age=60");
+---
+
+<KitLayout title={title} description={description} orderHref={orderable ? "#tempah" : undefined} moments={book.synopsis ? ["word-highlight"] : []}>
+  <style is:inline slot="head">
+    /* page CSS: the hero is the owner's Book Page layout, cover left on the jacket's navy */
+    .hero--book { display: grid; align-content: center; padding-top: calc(var(--nav) + var(--s-7)); padding-bottom: var(--s-8); }
+    .hero-book { align-items: center; }
+    .hero-book__cover { aspect-ratio: 1748 / 2480; max-width: 420px; max-height: calc(100svh - var(--nav) - 128px); }
+    .hero-book__cover img { display: block; width: 100%; height: 100%; object-fit: cover;
+      border-radius: var(--r-md); border: 1px solid var(--line-strong); box-shadow: 0 24px 60px rgb(0 0 0 / .45); }
+    .hero-book__label { font-size: var(--t-small); font-weight: 600; color: var(--p-accent); }
+    .hero-book__label a { color: inherit; text-decoration: none; }
+    .hero-book__label a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .hero-book__text h1 { margin-top: var(--s-3); font-size: clamp(40px, 5vw, 72px); line-height: 1.04; overflow-wrap: break-word; }
+    .hero-book__by { margin-top: var(--s-4); font-size: var(--t-lead); color: var(--muted); }
+    .hero-book__by strong { color: var(--ink); font-weight: 600; }
+    .hero-book__prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); margin: var(--s-7) 0; padding: var(--s-5) 0;
+      border-block: 1px solid var(--line-strong); }
+    .hero-book__prices > div { display: flex; flex-direction: column; }
+    .hero-book__prices dt { font-size: var(--t-small); color: var(--muted); }
+    .hero-book__prices dt span { display: block; }
+    .hero-book__prices dd { margin: auto 0 0; padding-top: var(--s-2); font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+    .hero-book__prices dd.is-accent { color: var(--p-accent); }
+    .hero-book__prices dd.is-small { font-size: var(--t-lead); }
+    .hero-book__soon { margin: var(--s-7) 0; padding: var(--s-5) 0; border-block: 1px solid var(--line-strong); font-size: var(--t-lead); }
+    @media (max-width: 1023px) {
+      .hero--book { align-content: start; }
+      .hero-book__cover { order: 2; margin-top: var(--s-7); max-width: 300px; max-height: none; }
+    }
+    @media (max-width: 639px) {
+      .hero--book { height: auto; min-height: 100svh; }
+      .hero-book__prices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero-book__prices > div:last-child { grid-column: 1 / -1; }
+      .hero-book__cover { max-width: 240px; }
+    }
+    /* the Book's details beside the order form, and alone when it can't be ordered yet */
+    .book-facts { align-self: start; padding: var(--s-6); border-radius: var(--r-lg); background: var(--surface); }
+    .book-facts h3 { font-size: var(--t-card, 20px); font-weight: 500; }
+    .book-facts .rows { margin-top: var(--s-4); }
+    @media (max-width: 639px) { .book-facts { margin-top: var(--s-7); padding: var(--s-5); } }
+    @media (max-width: 479px) {
+      .book-facts .rows > li { grid-template-columns: auto minmax(0, 1fr); }
+      .book-facts .rows__value { max-width: none; overflow-wrap: anywhere; }
+    }
+    /* sections that grow with what the admin wrote, instead of the kit's one-screen height */
+    main > section.section--grow { height: auto; min-height: 0; }
+    main > section.section--grow > .wrap { height: auto; }
+  </style>
+
+  <!-- HERO: the cover on the left; category, title, author, prices and actions on the right -->
+  <section class="hero hero--book ground-inverse" data-enter aria-labelledby="hero-h">
+    <div class="wrap">
+      <div class="grid hero-book">
+        <div class="span-5 hero-book__cover">
+          {book.cover ? (
+            <img data-enter-media src={book.cover.src} alt={coverAlt} width={book.cover.width} height={book.cover.height} fetchpriority="high" data-source="client" data-subject="the book, front cover" />
+          ) : (
+            <div class="shelf__cover shelf__cover--placeholder" role="img" aria-label={`Kulit buku ${book.title} belum dimuat naik`}></div>
+          )}
+        </div>
+        <div class="span-7 start-6 hero-book__text">
+          <p class="hero-book__label"><a href={`/${category.slug}`}>{category.label}</a> · {status}</p>
+          <h1 id="hero-h">{book.title}</h1>
+          <p class="hero-book__by">Karya <strong>{book.author}</strong></p>
+          {hasPrices ? (
+            <dl class="hero-book__prices">
+              <div><dt>Semenanjung <span>(termasuk pos)</span></dt><dd class="is-accent">{rm(book.priceSemenanjung)}</dd></div>
+              <div><dt>Sabah &amp; Sarawak <span>(termasuk pos)</span></dt><dd>{rm(book.priceSabahSarawak)}</dd></div>
+              {book.pages ? (
+                <div><dt>Muka surat</dt><dd class="is-small">{book.pages}</dd></div>
+              ) : (
+                <div><dt>Status</dt><dd class="is-small">{status}</dd></div>
+              )}
+            </dl>
+          ) : (
+            <p class="hero-book__soon">Harga dan tarikh tempahan akan diumumkan.</p>
+          )}
+          <div class="btn-row">
+            {orderable ? (
+              <a class="btn btn--primary" href="#tempah">{preorder ? "Pra-tempah buku" : "Tempah buku"}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8" /><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" /></svg></a>
+            ) : (
+              <a class="btn btn--primary" href={`/${category.slug}`}>Lihat buku {category.label}</a>
+            )}
+            {book.synopsis && <a class="btn btn--secondary" href="#sinopsis">Baca sinopsis buku</a>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- word-highlight (dealt moment): the synopsis as one statement. Then the order form (or the details while the
+       Book can't be ordered), the rest of its shelf, and the buyer's questions answered with this Book's prices. -->
+  {book.synopsis && (
+    <section class="section statement" id="sinopsis" data-moment="word-highlight" aria-label="Sinopsis">
+      <div class="wrap">
+        <p class="t-label">Sinopsis</p>
+        <p class="mo-wh__text">{book.synopsis}</p>
+      </div>
+    </section>
+  )}
+
+  {orderable ? (
+    <OrderSection
+      book={{ slug: book.slug, title: book.title, priceSemenanjung: book.priceSemenanjung, priceSabahSarawak: book.priceSabahSarawak }}
+      lede={preorder
+        ? "Pra-tempahan dibuka. Buku dipos sebaik sahaja siap dicetak, dan kami maklumkan melalui WhatsApp."
+        : "Stok sedia ada. Buku dipos dalam 2 hingga 3 hari bekerja selepas pesanan diterima."}
+    >
+      <div class="book-facts" slot="side">
+        <h3>Butiran buku</h3>
+        <ul class="rows rows--spec">
+          <li><span class="rows__name">Penulis</span><span class="rows__value">{book.author}</span></li>
+          {book.pages && <li><span class="rows__name">Muka surat</span><span class="rows__value">{book.pages}</span></li>}
+          {book.isbn && <li><span class="rows__name">ISBN</span><span class="rows__value">{book.isbn}</span></li>}
+          <li><span class="rows__name">Kategori</span><span class="rows__value">{category.label}</span></li>
+          <li><span class="rows__name">Penghantaran</span><span class="rows__value">{delivery}</span></li>
+        </ul>
+      </div>
+    </OrderSection>
+  ) : (
+    <section class="section section--grow" id="butiran" aria-labelledby="butiran-h">
+      <div class="wrap grid">
+        <div class="span-5">
+          <div class="section-head">
+            <h2 id="butiran-h">Butiran buku</h2>
+            <p>Buku ini belum boleh ditempah. Harga dan tarikhnya diumumkan di halaman ini apabila tempahan dibuka.</p>
+          </div>
+        </div>
+        <div class="span-6 start-7">
+          <ul class="rows rows--spec">
+            <li><span class="rows__name">Penulis</span><span class="rows__value">{book.author}</span></li>
+            {book.pages && <li><span class="rows__name">Muka surat</span><span class="rows__value">{book.pages}</span></li>}
+            {book.isbn && <li><span class="rows__name">ISBN</span><span class="rows__value">{book.isbn}</span></li>}
+            <li><span class="rows__name">Kategori</span><span class="rows__value">{category.label}</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {shelf.length > 0 && (
+    <section class="section section--grow" id="kategori-ini" aria-labelledby="lain-h">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="lain-h">Buku lain dalam {category.label}</h2>
+          <p><a class="link" href={`/${category.slug}`}>Lihat semua buku {category.label}</a></p>
+        </div>
+        <ul class="shelf" role="list">
+          {shelf.map((b) => (
+            <li>
+              <BookCard
+                title={b.title}
+                author={b.author}
+                availability={AVAILABILITY_LABEL[b.availability] ?? b.availability}
+                priceSemenanjung={b.priceSemenanjung}
+                priceSabahSarawak={b.priceSabahSarawak}
+                href={b.href}
+                cover={b.cover && { ...b.cover, alt: b.cover.alt || `Kulit buku ${b.title}` }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {orderable && (
+    <section class="section section--grow" id="soalan" aria-labelledby="soalan-h">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="soalan-h">Soalan tentang tempahan buku</h2>
+          <p>Ada soalan lain? WhatsApp <a class="link" href="https://wa.me/60108725969">+6010 872 5969</a> atau <a class="link" href="mailto:ronifira@gmail.com">e-mel kami</a>.</p>
+        </div>
+        <div class="faq faq--wide">
+          <div class="faq__item"><h3>Bila buku akan sampai?</h3><p>{preorder
+            ? "Buku dipos sebaik sahaja siap dicetak, dan sampai dalam 3 hingga 5 hari bekerja selepas dipos."
+            : "Buku dipos 2 hingga 3 hari bekerja selepas tempahan diterima, dan sampai dalam 3 hingga 5 hari bekerja ke Semenanjung, Sabah dan Sarawak."}</p></div>
+          <div class="faq__item"><h3>Adakah harga buku termasuk pos?</h3><p>Ya. {rm(book.priceSemenanjung)} ke Semenanjung dan {rm(book.priceSabahSarawak)} ke Sabah dan Sarawak, pos sudah termasuk.</p></div>
+          <div class="faq__item"><h3>Bagaimana saya membayar buku?</h3><p>Melalui CHIP Collect: FPX, DuitNow QR, kad kredit atau debit, dan e-dompet.</p></div>
+          <div class="faq__item"><h3>Bagaimana jika buku rosak semasa sampai?</h3><p>Hubungi kami dalam tempoh 7 hari dengan gambar kerosakan. Butirannya dalam <a class="link" href="/polisi-pemulangan">polisi pemulangan</a>.</p></div>
+        </div>
+      </div>
+    </section>
+  )}
+</KitLayout>

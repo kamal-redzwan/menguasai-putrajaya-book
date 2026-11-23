@@ -49,6 +49,13 @@ Radius `soft`. Type: Urbanist (the first pairing `start.mjs` dealt), self-hosted
   The client asked for the book to float, to draw the eye to the one book on sale. It bobs on a 6 s loop, stops
   for good once the reader scrolls down, and does not move under `prefers-reduced-motion`.
 
+## Standard Book Page (`src/pages/[category]/[book].astro`)
+Every Book added in the EmDash admin gets this page, built from its fields. It keeps the deal above: the owner's
+cover-left hero on navy, `word-highlight` on the short synopsis, the order form, the rest of the Category's shelf
+and the questions answered with the Book's prices. A Book has one picture (its cover), so the cover leads the hero
+only, and the Book's details sit beside the order form instead of a second picture. Sections below the hero grow
+with their content (`section--grow`), because how much the admin writes varies from Book to Book.
+
 ## Policy pages
 Legal text reads top to bottom, so the policy pages' one section grows with its text (page CSS
 `section.doc-page`) instead of the kit's one-screen sections.

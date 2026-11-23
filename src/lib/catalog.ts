@@ -1,7 +1,7 @@
 // The storefront's view of EmDash: the Categories as the owner names and orders them in the admin, which of them
 // have a Book a reader can order, and the Books on a Category's shelf. Every read falls back to what is known
 // without the database, so the homepage still renders if EmDash cannot be reached.
-import { getEntriesByTerm, getTaxonomyTerms } from "emdash";
+import { getEmDashEntry, getEntriesByTerm, getTaxonomyTerms } from "emdash";
 
 export interface Category {
   slug: string;
@@ -31,6 +31,11 @@ export async function getCategories(): Promise<Category[]> {
 
 /** Availability values that let a reader place an Order. */
 const ORDERABLE = new Set(["Pre-order", "On sale"]);
+
+export const isOrderable = (availability: string): boolean => ORDERABLE.has(availability);
+
+/** Availability as readers see it, in Malay. */
+export const AVAILABILITY_LABEL: Record<string, string> = { "Pre-order": "Pra-tempahan", "On sale": "Dijual", "Akan datang": "Akan datang" };
 
 /** Categories known to have an orderable Book when EmDash cannot be read. */
 const FALLBACK_ACTIVE = new Set(["umum-politik"]);
@@ -82,6 +87,56 @@ export async function getShelf(categorySlug: string): Promise<ShelfBook[]> {
   }
 }
 
+/** Everything the standard Book Page shows: the shelf card's facts plus the details only the Book Page has. */
+export interface Book extends ShelfBook {
+  isbn: string;
+  pages?: number;
+  synopsis: string;
+}
+
+/**
+ * One Book as filed under one Category, with the other Books on that shelf. Null when the Book is not published or
+ * is not in that Category, so a reader can't reach a Book through a Category it doesn't belong to.
+ */
+export async function getBookOnShelf(categorySlug: string, bookSlug: string): Promise<{ book: Book; others: ShelfBook[] } | null> {
+  let entries: Array<{ id: string; data: Record<string, unknown> }>;
+  try {
+    entries = await getEntriesByTerm("books", "category", categorySlug);
+  } catch (error) {
+    console.error(`[catalog] could not read the ${categorySlug} shelf`, error);
+    return null;
+  }
+  const entry = entries.find((e) => String(e.data.slug ?? e.id) === bookSlug);
+  if (!entry) return null;
+  const pages = Number(entry.data.pages);
+  const book: Book = {
+    ...toShelfBook(categorySlug, entry),
+    isbn: String(entry.data.isbn ?? "").trim(),
+    pages: Number.isFinite(pages) && pages > 0 ? pages : undefined,
+    synopsis: String(entry.data.synopsis ?? "").trim(),
+  };
+  const others = entries.filter((e) => e !== entry).map((e) => toShelfBook(categorySlug, e));
+  return { book, others };
+}
+
+/**
+ * The title and prices the checkout charges for a Book, read on the server so a reader cannot change the price in
+ * their browser. Null when the Book is not published or cannot be ordered.
+ */
+export async function getOrderableBook(
+  bookSlug: string,
+): Promise<{ title: string; priceSemenanjung: number; priceSabahSarawak: number } | null> {
+  const { entry, error } = await getEmDashEntry("books", bookSlug);
+  if (error) throw error;
+  // drafts reach this only in preview or edit mode; an order is only ever for the published Book
+  if (!entry || (entry.data.status && entry.data.status !== "published")) return null;
+  const d = entry.data;
+  const priceSemenanjung = Number(d.price_semenanjung ?? 0);
+  const priceSabahSarawak = Number(d.price_sabah_sarawak ?? 0);
+  if (!isOrderable(d.availability) || !(priceSemenanjung > 0) || !(priceSabahSarawak > 0)) return null;
+  return { title: d.title, priceSemenanjung, priceSabahSarawak };
+}
+
 /** Each Category with whether it is an Upcoming Category (no Book that is Pre-order or On sale). */
 export async function getCategoryShelves(): Promise<Array<Category & { upcoming: boolean; count: number }>> {
   const categories = await getCategories();
@@ -89,7 +144,7 @@ export async function getCategoryShelves(): Promise<Array<Category & { upcoming:
     categories.map(async (category) => {
       try {
         const entries = await getEntriesByTerm("books", "category", category.slug);
-        const orderable = entries.filter((e) => ORDERABLE.has(String(e.data.availability ?? "")));
+        const orderable = entries.filter((e) => isOrderable(String(e.data.availability ?? "")));
         return { ...category, upcoming: orderable.length === 0, count: orderable.length };
       } catch {
         const active = FALLBACK_ACTIVE.has(category.slug);
