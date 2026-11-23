@@ -137,6 +137,21 @@ export async function getOrderableBook(
   return { title: d.title, priceSemenanjung, priceSabahSarawak };
 }
 
+/** The title, author and cover of a published Book, for the order-received page. Null if it can't be read. */
+export async function getBookSummary(
+  bookSlug: string,
+): Promise<{ title: string; author: string; preorder: boolean; cover?: ShelfBook["cover"] } | null> {
+  try {
+    const { entry } = await getEmDashEntry("books", bookSlug);
+    if (!entry || (entry.data.status && entry.data.status !== "published")) return null;
+    const { title, author, cover, availability } = toShelfBook("", { id: entry.id, data: entry.data as unknown as Record<string, unknown> });
+    return { title, author, cover, preorder: availability === "Pre-order" };
+  } catch (error) {
+    console.error(`[catalog] could not read the Book ${bookSlug}`, error);
+    return null;
+  }
+}
+
 /** Each Category with whether it is an Upcoming Category (no Book that is Pre-order or On sale). */
 export async function getCategoryShelves(): Promise<Array<Category & { upcoming: boolean; count: number }>> {
   const categories = await getCategories();

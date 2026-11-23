@@ -195,7 +195,7 @@ const resolvedBrandId =
         products: [{ name: `${bookTitle} (${regionLabel})`, price: unit * 100, quantity: qty }],
         notes: `Nama: ${fullName} | Tel: ${phone} | E-mel: ${email} | Zon: ${regionLabel} | Kuantiti: ${qty} naskhah | Jumlah: RM${total} | Alamat: ${cleanAddress}`,
       },
-      success_redirect: `${window.location.origin}/berjaya`,
+      success_redirect: `${window.location.origin}/berjaya${bookSlug ? `?buku=${encodeURIComponent(bookSlug)}` : ""}`,
       failure_redirect: `${window.location.origin}${window.location.pathname}?status=gagal#tempah`,
       success_callback: `${window.location.origin}/api/webhook`,
     };

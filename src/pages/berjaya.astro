@@ -1,26 +1,50 @@
 ---
+// Where CHIP Collect sends a reader after paying. A standard Book Page's form adds ?buku=<slug>, so the page names and
+// shows the Book that was ordered; with no slug (the Putrajaya Book Page) it shows Siapa Akan Menguasai Putrajaya?.
 import KitLayout from "../layouts/KitLayout.astro";
-const cover = encodeURI("/COVER 16 copy 2.jpg");
+import { getBookSummary } from "../lib/catalog";
+
+export const prerender = false;
+
+const PUTRAJAYA = {
+  title: "Siapa Akan Menguasai Putrajaya?",
+  author: "Ronifira Rejab",
+  preorder: false,
+  cover: { src: encodeURI("/COVER 16 copy 2.jpg"), alt: "Kulit hadapan buku Siapa Akan Menguasai Putrajaya?", width: 1748, height: 2480 },
+};
+const slug = Astro.url.searchParams.get("buku");
+const found = slug ? await getBookSummary(slug) : null;
+// a slug that can't be read gets a thank-you with no Book named, rather than the wrong Book
+const book = slug ? found : PUTRAJAYA;
+const transit = book?.preorder ? "3 hingga 5 hari bekerja selepas buku siap dicetak" : "3 hingga 5 hari bekerja";
+const title = book ? `Tempahan diterima: ${book.title}` : "Tempahan diterima";
+const description = book
+  ? `Pengesahan tempahan buku ${book.title} karya ${book.author}.`
+  : "Pengesahan tempahan buku daripada Brainwave Communications.";
 ---
 
-<KitLayout title="Tempahan diterima: Siapa Akan Menguasai Putrajaya?" description="Pengesahan tempahan buku Siapa Akan Menguasai Putrajaya? karya Ronifira Rejab.">
+<KitLayout title={title} description={description}>
   <section class="section" aria-labelledby="ok-h">
     <div class="wrap grid">
       <div class="span-7">
         <div class="section-head">
           <h1 id="ok-h">Terima kasih. Tempahan anda diterima.</h1>
-          <p class="t-lead">Resit dan butiran tempahan dihantar ke e-mel anda oleh CHIP Collect.</p>
+          <p class="t-lead">
+            {book ? <Fragment>Tempahan buku <strong>{book.title}</strong> diterima. </Fragment> : null}Resit dan butiran tempahan dihantar ke e-mel anda oleh CHIP Collect.
+          </p>
         </div>
         <ul class="rows rows--spec">
-          <li><span class="rows__name">Semenanjung</span><span class="rows__value">3 hingga 5 hari bekerja</span></li>
-          <li><span class="rows__name">Sabah dan Sarawak</span><span class="rows__value">3 hingga 5 hari bekerja</span></li>
+          <li><span class="rows__name">Semenanjung</span><span class="rows__value">{transit}</span></li>
+          <li><span class="rows__name">Sabah dan Sarawak</span><span class="rows__value">{transit}</span></li>
           <li><span class="rows__name">Nombor penjejakan</span><span class="rows__value">Melalui WhatsApp atau e-mel</span></li>
         </ul>
         <div class="btn-row" style="margin-top: var(--s-7)"><a class="btn btn--secondary" href="/">Kembali ke laman utama</a></div>
       </div>
-      <div class="span-4 start-9">
-        <div class="frame frame--photo" style="aspect-ratio: 1748 / 2480"><img class="frame__img" src={cover} alt="Kulit hadapan buku Siapa Akan Menguasai Putrajaya?" width="1748" height="2480" /></div>
-      </div>
+      {book?.cover && (
+        <div class="span-4 start-9">
+          <div class="frame frame--photo" style="aspect-ratio: 1748 / 2480"><img class="frame__img" src={book.cover.src} alt={book.cover.alt || `Kulit hadapan buku ${book.title}`} width={book.cover.width} height={book.cover.height} /></div>
+        </div>
+      )}
     </div>
   </section>
 </KitLayout>
