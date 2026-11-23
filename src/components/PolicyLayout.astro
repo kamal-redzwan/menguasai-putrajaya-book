@@ -6,10 +6,9 @@ export interface Props {
   enTitle: string;
   description: string;
   currentPath: string;
-  lastUpdated?: string;
 }
 
-const { title, enTitle, description, currentPath, lastUpdated = "15 November 2026" } = Astro.props;
+const { title, enTitle, description, currentPath } = Astro.props;
 
 const policyNav = [
   { href: "/polisi-penghantaran", label: "Penghantaran" },
@@ -47,7 +46,7 @@ const policyNav = [
       </nav>
       <div class="section-head measure">
         <h1 id="doc-h">{title}</h1>
-        <p class="muted">{enTitle}. Kemas kini {lastUpdated}. Dikeluarkan oleh Brainwave Communications (202203208117 / JM0967023-W).</p>
+        <p class="muted">{enTitle}. Dikeluarkan oleh Brainwave Communications (202203208117 / JM0967023-W).</p>
       </div>
       <article class="doc measure">
         <slot />
