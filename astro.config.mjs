@@ -3,6 +3,7 @@ import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import emdash from 'emdash/astro';
 import { d1, r2 } from '@emdash-cms/cloudflare';
+import { emdashSmtp } from 'emdash-smtp';
 
 export default defineConfig({
   output: 'static',
@@ -25,6 +26,9 @@ export default defineConfig({
     emdash({
       database: d1({ binding: 'DB', session: 'auto' }),
       storage: r2({ binding: 'MEDIA' }),
+      // Email provider (invites, password resets). Resend is chosen and its API key is entered in the admin:
+      // Extensions → SMTP → Providers. Resend sends over its HTTP API, so it runs on the free Workers plan.
+      plugins: [emdashSmtp()],
     }),
   ],
   env: {
